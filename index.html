@@ -2,20 +2,22 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
-    <title>Global Harmony - Final Pro</title>
+    <title>Global Harmony Pro</title>
     <style>
-        body { margin: 0; background: #121212; color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
-        .nav { padding: 20px; background: #000; display: flex; gap: 10px; }
-        .main { display: flex; flex: 1; overflow: hidden; }
-        #sidebar { width: 300px; padding: 20px; overflow-y: auto; background: #181818; }
+        body { margin: 0; background: linear-gradient(135deg, #121212, #1db954); color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
+        .nav { padding: 20px; background: rgba(0,0,0,0.5); display: flex; gap: 10px; justify-content: center; }
+        .main { display: flex; flex: 1; overflow: hidden; padding: 20px; }
+        #sidebar { width: 300px; padding: 20px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 10px; }
         #content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        audio { width: 80%; background: #333; border-radius: 10px; }
+        audio { width: 100%; max-width: 500px; background: #fff; border-radius: 50px; }
+        .list-item { padding: 10px; border-bottom: 1px solid #333; cursor: pointer; }
+        .list-item:hover { color: #1db954; }
     </style>
 </head>
 <body>
     <div class="nav">
-        <input type="text" id="link" placeholder="MP3 Link Paste Karein...">
-        <button onclick="playLink()">Play Online Link</button>
+        <input type="text" id="link" placeholder="Direct MP3 Link paste karein...">
+        <button onclick="playLink()">Play Online</button>
         <button onclick="document.getElementById('file').click()">Upload Offline</button>
         <input type="file" id="file" style="display:none" accept="audio/*">
     </div>
@@ -30,19 +32,24 @@
 
     <script>
         const player = document.getElementById('player');
+        const list = document.getElementById('list');
+
         // Offline Load
         document.getElementById('file').onchange = (e) => {
             for(let f of e.target.files) {
                 let li = document.createElement('li');
-                li.innerText = f.name;
-                li.onclick = () => { player.src = URL.createObjectURL(f); player.play(); };
-                document.getElementById('list').appendChild(li);
+                li.className = 'list-item';
+                li.innerText = "🎵 " + f.name;
+                li.onclick = () => { player.src = URL.createObjectURL(f); player.play(); document.getElementById('title').innerText = f.name; };
+                list.appendChild(li);
             }
         };
-        // Online Load (Sirf Direct MP3 Link)
+
+        // Online Load
         function playLink() {
             player.src = document.getElementById('link').value;
             player.play();
+            document.getElementById('title').innerText = "Streaming Online...";
         }
     </script>
 </body>
