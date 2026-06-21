@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -8,84 +9,52 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: sans-serif; background: #000; color: #fff; height: 100vh; display: flex; flex-direction: column; }
         header { padding: 20px; display: flex; justify-content: space-between; background: #121212; align-items: center; }
-        .search-btn { cursor: pointer; font-size: 16px; color: #fff; }
-        .main-content { flex: 1; padding: 20px; display: grid; grid-template-columns: 250px 1fr; gap: 20px; }
-        .playlist-side { background: #181818; padding: 15px; border-radius: 8px; }
-        #playlist-list { list-style: none; margin-top: 10px; }
-        #playlist-list li { padding: 8px; border-bottom: 1px solid #333; cursor: pointer; }
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-        .song-card { background: #181818; padding: 10px; border-radius: 8px; cursor: pointer; text-align: center; }
-        .song-card img { width: 100%; border-radius: 4px; }
-        #player-bar { position: fixed; bottom: 0; width: 100%; height: 90px; background: #282828; display: flex; align-items: center; padding: 0 20px; gap: 20px; }
+        .main-content { flex: 1; padding: 40px; display: grid; grid-template-columns: 250px 1fr; gap: 40px; }
+        
+        /* BADE CARDS */
+        .song-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
+        .song-card { background: #181818; padding: 25px; border-radius: 15px; cursor: pointer; text-align: center; border: 2px solid #333; }
+        .song-card img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
+        .song-card p { font-size: 22px; font-weight: bold; }
+        
+        #player-bar { position: fixed; bottom: 0; width: 100%; height: 90px; background: #282828; display: flex; align-items: center; padding: 0 20px; }
     </style>
 </head>
 <body>
-
     <header>
         <div><i class="fas fa-home"></i> Home</div>
-        <div class="search-btn" onclick="searchOnline()"><i class="fas fa-search"></i> Search Online</div>
+        <div onclick="searchOnline()" style="cursor:pointer"><i class="fas fa-search"></i> Search Online</div>
         <div><button>Log in</button> <button>Premium</button></div>
     </header>
 
     <div class="main-content">
-        <div class="playlist-side">
-            <h3>Library <i class="fas fa-plus" onclick="createPlaylist()" style="cursor:pointer"></i></h3>
-            <ul id="playlist-list"></ul>
+        <div class="playlist-side" style="background:#181818; padding:20px;">
+            <h3>Library +</h3>
         </div>
         <div class="song-grid">
-            <div class="song-card" onclick="playSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', 'Song 1')">
-                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300">
-                <p>Play Song 1</p>
+            <div class="song-card" onclick="playSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')">
+                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=500">
+                <p>SoundHelix 1</p>
+            </div>
+            <div class="song-card" onclick="playSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')">
+                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=500">
+                <p>SoundHelix 2</p>
+            </div>
+            <div class="song-card" onclick="playSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
+                <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500">
+                <p>SoundHelix 3</p>
             </div>
         </div>
     </div>
-
-    <div id="player-bar">
-        <div id="now-playing">Playing: None</div>
-        <audio id="audio-element" controls></audio>
-    </div>
-
+    <div id="player-bar"><audio id="audio-element" controls style="width:100%"></audio></div>
+    
     <script>
-        const audio = document.getElementById('audio-element');
-
-        // 1. Search Logic
-        function searchOnline() {
-            let query = prompt("Gaane ka naam:");
-            if (query) {
-                document.getElementById('now-playing').innerText = "Searching: " + query;
-                window.open(`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`, '_blank');
-            }
-        }
-
-        // 2. Play Song
-        function playSong(url, name) {
+        function playSong(url) {
+            let audio = document.getElementById('audio-element');
             audio.src = url;
             audio.play();
-            document.getElementById('now-playing').innerText = "Playing: " + name;
         }
-
-        // 3. Playlist Logic (Storage)
-        function createPlaylist() {
-            let name = prompt("Playlist ka naam:");
-            if(name) {
-                let li = document.createElement('li');
-                li.innerText = name;
-                document.getElementById('playlist-list').appendChild(li);
-                localStorage.setItem('playlist_' + name, name);
-            }
-        }
-
-        // Load saved playlists on start
-        window.onload = () => {
-            for(let i=0; i<localStorage.length; i++) {
-                let key = localStorage.key(i);
-                if(key.startsWith('playlist_')) {
-                    let li = document.createElement('li');
-                    li.innerText = localStorage.getItem(key);
-                    document.getElementById('playlist-list').appendChild(li);
-                }
-            }
-        }
+        function searchOnline() { window.open('https://www.youtube.com', '_blank'); }
     </script>
 </body>
 </html>
