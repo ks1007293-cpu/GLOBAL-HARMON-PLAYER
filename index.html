@@ -2,54 +2,399 @@
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Harmony Pro</title>
     <style>
-        body { margin: 0; background: linear-gradient(135deg, #121212, #1db954); color: white; font-family: sans-serif; display: flex; flex-direction: column; height: 100vh; }
-        .nav { padding: 20px; background: rgba(0,0,0,0.5); display: flex; gap: 10px; justify-content: center; }
-        .main { display: flex; flex: 1; overflow: hidden; padding: 20px; }
-        #sidebar { width: 300px; padding: 20px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 10px; }
-        #content { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        audio { width: 100%; max-width: 500px; background: #fff; border-radius: 50px; }
-        .list-item { padding: 10px; border-bottom: 1px solid #333; cursor: pointer; }
-        .list-item:hover { color: #1db954; }
+        /* CSS Reset & Variables */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --bg-black: #000000;
+            --bg-dark-1: #121212;
+            --bg-dark-2: #212121;
+            --text-main: #ffffff;
+            --text-sub: #b3b3b3;
+            --main-green: #1db954;
+            --player-height: 90px;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, sans-serif;
+            background: var(--bg-black);
+            color: var(--text-main);
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            font-size: 14px;
+        }
+
+        /* --- Global Elements --- */
+        button { background: none; border: none; color: var(--text-main); cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; }
+        button:hover { color: var(--text-main); }
+        .icon { font-size: 20px; }
+        .p-btn { background: var(--main-green); color: black; font-weight: bold; padding: 8px 16px; border-radius: 20px; }
+        .p-btn:hover { background: #1ed760; }
+        .plus-icon { color: var(--text-sub); }
+        .plus-icon:hover { color: var(--text-main); }
+
+        /* --- Main Layout --- */
+        #main-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            margin-right: 8px;
+            margin-bottom: var(--player-height);
+        }
+
+        /* --- Header --- */
+        header {
+            height: 64px;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-left { display: flex; gap: 24px; }
+        .header-left button { color: var(--text-sub); }
+
+        .header-right { display: flex; gap: 16px; align-items: center; }
+        .signup-btn { font-weight: bold; }
+        .login-btn { font-weight: bold; background: white; color: black; padding: 8px 16px; border-radius: 20px; }
+        .customer-support-btn { color: var(--text-sub); font-size: 12px; }
+
+        /* --- Sidebar & Plus Icon --- */
+        aside {
+            width: 250px;
+            background: var(--bg-dark-1);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            border-radius: 8px;
+            margin-right: 8px;
+            margin-bottom: var(--player-height);
+        }
+
+        .nav-links { display: flex; flex-direction: column; gap: 16px; }
+        .nav-links button { color: var(--text-sub); justify-content: start; }
+        .nav-links button.active { color: var(--text-main); }
+
+        .library {
+            flex: 1;
+            background: var(--bg-dark-1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .library-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-sub);
+            margin-bottom: 16px;
+        }
+        .library-header h4 { display: flex; align-items: center; gap: 12px; font-weight: bold; }
+
+        #playlist-list {
+            list-style: none;
+            overflow-y: auto;
+        }
+        #playlist-list li {
+            color: var(--text-sub);
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        #playlist-list li:hover { background: rgba(255,255,255,0.1); color: var(--text-main); }
+
+        /* --- Content Area & GRID --- */
+        main {
+            flex: 1;
+            background: linear-gradient(#1e1e1e, #121212);
+            border-radius: 8px;
+            padding: 32px;
+            overflow-y: auto;
+        }
+
+        main h1 { font-size: 32px; margin-bottom: 32px; }
+
+        .section-header { margin-bottom: 24px; font-size: 24px; }
+
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 24px;
+        }
+
+        .song-card {
+            background: var(--bg-dark-2);
+            padding: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.3s;
+            position: relative;
+        }
+        .song-card:hover { background: #2a2a2a; }
+
+        .song-card img { width: 100%; border-radius: 4px; aspect-ratio: 1/1; object-fit: cover; margin-bottom: 16px; }
+        .song-card h3 { font-size: 16px; margin-bottom: 8px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .song-card p { font-size: 14px; color: var(--text-sub); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+        .play-btn-overlay {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--main-green);
+            color: black;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            bottom: 60px;
+            right: 25px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            opacity: 0;
+            transition: 0.3s;
+        }
+        .song-card:hover .play-btn-overlay { opacity: 1; transform: translateY(-5px); }
+
+        /* --- PLAYER BAR (Hidden & Pop Up) --- */
+        #player-bar {
+            position: fixed;
+            bottom: - var(--player-height); /* Hidden initial state */
+            left: 0;
+            width: 100%;
+            height: var(--player-height);
+            background: var(--bg-dark-1);
+            border-top: 1px solid #282828;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: bottom 0.5s ease-in-out;
+            z-index: 100;
+        }
+
+        #player-bar.active { bottom: 0; } /* Class to pop up */
+
+        .player-now-playing { display: flex; align-items: center; gap: 16px; width: 30%; }
+        .player-now-playing img { width: 56px; height: 56px; border-radius: 4px; }
+        .player-info h4 { font-size: 14px; }
+        .player-info p { font-size: 12px; color: var(--text-sub); }
+
+        .player-controls-container { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .player-controls { display: flex; gap: 24px; color: var(--text-sub); }
+        .player-controls .play-pause { background: white; color: black; border-radius: 50%; width: 32px; height: 32px; font-size: 14px; justify-content: center; align-items: center; }
+
+        #player-progress-container { width: 100%; display: flex; align-items: center; gap: 8px; }
+        #player-current-time, #player-total-time { font-size: 12px; color: var(--text-sub); }
+        #player-progress {
+            flex: 1;
+            height: 4px;
+            background: #535353;
+            border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+        }
+        #player-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: white;
+            border-radius: 2px;
+            position: absolute;
+        }
+
+        .player-volume-support { display: flex; align-items: center; gap: 16px; width: 30%; justify-content: end; color: var(--text-sub); }
+        .player-volume-support button { font-size: 16px; }
+        .lyrics-btn { font-size: 14px; }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="nav">
-        <input type="text" id="link" placeholder="Direct MP3 Link paste karein...">
-        <button onclick="playLink()">Play Online</button>
-        <button onclick="document.getElementById('file').click()">Upload Offline</button>
-        <input type="file" id="file" style="display:none" accept="audio/*">
+
+    <aside>
+        <div class="nav-links">
+            <button class="active"><i class="fas fa-home icon"></i> Home</button>
+        </div>
+        <div class="library">
+            <div class="library-header">
+                <h4><i class="fas fa-list icon plus-icon"></i> Your Library</h4>
+                <button title="Create Playlist" class="plus-icon"><i class="fas fa-plus icon"></i></button>
+            </div>
+            <ul id="playlist-list">
+                <li>Liked Songs</li>
+                <li>Offline Songs</li>
+                <li style="border-top: 1px solid #282828; margin-top: 10px; color: var(--text-sub); pointer-events: none;">+ Personal Playlists...</li>
+            </ul>
+        </div>
+    </aside>
+
+    <div id="main-container">
+        <header>
+            <div class="header-left">
+                <button><i class="fas fa-angle-left icon"></i></button>
+                <button><i class="fas fa-angle-right icon"></i></button>
+                <button><i class="fas fa-search icon"></i> Search</button>
+            </div>
+            <div class="header-right">
+                <button class="signup-btn">Sign up</button>
+                <button class="login-btn">Log in</button>
+                <button class="p-btn">Premium</button>
+                <button class="customer-support-btn" title="Contact Customer Support"><i class="fas fa-headset icon"></i> Support</button>
+            </div>
+        </header>
+
+        <main>
+            <h1>GLOBAL Harmony Player</h1>
+
+            <div class="section-header">Artist Playlist & Features</div>
+
+            <div class="song-grid" id="song-grid">
+                <div class="song-card">
+                    <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300" alt="Local MP3">
+                    <h3>Your MP3 Files</h3>
+                    <p>Click 'Upload' in nav</p>
+                    <div class="play-btn-overlay" onclick="document.getElementById('file-input').click()"><i class="fas fa-upload"></i></div>
+                </div>
+
+                <div class="song-card" onclick="loadSampleSong('Song helix 1', 'Sample Artist', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3', 'https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=300')">
+                    <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=300" alt="Sound Helix 1">
+                    <h3>Sound Helix 1</h3>
+                    <p>Sample Artist</p>
+                    <div class="play-btn-overlay"><i class="fas fa-play"></i></div>
+                </div>
+
+                <div class="song-card" onclick="loadSampleSong('Helix 3 (Sample)', 'Sample Artist 2', 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3', 'https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300')">
+                    <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300" alt="Helix 3">
+                    <h3>Helix 3</h3>
+                    <p>Artist 2</p>
+                    <div class="play-btn-overlay"><i class="fas fa-play"></i></div>
+                </div>
+                
+                <input type="file" id="file-input" style="display: none;" accept="audio/mpeg" onchange="handleLocalFile(this)">
+                
+            </div>
+        </main>
     </div>
 
-    <div class="main">
-        <div id="sidebar"><h3>Playlist</h3><ul id="list"></ul></div>
-        <div id="content">
-            <h2 id="title">Global Harmony</h2>
-            <audio id="player" controls></audio>
+    <footer id="player-bar">
+        <div class="player-now-playing">
+            <img src="" alt="Album Art" id="player-art">
+            <div class="player-info">
+                <h4 id="player-title">Song Title</h4>
+                <p id="player-artist">Artist</p>
+            </div>
+            <button class="plus-icon"><i class="fas fa-plus"></i></button>
         </div>
-    </div>
+
+        <div class="player-controls-container">
+            <div class="player-controls">
+                <button><i class="fas fa-shuffle"></i></button>
+                <button><i class="fas fa-backward-step"></i></button>
+                <button class="play-pause" onclick="togglePlay()"><i id="play-pause-icon" class="fas fa-play"></i></button>
+                <button><i class="fas fa-forward-step"></i></button>
+                <button><i class="fas fa-repeat"></i></button>
+            </div>
+            <div id="player-progress-container">
+                <span id="player-current-time">0:00</span>
+                <div id="player-progress" onclick="seek(event)">
+                    <div id="player-progress-fill"></div>
+                </div>
+                <span id="player-total-time">0:00</span>
+            </div>
+        </div>
+
+        <div class="player-volume-support">
+            <button><i class="fas fa-volume-up"></i></button>
+            <button class="lyrics-btn"><i class="fas fa-microphone"></i> Lyrics</button>
+            <button><i class="fas fa-expand"></i></button>
+        </div>
+    </footer>
+
+    <audio id="audio-element"></audio>
 
     <script>
-        const player = document.getElementById('player');
-        const list = document.getElementById('list');
+        const audio = document.getElementById('audio-element');
+        const playerBar = document.getElementById('player-bar');
+        const playPauseIcon = document.getElementById('play-pause-icon');
+        const progressFill = document.getElementById('player-progress-fill');
+        const currentTimeSpan = document.getElementById('player-current-time');
+        const totalTimeSpan = document.getElementById('player-total-time');
 
-        // Offline Load
-        document.getElementById('file').onchange = (e) => {
-            for(let f of e.target.files) {
-                let li = document.createElement('li');
-                li.className = 'list-item';
-                li.innerText = "🎵 " + f.name;
-                li.onclick = () => { player.src = URL.createObjectURL(f); player.play(); document.getElementById('title').innerText = f.name; };
-                list.appendChild(li);
+        // Function to load and play a sample song (in-app stream from external link)
+        function loadSampleSong(title, artist, url, art) {
+            document.getElementById('player-art').src = art;
+            document.getElementById('player-title').innerText = title;
+            document.getElementById('player-artist').innerText = artist;
+
+            audio.src = url;
+            playAudio();
+        }
+
+        // --- LOCAL MP3 PLAY JUGAD ---
+        // Function to handle local MP3 upload for in-app play
+        function handleLocalFile(input) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('player-art').src = 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300';
+                    document.getElementById('player-title').innerText = file.name;
+                    document.getElementById('player-artist').innerText = 'Offline MP3';
+
+                    audio.src = e.target.result;
+                    playAudio();
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function playAudio() {
+            audio.play();
+            playerBar.classList.add('active'); // Pop up player bar
+            playPauseIcon.classList.remove('fa-play');
+            playPauseIcon.classList.add('fa-pause');
+        }
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playPauseIcon.classList.remove('fa-play');
+                playPauseIcon.classList.add('fa-pause');
+            } else {
+                audio.pause();
+                playPauseIcon.classList.remove('fa-pause');
+                playPauseIcon.classList.add('fa-play');
+            }
+        }
+
+        // --- PROGRESS BAR LOGIC ---
+        audio.ontimeupdate = function() {
+            if (audio.duration) {
+                const percentage = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = percentage + '%';
+                currentTimeSpan.innerText = formatTime(audio.currentTime);
+                totalTimeSpan.innerText = formatTime(audio.duration);
             }
         };
 
-        // Online Load
-        function playLink() {
-            player.src = document.getElementById('link').value;
-            player.play();
-            document.getElementById('title').innerText = "Streaming Online...";
+        function seek(event) {
+            const containerWidth = document.getElementById('player-progress').clientWidth;
+            const clickX = event.offsetX;
+            const duration = audio.duration;
+            audio.currentTime = (clickX / containerWidth) * duration;
+        }
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
         }
     </script>
 </body>
