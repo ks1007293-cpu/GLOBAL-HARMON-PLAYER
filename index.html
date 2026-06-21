@@ -1,60 +1,352 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Harmony Pro</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: sans-serif; background: #000; color: #fff; height: 100vh; display: flex; flex-direction: column; }
-        header { padding: 20px; display: flex; justify-content: space-between; background: #121212; align-items: center; }
-        .main-content { flex: 1; padding: 40px; display: grid; grid-template-columns: 250px 1fr; gap: 40px; }
-        
-        /* BADE CARDS */
-        .song-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; }
-        .song-card { background: #181818; padding: 25px; border-radius: 15px; cursor: pointer; text-align: center; border: 2px solid #333; }
-        .song-card img { width: 100%; border-radius: 10px; margin-bottom: 20px; }
-        .song-card p { font-size: 22px; font-weight: bold; }
-        
-        #player-bar { position: fixed; bottom: 0; width: 100%; height: 90px; background: #282828; display: flex; align-items: center; padding: 0 20px; }
+        :root {
+            --spotify-green: #1DB954;
+            --spotify-black: #121212;
+            --spotify-light: #282828;
+            --spotify-grey: #b3b3b3;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+
+        body {
+            background-color: #000;
+            color: white;
+            height: 100vh;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            width: 240px;
+            background-color: #000;
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            color: var(--spotify-grey);
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active { color: white; background: #1a1a1a; }
+
+        .library {
+            background: #121212;
+            border-radius: 8px;
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* --- MAIN CONTENT --- */
+        .main {
+            flex: 1;
+            background: linear-gradient(to bottom, #222, var(--spotify-black));
+            overflow-y: auto; /* Vertically scrollable */
+            padding: 20px 30px 120px 30px; /* Bottom padding added for player space */
+            border-radius: 8px;
+            margin: 8px 8px 8px 0;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: rgba(0,0,0,0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 30px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 350px;
+        }
+
+        .search-bar input {
+            border: none;
+            outline: none;
+            width: 100%;
+            font-size: 14px;
+            color: #000;
+        }
+
+        .search-bar i { color: #000; }
+
+        .auth-buttons { display: flex; gap: 15px; align-items: center; }
+
+        .btn-signup { color: var(--spotify-grey); font-weight: bold; cursor: pointer; font-size: 14px; }
+        .btn-signup:hover { color: white; }
+
+        .btn-login, .btn-premium {
+            background: white;
+            color: black;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 14px;
+            border: none;
+        }
+
+        .btn-premium { background: var(--spotify-green); color: white; }
+        .btn-login:hover, .btn-premium:hover { transform: scale(1.05); }
+
+        .support-btn {
+            background: none;
+            border: none;
+            color: var(--spotify-grey);
+            cursor: pointer;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .support-btn:hover { color: white; }
+
+        .upload-trigger-btn {
+            background: var(--spotify-green);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 30px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+        .upload-trigger-btn:hover { transform: scale(1.03); }
+
+        .section-title { font-size: 24px; margin-bottom: 15px; }
+
+        /* --- FIXED GRID: SMART REPEATING AUTO-FILL --- */
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Chote compact cards */
+            gap: 20px;
+            width: 100%;
+        }
+
+        .song-card {
+            background: #181818;
+            padding: 15px;
+            border-radius: 10px;
+            transition: 0.3s;
+            cursor: pointer;
+            position: relative;
+            text-align: center;
+            border: 1px solid #282828;
+        }
+
+        .song-card:hover { background: #282828; }
+
+        .song-card img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 12px;
+            box-shadow: 0 6px 12px rgba(0,0,0,0.5);
+            aspect-ratio: 1/1;
+            object-fit: cover;
+        }
+
+        .song-card h3 { font-size: 14px; margin-bottom: 5px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .song-card p { color: var(--spotify-grey); font-size: 12px; }
+
+        /* --- PLAYER BAR --- */
+        .player-bar {
+            position: fixed;
+            bottom: -100px;
+            left: 0;
+            width: 100%;
+            height: 90px;
+            background: #121212;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            transition: 0.4s ease-in-out;
+            z-index: 1000;
+            border-top: 1px solid #282828;
+        }
+
+        .player-bar.active { bottom: 0; }
+
+        .now-playing { display: flex; align-items: center; gap: 15px; width: 30%; }
+        .now-playing img { width: 56px; height: 56px; border-radius: 4px; object-fit: cover; }
+        .song-info h4 { font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 180px; }
+        .song-info p { font-size: 12px; color: var(--spotify-grey); }
+
+        .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .audio-element-custom { width: 100%; }
     </style>
 </head>
 <body>
-    <header>
-        <div><i class="fas fa-home"></i> Home</div>
-        <div onclick="searchOnline()" style="cursor:pointer"><i class="fas fa-search"></i> Search Online</div>
-        <div><button>Log in</button> <button>Premium</button></div>
-    </header>
 
-    <div class="main-content">
-        <div class="playlist-side" style="background:#181818; padding:20px;">
-            <h3>Library +</h3>
-        </div>
-        <div class="song-grid">
-            <div class="song-card" onclick="playSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3')">
-                <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=500">
-                <p>SoundHelix 1</p>
-            </div>
-            <div class="song-card" onclick="playSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3')">
-                <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=500">
-                <p>SoundHelix 2</p>
-            </div>
-            <div class="song-card" onclick="playSong('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3')">
-                <img src="https://images.unsplash.com/photo-1506157786151-b8491531f063?w=500">
-                <p>SoundHelix 3</p>
-            </div>
+    <div class="sidebar">
+        <div class="nav-item active"><i class="fas fa-house"></i> Home</div>
+        <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> Search</div>
+        
+        <div class="library">
+            <div class="nav-item" style="padding: 0;"><i class="fas fa-layer-group"></i> Library <i class="fas fa-plus" style="margin-left:auto" onclick="createPlaylist()"></i></div>
+            <ul id="playlist-list" style="list-style: none; color: var(--spotify-grey); font-size: 14px; display: flex; flex-direction: column; gap: 10px;"></ul>
+            <button class="support-btn" style="margin-top: auto;" onclick="alert('Customer Support: support@globalharmony.com')"><i class="fas fa-headset"></i> Support</button>
         </div>
     </div>
-    <div id="player-bar"><audio id="audio-element" controls style="width:100%"></audio></div>
-    
+
+    <div class="main">
+        <header>
+            <div class="search-bar">
+                <i class="fas fa-magnifying-glass"></i>
+                <input type="text" id="searchInput" placeholder="Search from uploaded songs..." onkeyup="searchSongs()">
+            </div>
+            <div class="auth-buttons">
+                <div class="btn-signup">Sign up</div>
+                <button class="btn-login">Log in</button>
+                <button class="btn-premium">Premium</button>
+            </div>
+        </header>
+
+        <button class="upload-trigger-btn" onclick="document.getElementById('multiFileInput').click()">
+            <i class="fas fa-cloud-upload-alt"></i> Ek Saath Saare Gaane Upload Karein
+        </button>
+        
+        <input type="file" id="multiFileInput" style="display:none" accept="audio/*" multiple>
+
+        <h2 class="section-title">Your Tracks</h2>
+        <div class="song-grid" id="songGrid">
+            </div>
+    </div>
+
+    <footer class="player-bar" id="playerBar">
+        <div class="now-playing">
+            <img id="p-img" src="">
+            <div class="song-info">
+                <h4 id="p-title">Song Title</h4>
+                <p id="p-artist">Local Audio</p>
+            </div>
+        </div>
+
+        <div class="controls">
+            <audio id="audioElement" class="audio-element-custom" controls></audio>
+        </div>
+        <div style="width: 30%;"></div>
+    </footer>
+
     <script>
-        function playSong(url) {
-            let audio = document.getElementById('audio-element');
-            audio.src = url;
+        const audio = document.getElementById('audioElement');
+        const multiFileInput = document.getElementById('multiFileInput');
+        const songGrid = document.getElementById('songGrid');
+        const playerBar = document.getElementById('playerBar');
+        
+        let trackList = [];
+
+        const imagesPool = [
+            "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
+            "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=300",
+            "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300",
+            "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300",
+            "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
+        ];
+
+        multiFileInput.onchange = (e) => {
+            const files = e.target.files;
+            if (files.length === 0) return;
+
+            songGrid.innerHTML = '';
+            trackList = [];
+
+            Array.from(files).forEach((file, index) => {
+                const blobUrl = URL.createObjectURL(file);
+                const cleanName = file.name.replace(/\.[^/.]+$/, "");
+                const randomImg = imagesPool[index % imagesPool.length];
+
+                trackList.push({
+                    id: index,
+                    url: blobUrl,
+                    title: cleanName,
+                    img: randomImg
+                });
+
+                const card = document.createElement('div');
+                card.className = 'song-card';
+                card.setAttribute('onclick', `playTrack(${index})`);
+                card.innerHTML = `
+                    <img src="${randomImg}">
+                    <h3>${cleanName}</h3>
+                    <p>Offline Loaded</p>
+                `;
+                songGrid.appendChild(card);
+            });
+
+            if(trackList.length > 0) {
+                playTrack(0);
+            }
+        };
+
+        function playTrack(index) {
+            const track = trackList[index];
+            if (!track) return;
+
+            audio.src = track.url;
+            document.getElementById('p-title').innerText = track.title;
+            document.getElementById('p-artist').innerText = "Playing Offline";
+            document.getElementById('p-img').src = track.img;
+            
             audio.play();
+            playerBar.classList.add('active');
         }
-        function searchOnline() { window.open('https://www.youtube.com', '_blank'); }
+
+        function searchSongs() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.song-card');
+            cards.forEach(card => {
+                const titleText = card.querySelector('h3').innerText.toLowerCase();
+                if (titleText.includes(query)) {
+                    card.style.display = "block";
+                } else {
+                    card.style.display = "none";
+                }
+            });
+        }
+
+        function createPlaylist() {
+            let name = prompt("Nayi Playlist ka naam:");
+            if(name) {
+                let li = document.createElement('li');
+                li.innerText = "🎵 " + name;
+                document.getElementById('playlist-list').appendChild(li);
+            }
+        }
     </script>
 </body>
 </html>
