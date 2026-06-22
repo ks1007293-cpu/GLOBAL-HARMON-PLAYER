@@ -123,7 +123,7 @@
         
         let trackList = [];
         let db;
-        let activeObjectURL = null;
+        let currentBlobUrl = null;
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -133,27 +133,9 @@
             "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
         ];
 
-        // 1. AUTO-EMAIL ERROR REPORTING LOGIC
-        window.onerror = function(message, source, lineno, colno, error) {
-            const errorDetails = `Error: ${message} | Source: ${source} | Line: ${lineno}`;
-            fetch("https://formspree.io/f/mnnqevwd", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email: "ks1007293@gmail.com", message: errorDetails })
-            }).catch(() => {});
-            return false;
-        };
-
-        // 2. CRASH-PROOF STRUCTURAL DATABASE (V3 Bypass)
+        // 1. DATABASE CONNECT
         const dbRequest = indexedDB.open("GlobalHarmonyFinalDB_v3", 1);
         
-        dbRequest.onupgradeneeded = (e) => {
-            let database = e.target.result;
-            if (!database.objectStoreNames.contains("offline_tracks")) {
-                database.createObjectStore("offline_tracks", { keyPath: "id", autoIncrement: true });
-            }
-        };
-
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
             loadTracksFromDB();
@@ -177,7 +159,7 @@
                 return;
             }
             trackList.forEach((track, index) => {
-                const cleanName = track.title.replace(/_/g, " ");
+                const cleanName = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 card.addEventListener('click', () => playTrack(index));
@@ -190,7 +172,7 @@
             });
         }
 
-        // 3. FIXED NO-CONVERSION MEMORY STREAMING (Saves directly as File/Blob)
+        // 2. BACKWARD MEMORY COMPATIBILITY UPLOAD
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
@@ -215,20 +197,25 @@
             };
         });
 
+        // 3. LIGHTWEIGHT INSTANT STREAMING (No Lag Click)
         function playTrack(index) {
             const track = trackList[index];
             if (!track) return;
 
-            if (activeObjectURL) {
-                URL.revokeObjectURL(activeObjectURL);
+            // Purani RAM cache memory ko turant clear karo taaki lag na ho
+            if (currentBlobUrl) {
+                URL.revokeObjectURL(currentBlobUrl);
             }
 
-            activeObjectURL = URL.createObjectURL(track.audioBlob);
-            audio.src = activeObjectURL; 
-            document.getElementById('p-title').innerText = track.title.replace(/_/g, " ");
+            // Infinite performance chunk load
+            currentBlobUrl = URL.createObjectURL(track.audioBlob);
+            audio.src = currentBlobUrl; 
+            
+            const cleanTitle = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
+            document.getElementById('p-title').innerText = cleanTitle;
             document.getElementById('p-img').src = track.img;
             
-            audio.play();
+            audio.play().catch(err => console.log("Playback interaction deferred"));
             playerBar.classList.add('active');
         }
 
