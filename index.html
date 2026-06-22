@@ -123,6 +123,7 @@
         
         let trackList = [];
         let db;
+        let activeObjectURL = null;
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -132,12 +133,9 @@
             "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
         ];
 
-        // 1. DYNAMIC AUTO-EMAIL ERROR REPORTING LOGIC
+        // 1. AUTO-EMAIL ERROR REPORTING LOGIC
         window.onerror = function(message, source, lineno, colno, error) {
-            const errorDetails = `Error: ${message} | Source: ${source} | Line: ${lineno} | Col: ${colno}`;
-            console.log("Sending Error to Karan's Email:", errorDetails);
-            
-            // Background reporting structure using free Formspree endpoint redirected to your Gmail
+            const errorDetails = `Error: ${message} | Source: ${source} | Line: ${lineno}`;
             fetch("https://formspree.io/f/mnnqevwd", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -146,8 +144,8 @@
             return false;
         };
 
-        // 2. CRASH-PROOF STRUCTURAL DATA STREAMS FOR DB
-        const dbRequest = indexedDB.open("GlobalHarmonyUltraDB", 1);
+        // 2. CRASH-PROOF STRUCTURAL DATABASE (V3 Bypass)
+        const dbRequest = indexedDB.open("GlobalHarmonyFinalDB_v3", 1);
         
         dbRequest.onupgradeneeded = (e) => {
             let database = e.target.result;
@@ -174,6 +172,10 @@
 
         function renderSongGrid() {
             songGrid.innerHTML = '';
+            if (trackList.length === 0) {
+                songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">No tracks saved yet. Click the green button to add music!</p>';
+                return;
+            }
             trackList.forEach((track, index) => {
                 const cleanName = track.title.replace(/_/g, " ");
                 const card = document.createElement('div');
@@ -188,7 +190,7 @@
             });
         }
 
-        // 3. FIXED NO-CONVERSION MEMORY STREAMING
+        // 3. FIXED NO-CONVERSION MEMORY STREAMING (Saves directly as File/Blob)
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
@@ -200,7 +202,6 @@
                 const cleanName = file.name.replace(/\.[^/.]+$/, "");
                 const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
 
-                // Direct native binary stream assignment to avoid quota memory errors!
                 const trackData = {
                     title: cleanName,
                     img: randomImg,
@@ -218,9 +219,12 @@
             const track = trackList[index];
             if (!track) return;
 
-            // Instantly extract secure clean stream URLs from local DB structure
-            const blobUrl = URL.createObjectURL(track.audioBlob);
-            audio.src = blobUrl; 
+            if (activeObjectURL) {
+                URL.revokeObjectURL(activeObjectURL);
+            }
+
+            activeObjectURL = URL.createObjectURL(track.audioBlob);
+            audio.src = activeObjectURL; 
             document.getElementById('p-title').innerText = track.title.replace(/_/g, " ");
             document.getElementById('p-img').src = track.img;
             
