@@ -142,7 +142,6 @@
         }
         .support-btn:hover { color: white; }
 
-        /* --- MOBILE INTUITIVE UPLOAD LABELS --- */
         .upload-label {
             background: var(--spotify-green);
             color: white;
@@ -278,7 +277,8 @@
         const playerBar = document.getElementById('playerBar');
         
         let trackList = [];
-        const filesMap = new Map();
+        let db;
+        let activeObjectURL = null;
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -288,47 +288,86 @@
             "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
         ];
 
-        // Mobile Safe Dynamic Loading Structure
-        multiFileInput.addEventListener('change', (e) => {
-            const files = e.target.files;
-            if (!files || files.length === 0) return;
+        // 1. DYNAMIC NO-CRASH INDEXEDDB HOOK
+        const dbRequest = indexedDB.open("GlobalHarmonyCoreDB", 1);
+        
+        dbRequest.onupgradeneeded = (e) => {
+            let database = e.target.result;
+            if (!database.objectStoreNames.contains("tracks")) {
+                database.createObjectStore("tracks", { keyPath: "id", autoIncrement: true });
+            }
+        };
 
+        dbRequest.onsuccess = (e) => {
+            db = e.target.result;
+            loadTracksFromDB();
+        };
+
+        function loadTracksFromDB() {
+            const transaction = db.transaction(["tracks"], "readonly");
+            const store = transaction.objectStore("tracks");
+            const getAllRequest = store.getAll();
+
+            getAllRequest.onsuccess = () => {
+                trackList = getAllRequest.result;
+                renderSongGrid();
+            };
+        }
+
+        function renderSongGrid() {
             songGrid.innerHTML = '';
-            trackList = [];
-            filesMap.clear();
-
-            Array.from(files).forEach((file, index) => {
-                const cleanName = file.name.replace(/\.[^/.]+$/, "").replace(/_/g, " ");
-                const randomImg = imagesPool[index % imagesPool.length];
-
-                trackList.push({
-                    id: index,
-                    title: cleanName,
-                    img: randomImg
-                });
-
-                filesMap.set(index, file);
-
+            trackList.forEach((track, index) => {
+                const cleanName = track.title.replace(/_/g, " ");
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 card.setAttribute('onclick', `playTrack(${index})`);
                 card.innerHTML = `
-                    <img src="${randomImg}">
+                    <img src="${track.img}">
                     <h3>${cleanName}</h3>
-                    <p>Ready to Play</p>
+                    <p>Permanently Saved</p>
                 `;
                 songGrid.appendChild(card);
             });
-        });
+        }
+
+        // 2. RAW STREAM BLOB SAVE (Memory Crash Safe)
+        multiFileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+
+            const transaction = db.transaction(["tracks"], "readwrite");
+            const store = transaction.objectStore("tracks");
+
+            Array.from(files).forEach((file, index) => {
+                const cleanName = file.name.replace(/\.[^/.]+$/, "");
+                const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
+
+                // Pure native Blob chunk binary structure file is directly dumped safely
+                const trackData = {
+                    title: cleanName,
+                    img: randomImg,
+                    audioBlob: file // Heavy conversion bypassed!
+                };
+                store.add(trackData);
+            });
+
+            transaction.oncomplete = () => {
+                loadTracksFromDB();
+            };
+        };
 
         function playTrack(index) {
             const track = trackList[index];
-            const file = filesMap.get(index);
-            if (!track || !file) return;
+            if (!track) return;
 
-            const blobUrl = URL.createObjectURL(file);
-            audio.src = blobUrl;
-            document.getElementById('p-title').innerText = track.title;
+            // Purani object string runtime memory se dump karega taaki ram safe rahe
+            if (activeObjectURL) {
+                URL.revokeObjectURL(activeObjectURL);
+            }
+
+            activeObjectURL = URL.createObjectURL(track.audioBlob);
+            audio.src = activeObjectURL;
+            document.getElementById('p-title').innerText = track.title.replace(/_/g, " ");
             document.getElementById('p-img').src = track.img;
             
             audio.play();
