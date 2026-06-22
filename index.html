@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -24,7 +23,7 @@
             overflow: hidden;
         }
 
-        /* --- SIDEBAR (Responsive) --- */
+        /* --- SIDEBAR --- */
         .sidebar {
             width: 240px;
             background-color: #000;
@@ -220,11 +219,6 @@
 
         .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .audio-element-custom { width: 100%; }
-        
-        @media (max-width: 600px) {
-            .now-playing { width: 40%; }
-            .controls { width: 60%; }
-        }
     </style>
 </head>
 <body>
@@ -283,7 +277,7 @@
         const playerBar = document.getElementById('playerBar');
         
         let trackList = [];
-        let db;
+        const filesMap = new Map(); // Fast temporary memory reference
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -293,82 +287,47 @@
             "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
         ];
 
-        // 1. DATABASE INIT (IndexedDB to save songs permanently)
-        const request = indexedDB.open("GlobalHarmonyDB", 1);
-        request.onupgradeneeded = (e) => {
-            db = e.target.result;
-            db.createObjectStore("songs", { keyPath: "id", autoIncrement: true });
-        };
-        request.onsuccess = (e) => {
-            db = e.target.result;
-            loadSavedSongs();
-        };
-
-        // 2. LOAD SAVED SONGS FROM MEMORY
-        function loadSavedSongs() {
-            const transaction = db.transaction(["songs"], "readonly");
-            const store = transaction.objectStore("songs");
-            const getAll = store.getAll();
-
-            getAll.onsuccess = () => {
-                trackList = getAll.result;
-                renderGrid();
-            };
-        }
-
-        function renderGrid() {
-            songGrid.innerHTML = '';
-            trackList.forEach((track, index) => {
-                const card = document.createElement('div');
-                card.className = 'song-card';
-                card.setAttribute('onclick', `playTrack(${index})`);
-                card.innerHTML = `
-                    <img src="${track.img}">
-                    <h3>${track.title}</h3>
-                    <p>Permanently Saved</p>
-                `;
-                songGrid.appendChild(card);
-            });
-        }
-
-        // 3. MULTI UPLOAD & SAVE TO DATABASE
+        // Light weight loading via Local session cache pointers
         multiFileInput.onchange = (e) => {
             const files = e.target.files;
             if (files.length === 0) return;
 
-            const transaction = db.transaction(["songs"], "readwrite");
-            const store = transaction.objectStore("songs");
+            songGrid.innerHTML = '';
+            trackList = [];
+            filesMap.clear();
 
             Array.from(files).forEach((file, index) => {
-                const reader = new FileReader();
                 const cleanName = file.name.replace(/\.[^/.]+$/, "");
                 const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
 
-                reader.onload = (event) => {
-                    const arrayBuffer = event.target.result;
-                    const blob = new Blob([arrayBuffer], { type: file.type });
-                    
-                    const newTrack = {
-                        title: cleanName,
-                        img: randomImg,
-                        fileBlob: blob
-                    };
-                    store.add(newTrack);
-                };
-                reader.readAsArrayBuffer(file);
-            });
+                // Store only references, no heavy background array buffers
+                trackList.push({
+                    id: index,
+                    title: cleanName,
+                    img: randomImg
+                });
 
-            transaction.oncomplete = () => {
-                setTimeout(loadSavedSongs, 500); // Reload list after saving
-            };
+                filesMap.set(index, file);
+
+                const card = document.createElement('div');
+                card.className = 'song-card';
+                card.setAttribute('onclick', `playTrack(${index})`);
+                card.innerHTML = `
+                    <img src="${randomImg}">
+                    <h3>${cleanName}</h3>
+                    <p>Ready to Play</p>
+                `;
+                songGrid.appendChild(card);
+            });
         };
 
         function playTrack(index) {
             const track = trackList[index];
-            if (!track) return;
+            const file = filesMap.get(index);
+            if (!track || !file) return;
 
-            // Create temporary active URL from database Blob data
-            const blobUrl = URL.createObjectURL(track.fileBlob);
+            // Stream instantly on demand
+            const blobUrl = URL.createObjectURL(file);
             audio.src = blobUrl;
             document.getElementById('p-title').innerText = track.title;
             document.getElementById('p-img').src = track.img;
@@ -377,13 +336,11 @@
             playerBar.classList.add('active');
         }
 
-        // 4. OFFLINE CACHE CONFIG SERVICE WORKER VIA INLINE BLOB
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'harmony-v1';
-                const urlsToCache = [location.href];
+                const CACHE_NAME = 'harmony-v2';
                 self.addEventListener('install', e => {
-                    e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(urlsToCache)));
+                    e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll([location.href])));
                 });
                 self.addEventListener('fetch', e => {
                     e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
