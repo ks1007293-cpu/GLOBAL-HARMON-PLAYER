@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="hi">
 <head>
-   <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" /> <meta charset="UTF-8">
- <meta name="description" content="Global Harmony Pro - Play your favorite music tracks offline with a premium Spotify-inspired UI, created by Karan.">
-<meta name="keywords" content="Global Harmony Pro, Global Harmony, Music Player, Offline Player, Karan Music Player">
-<meta name="author" content="Karan">   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
+    <meta charset="UTF-8">
+    <meta name="description" content="Global Harmony Pro - Play your favorite music tracks offline with a premium Spotify-inspired UI, created by Karan.">
+    <meta name="keywords" content="Global Harmony Pro, Global Harmony, Music Player, Offline Player, Karan Music Player">
+    <meta name="author" content="Karan">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Global Harmony Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -21,9 +23,34 @@
 
         /* --- SIDEBAR --- */
         .sidebar { width: 240px; background-color: #000; padding: 20px 10px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; }
+        
+        /* Premium Brand Logo Container */
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 15px;
+            margin-bottom: 5px;
+        }
+        .brand-logo img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--spotify-green);
+        }
+        .brand-logo h1 {
+            font-size: 18px;
+            font-weight: bold;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
         @media (max-width: 768px) {
             .sidebar { width: 70px; padding: 10px 5px; }
-            .sidebar .nav-item span, .sidebar .library h3, .sidebar .support-btn span { display: none; }
+            .sidebar .nav-item span, .sidebar .library h3, .sidebar .support-btn span, .sidebar .brand-logo h1 { display: none; }
+            .brand-logo { padding: 10px; justify-content: center; }
+            .brand-logo img { width: 35px; height: 35px; }
         }
 
         .nav-item { display: flex; align-items: center; gap: 15px; color: var(--spotify-grey); font-weight: bold; padding: 10px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
@@ -73,6 +100,11 @@
 <body>
 
     <div class="sidebar">
+        <div class="brand-logo">
+            <img src="https://lh3.googleusercontent.com/rd-gg-dl/AFfU-fJkOrm-r2-NhI5XWyg9JLZO9lUi7QYI55nZxd414mRPmwBXDDjOD5YFui30DXFZov3v94teAjkycpkhjH_aztocoz42s07WWFPEAidgld3PijQWaI-aK16LLm0w0omGEOE1tsANkAB5fQQonhAVxDb2XUWs5jLItAS8ne5YRFwvuq2P0v5rfU6ezZmfUMmUXL9qBb4wwS7ck0bWCQHV1k1BkBtijKY4P8CamVNLb8mAUo0TeexBu0N7InOxI53TvcPMz0h5kBT6469Cw1thp1nmiQ9Y2PFem07xZzk5hQxHBMGC0gykzmVTAVQOz5KaE4sjk37ONI-TtiQNzVAKKfkqi9L7vd00M82S-XzeCknyhLS2-vlxf_OCA2xV8dW_1pPivg6Cc5-fKaVTZkN4IPDg-18wD8_LYF2hqYrhM7owClQl8apcOheGDCMuEk1UXnoLNo0CQrbBz8qutcAAx87m-ej8D1qhhfSOfwAV9tUzPwmnt5MEfA9J9MB64hjku4b5FM1036ZzhxQJJBJZAIgS7Y_t4EXKiQ2TgWJX_MWISoGbT7xjcr7b6B2EkeK8yQGZXGipURTqleipDF9zee1Q9NLIRLUNt78YwMMkr60Mrf51Fsp9xI7iqle-FrQbCdVVXXJKQ0Jmw-YdLZvZs4_5IClu7s2ZVDShEE4wlP9soY-1gAvpwkmIcqc51bzppMdTAnp4EwTiJIsOI5Qx1RGXg9nQxa0aiTLujxDEm2U0ky6Ike4OKm-VGG2umWuMxT6hqdMCR1FB-czBRecmnr6ipGtyGPFJfNoUcZTeW9UmUYo3H1RtlHPsHlRNIVGCSfftM4afViM9BdVqgp3JYo5EA5hBjAY1E28r9S79R7iGM8zC8zFMRm34vZpp-ZpVg3COd4p5g2UvGD7J562PAelWXwSxZteGGy1aar2kMu20VPYoyERa373_T8UITN1WA9LcSO7VALsDPG4ip_cTytRRSk1Vc22ph-bBVWkgOBIW8zqXPRU6btD3j-EdENH8boBLHafv46r1_PVvU4CQUMv4MaU9lr2-COD-84xS006RYGa8TlNtf2FxkiqNfWXUJC8-kiepCpCik38BmNw5tVzshDx9szCEpzWZtctKkSg46C-TKaunFMOgYBTTU08HudOn19Oh4xELgZtdZHfambF4Q0SZTXusqyTvTm9SBT2EQQ7alriTZwlW-FdQ0RjZyRzXcOaZV4K0D5n8bJs=s1024-rj" alt="Global Harmony Logo">
+            <h1>Harmony Pro</h1>
+        </div>
+
         <div class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></div>
         <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> <span>Search</span></div>
         <div class="library">
@@ -135,9 +167,7 @@
             "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
         ];
 
-        // 1. DATABASE CONNECT
         const dbRequest = indexedDB.open("GlobalHarmonyFinalDB_v3", 1);
-        
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
             loadTracksFromDB();
@@ -147,7 +177,6 @@
             const transaction = db.transaction(["offline_tracks"], "readonly");
             const store = transaction.objectStore("offline_tracks");
             const getAllRequest = store.getAll();
-
             getAllRequest.onsuccess = () => {
                 trackList = getAllRequest.result;
                 renderSongGrid();
@@ -174,49 +203,29 @@
             });
         }
 
-        // 2. BACKWARD MEMORY COMPATIBILITY UPLOAD
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-
             const transaction = db.transaction(["offline_tracks"], "readwrite");
             const store = transaction.objectStore("offline_tracks");
-
             Array.from(files).forEach((file) => {
                 const cleanName = file.name.replace(/\.[^/.]+$/, "");
                 const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
-
-                const trackData = {
-                    title: cleanName,
-                    img: randomImg,
-                    audioBlob: file 
-                };
+                const trackData = { title: cleanName, img: randomImg, audioBlob: file };
                 store.add(trackData);
             });
-
-            transaction.oncomplete = () => {
-                loadTracksFromDB();
-            };
+            transaction.oncomplete = () => { loadTracksFromDB(); };
         });
 
-        // 3. LIGHTWEIGHT INSTANT STREAMING (No Lag Click)
         function playTrack(index) {
             const track = trackList[index];
             if (!track) return;
-
-            // Purani RAM cache memory ko turant clear karo taaki lag na ho
-            if (currentBlobUrl) {
-                URL.revokeObjectURL(currentBlobUrl);
-            }
-
-            // Infinite performance chunk load
+            if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); }
             currentBlobUrl = URL.createObjectURL(track.audioBlob);
             audio.src = currentBlobUrl; 
-            
             const cleanTitle = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
             document.getElementById('p-title').innerText = cleanTitle;
             document.getElementById('p-img').src = track.img;
-            
             audio.play().catch(err => console.log("Playback interaction deferred"));
             playerBar.classList.add('active');
         }
