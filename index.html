@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="hi">
 <head>
@@ -23,7 +24,7 @@
             overflow: hidden;
         }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (Responsive) --- */
         .sidebar {
             width: 240px;
             background-color: #000;
@@ -32,6 +33,11 @@
             flex-direction: column;
             gap: 20px;
             flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; padding: 10px 5px; }
+            .sidebar .nav-item span, .sidebar .library h3, .sidebar .support-btn span { display: none; }
         }
 
         .nav-item {
@@ -62,8 +68,8 @@
         .main {
             flex: 1;
             background: linear-gradient(to bottom, #222, var(--spotify-black));
-            overflow-y: auto; /* Vertically scrollable */
-            padding: 20px 30px 120px 30px; /* Bottom padding added for player space */
+            overflow-y: auto;
+            padding: 20px 20px 120px 20px;
             border-radius: 8px;
             margin: 8px 8px 8px 0;
         }
@@ -76,6 +82,7 @@
             background: rgba(0,0,0,0.5);
             padding: 10px 20px;
             border-radius: 8px;
+            gap: 10px;
         }
 
         .search-bar {
@@ -85,7 +92,8 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            width: 350px;
+            flex: 1;
+            max-width: 350px;
         }
 
         .search-bar input {
@@ -98,7 +106,11 @@
 
         .search-bar i { color: #000; }
 
-        .auth-buttons { display: flex; gap: 15px; align-items: center; }
+        .auth-buttons { display: flex; gap: 15px; align-items: center; flex-shrink: 0; }
+
+        @media (max-width: 480px) {
+            .auth-buttons .btn-signup, .auth-buttons .btn-login { display: none; }
+        }
 
         .btn-signup { color: var(--spotify-grey); font-weight: bold; cursor: pointer; font-size: 14px; }
         .btn-signup:hover { color: white; }
@@ -149,11 +161,11 @@
 
         .section-title { font-size: 24px; margin-bottom: 15px; }
 
-        /* --- FIXED GRID: SMART REPEATING AUTO-FILL --- */
+        /* --- RESPONSIVE GRID --- */
         .song-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* Chote compact cards */
-            gap: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
             width: 100%;
         }
 
@@ -193,7 +205,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 30px;
+            padding: 0 20px;
             transition: 0.4s ease-in-out;
             z-index: 1000;
             border-top: 1px solid #282828;
@@ -201,25 +213,30 @@
 
         .player-bar.active { bottom: 0; }
 
-        .now-playing { display: flex; align-items: center; gap: 15px; width: 30%; }
-        .now-playing img { width: 56px; height: 56px; border-radius: 4px; object-fit: cover; }
-        .song-info h4 { font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 180px; }
-        .song-info p { font-size: 12px; color: var(--spotify-grey); }
+        .now-playing { display: flex; align-items: center; gap: 12px; width: 30%; }
+        .now-playing img { width: 50px; height: 50px; border-radius: 4px; object-fit: cover; }
+        .song-info h4 { font-size: 13px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 140px; }
+        .song-info p { font-size: 11px; color: var(--spotify-grey); }
 
         .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
         .audio-element-custom { width: 100%; }
+        
+        @media (max-width: 600px) {
+            .now-playing { width: 40%; }
+            .controls { width: 60%; }
+        }
     </style>
 </head>
 <body>
 
     <div class="sidebar">
-        <div class="nav-item active"><i class="fas fa-house"></i> Home</div>
-        <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> Search</div>
+        <div class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></div>
+        <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> <span>Search</span></div>
         
         <div class="library">
-            <div class="nav-item" style="padding: 0;"><i class="fas fa-layer-group"></i> Library <i class="fas fa-plus" style="margin-left:auto" onclick="createPlaylist()"></i></div>
+            <div class="nav-item" style="padding: 0;"><i class="fas fa-layer-group"></i> <span>Library</span> <i class="fas fa-plus" style="margin-left:auto" onclick="createPlaylist()"></i></div>
             <ul id="playlist-list" style="list-style: none; color: var(--spotify-grey); font-size: 14px; display: flex; flex-direction: column; gap: 10px;"></ul>
-            <button class="support-btn" style="margin-top: auto;" onclick="alert('Customer Support: support@globalharmony.com')"><i class="fas fa-headset"></i> Support</button>
+            <button class="support-btn" style="margin-top: auto;" onclick="alert('Customer Support: support@globalharmony.com')"><i class="fas fa-headset"></i> <span>Support</span></button>
         </div>
     </div>
 
@@ -227,7 +244,7 @@
         <header>
             <div class="search-bar">
                 <i class="fas fa-magnifying-glass"></i>
-                <input type="text" id="searchInput" placeholder="Search from uploaded songs..." onkeyup="searchSongs()">
+                <input type="text" id="searchInput" placeholder="Search from saved songs..." onkeyup="searchSongs()">
             </div>
             <div class="auth-buttons">
                 <div class="btn-signup">Sign up</div>
@@ -237,14 +254,13 @@
         </header>
 
         <button class="upload-trigger-btn" onclick="document.getElementById('multiFileInput').click()">
-            <i class="fas fa-cloud-upload-alt"></i> Ek Saath Saare Gaane Upload Karein
+            <i class="fas fa-cloud-upload-alt"></i> Ek Saath Saare Gaane Save Karein
         </button>
         
         <input type="file" id="multiFileInput" style="display:none" accept="audio/*" multiple>
 
         <h2 class="section-title">Your Tracks</h2>
-        <div class="song-grid" id="songGrid">
-            </div>
+        <div class="song-grid" id="songGrid"></div>
     </div>
 
     <footer class="player-bar" id="playerBar">
@@ -255,11 +271,9 @@
                 <p id="p-artist">Local Audio</p>
             </div>
         </div>
-
         <div class="controls">
             <audio id="audioElement" class="audio-element-custom" controls></audio>
         </div>
-        <div style="width: 30%;"></div>
     </footer>
 
     <script>
@@ -269,6 +283,7 @@
         const playerBar = document.getElementById('playerBar');
         
         let trackList = [];
+        let db;
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -278,52 +293,104 @@
             "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
         ];
 
-        multiFileInput.onchange = (e) => {
-            const files = e.target.files;
-            if (files.length === 0) return;
+        // 1. DATABASE INIT (IndexedDB to save songs permanently)
+        const request = indexedDB.open("GlobalHarmonyDB", 1);
+        request.onupgradeneeded = (e) => {
+            db = e.target.result;
+            db.createObjectStore("songs", { keyPath: "id", autoIncrement: true });
+        };
+        request.onsuccess = (e) => {
+            db = e.target.result;
+            loadSavedSongs();
+        };
 
+        // 2. LOAD SAVED SONGS FROM MEMORY
+        function loadSavedSongs() {
+            const transaction = db.transaction(["songs"], "readonly");
+            const store = transaction.objectStore("songs");
+            const getAll = store.getAll();
+
+            getAll.onsuccess = () => {
+                trackList = getAll.result;
+                renderGrid();
+            };
+        }
+
+        function renderGrid() {
             songGrid.innerHTML = '';
-            trackList = [];
-
-            Array.from(files).forEach((file, index) => {
-                const blobUrl = URL.createObjectURL(file);
-                const cleanName = file.name.replace(/\.[^/.]+$/, "");
-                const randomImg = imagesPool[index % imagesPool.length];
-
-                trackList.push({
-                    id: index,
-                    url: blobUrl,
-                    title: cleanName,
-                    img: randomImg
-                });
-
+            trackList.forEach((track, index) => {
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 card.setAttribute('onclick', `playTrack(${index})`);
                 card.innerHTML = `
-                    <img src="${randomImg}">
-                    <h3>${cleanName}</h3>
-                    <p>Offline Loaded</p>
+                    <img src="${track.img}">
+                    <h3>${track.title}</h3>
+                    <p>Permanently Saved</p>
                 `;
                 songGrid.appendChild(card);
             });
+        }
 
-            if(trackList.length > 0) {
-                playTrack(0);
-            }
+        // 3. MULTI UPLOAD & SAVE TO DATABASE
+        multiFileInput.onchange = (e) => {
+            const files = e.target.files;
+            if (files.length === 0) return;
+
+            const transaction = db.transaction(["songs"], "readwrite");
+            const store = transaction.objectStore("songs");
+
+            Array.from(files).forEach((file, index) => {
+                const reader = new FileReader();
+                const cleanName = file.name.replace(/\.[^/.]+$/, "");
+                const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
+
+                reader.onload = (event) => {
+                    const arrayBuffer = event.target.result;
+                    const blob = new Blob([arrayBuffer], { type: file.type });
+                    
+                    const newTrack = {
+                        title: cleanName,
+                        img: randomImg,
+                        fileBlob: blob
+                    };
+                    store.add(newTrack);
+                };
+                reader.readAsArrayBuffer(file);
+            });
+
+            transaction.oncomplete = () => {
+                setTimeout(loadSavedSongs, 500); // Reload list after saving
+            };
         };
 
         function playTrack(index) {
             const track = trackList[index];
             if (!track) return;
 
-            audio.src = track.url;
+            // Create temporary active URL from database Blob data
+            const blobUrl = URL.createObjectURL(track.fileBlob);
+            audio.src = blobUrl;
             document.getElementById('p-title').innerText = track.title;
-            document.getElementById('p-artist').innerText = "Playing Offline";
             document.getElementById('p-img').src = track.img;
             
             audio.play();
             playerBar.classList.add('active');
+        }
+
+        // 4. OFFLINE CACHE CONFIG SERVICE WORKER VIA INLINE BLOB
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'harmony-v1';
+                const urlsToCache = [location.href];
+                self.addEventListener('install', e => {
+                    e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(urlsToCache)));
+                });
+                self.addEventListener('fetch', e => {
+                    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+                });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
         }
 
         function searchSongs() {
@@ -331,21 +398,8 @@
             const cards = document.querySelectorAll('.song-card');
             cards.forEach(card => {
                 const titleText = card.querySelector('h3').innerText.toLowerCase();
-                if (titleText.includes(query)) {
-                    card.style.display = "block";
-                } else {
-                    card.style.display = "none";
-                }
+                card.style.display = titleText.includes(query) ? "block" : "none";
             });
-        }
-
-        function createPlaylist() {
-            let name = prompt("Nayi Playlist ka naam:");
-            if(name) {
-                let li = document.createElement('li');
-                li.innerText = "🎵 " + name;
-                document.getElementById('playlist-list').appendChild(li);
-            }
         }
     </script>
 </body>
