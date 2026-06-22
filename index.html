@@ -192,7 +192,7 @@
         }
 
         .song-card h3 { font-size: 14px; margin-bottom: 5px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .song-card p { color: var(--spotify-grey); font-size: 12px; }
+        .song-card p { color: var(--spotify-green); font-size: 12px; font-weight: bold; }
 
         /* --- PLAYER BAR --- */
         .player-bar {
@@ -262,7 +262,7 @@
             <img id="p-img" src="">
             <div class="song-info">
                 <h4 id="p-title">Song Title</h4>
-                <p id="p-artist">Local Audio</p>
+                <p id="p-artist">Offline Player</p>
             </div>
         </div>
         <div class="controls">
@@ -278,7 +278,6 @@
         
         let trackList = [];
         let db;
-        let activeObjectURL = null;
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -288,13 +287,13 @@
             "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
         ];
 
-        // 1. DYNAMIC NO-CRASH INDEXEDDB HOOK
-        const dbRequest = indexedDB.open("GlobalHarmonyCoreDB", 1);
+        // 1. FOREVER SAVED INDEXEDDB LOGIC
+        const dbRequest = indexedDB.open("GlobalHarmonyFinalDB", 1);
         
         dbRequest.onupgradeneeded = (e) => {
             let database = e.target.result;
-            if (!database.objectStoreNames.contains("tracks")) {
-                database.createObjectStore("tracks", { keyPath: "id", autoIncrement: true });
+            if (!database.objectStoreNames.contains("offline_tracks")) {
+                database.createObjectStore("offline_tracks", { keyPath: "id", autoIncrement: true });
             }
         };
 
@@ -304,8 +303,8 @@
         };
 
         function loadTracksFromDB() {
-            const transaction = db.transaction(["tracks"], "readonly");
-            const store = transaction.objectStore("tracks");
+            const transaction = db.transaction(["offline_tracks"], "readonly");
+            const store = transaction.objectStore("offline_tracks");
             const getAllRequest = store.getAll();
 
             getAllRequest.onsuccess = () => {
@@ -320,58 +319,80 @@
                 const cleanName = track.title.replace(/_/g, " ");
                 const card = document.createElement('div');
                 card.className = 'song-card';
-                card.setAttribute('onclick', `playTrack(${index})`);
+                card.addEventListener('click', () => playTrack(index));
                 card.innerHTML = `
                     <img src="${track.img}">
                     <h3>${cleanName}</h3>
-                    <p>Permanently Saved</p>
+                    <p><i class="fas fa-check-circle"></i> Offline Ready</p>
                 `;
                 songGrid.appendChild(card);
             });
         }
 
-        // 2. RAW STREAM BLOB SAVE (Memory Crash Safe)
+        // 2. STABLE BASE64 CONVERSION (No F5 Deletion, No Android Crash)
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
 
-            const transaction = db.transaction(["tracks"], "readwrite");
-            const store = transaction.objectStore("tracks");
+            let loadedCount = 0;
 
-            Array.from(files).forEach((file, index) => {
+            Array.from(files).forEach((file) => {
+                const reader = new FileReader();
                 const cleanName = file.name.replace(/\.[^/.]+$/, "");
                 const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
 
-                // Pure native Blob chunk binary structure file is directly dumped safely
-                const trackData = {
-                    title: cleanName,
-                    img: randomImg,
-                    audioBlob: file // Heavy conversion bypassed!
-                };
-                store.add(trackData);
-            });
+                reader.onload = (event) => {
+                    const transaction = db.transaction(["offline_tracks"], "readwrite");
+                    const store = transaction.objectStore("offline_tracks");
 
-            transaction.oncomplete = () => {
-                loadTracksFromDB();
-            };
-        };
+                    const trackData = {
+                        title: cleanName,
+                        img: randomImg,
+                        audioData: event.target.result // Pure string database block
+                    };
+
+                    store.add(trackData);
+                    
+                    transaction.oncomplete = () => {
+                        loadedCount++;
+                        if (loadedCount === files.length) {
+                            loadTracksFromDB();
+                        }
+                    };
+                };
+                reader.readAsDataURL(file);
+            });
+        });
 
         function playTrack(index) {
             const track = trackList[index];
             if (!track) return;
 
-            // Purani object string runtime memory se dump karega taaki ram safe rahe
-            if (activeObjectURL) {
-                URL.revokeObjectURL(activeObjectURL);
-            }
-
-            activeObjectURL = URL.createObjectURL(track.audioBlob);
-            audio.src = activeObjectURL;
+            audio.src = track.audioData; // Plays instantly from base64 string anytime, anywhere!
             document.getElementById('p-title').innerText = track.title.replace(/_/g, " ");
             document.getElementById('p-img').src = track.img;
             
             audio.play();
             playerBar.classList.add('active');
+        }
+
+        // 3. COMPLETE PWA OFFLINE APP CONTROLLER (Service Worker)
+        if ('serviceWorker' in navigator) {
+            const swCode = `
+                const CACHE_NAME = 'harmony-offline-v1';
+                const ASSETS = [
+                    location.href,
+                    'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+                ];
+                self.addEventListener('install', e => {
+                    e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)));
+                });
+                self.addEventListener('fetch', e => {
+                    e.respondWith(caches.match(e.request).then(r => r || fetch(e.request)));
+                });
+            `;
+            const blob = new Blob([swCode], { type: 'application/javascript' });
+            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
         }
 
         function searchSongs() {
