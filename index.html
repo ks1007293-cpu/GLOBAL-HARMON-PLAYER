@@ -139,7 +139,7 @@
         let trackList = [];
         let db;
         let currentBlobUrl = null;
-        let currentPlayingIndex = -1; // Tracks current playing track reference
+        let currentPlayingIndex = -1; 
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -228,7 +228,7 @@
             const track = trackList[index];
             if (!track) return;
             
-            currentPlayingIndex = index; // Store track position index natively
+            currentPlayingIndex = index; // Exact array index pointer locked
 
             if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); }
             currentBlobUrl = URL.createObjectURL(track.audioBlob);
@@ -241,10 +241,10 @@
             playerBar.classList.add('active');
         }
 
-        // --- NEW AUTO PLAY LOGIC TRIGGER ---
+        // --- ACCURATE FIXED NEXT SONG TRIGGER ---
         audio.addEventListener('ended', () => {
-            if (trackList.length > 0) {
-                // Next index pointer calculation loops to 0 if out of range bounds
+            if (trackList.length > 0 && currentPlayingIndex !== -1) {
+                // Array index incremented safely
                 let nextIndex = (currentPlayingIndex + 1) % trackList.length;
                 playTrack(nextIndex);
             }
