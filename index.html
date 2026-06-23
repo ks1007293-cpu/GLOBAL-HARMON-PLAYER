@@ -139,6 +139,7 @@
         let trackList = [];
         let db;
         let currentBlobUrl = null;
+        let currentPlayingIndex = -1; // Tracks current playing track reference
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -146,7 +147,6 @@
             "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300"
         ];
 
-        // 1. NATIVE SERVICE WORKER (Fixes the data connection offline error completely)
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {
                 const swCode = `
@@ -168,11 +168,10 @@
                 `;
                 const blob = new Blob([swCode], { type: 'application/javascript' });
                 const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl).then(() => console.log("Offline Mode Armed")).catch(err => console.log(err));
+                navigator.serviceWorker.register(swUrl).catch(err => console.log(err));
             });
         }
 
-        // 2. CRASH-PROOF DATABASE INDEXEDDB
         const dbRequest = indexedDB.open("GlobalHarmonyFinalDB_v3", 1);
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
@@ -195,7 +194,6 @@
                 songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">No tracks saved yet. Click the green button to add music!</p>';
                 return;
             }
-            // Super fast UI fragment appending for lag-free performance
             const fragment = document.createDocumentFragment();
             trackList.forEach((track, index) => {
                 const cleanName = track.title.replace(/_/g, " ").replace(/\(0\)/g, "").replace(/\(320 kbps\)/g, "");
@@ -212,7 +210,6 @@
             songGrid.appendChild(fragment);
         }
 
-        // 3. ANDROID NATIVE UPLOAD FIX
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
@@ -230,15 +227,28 @@
         function playTrack(index) {
             const track = trackList[index];
             if (!track) return;
+            
+            currentPlayingIndex = index; // Store track position index natively
+
             if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); }
             currentBlobUrl = URL.createObjectURL(track.audioBlob);
             audio.src = currentBlobUrl; 
+            
             const cleanTitle = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
             document.getElementById('p-title').innerText = cleanTitle;
             document.getElementById('p-img').src = track.img;
             audio.play().catch(err => console.log("Playback deferred"));
             playerBar.classList.add('active');
         }
+
+        // --- NEW AUTO PLAY LOGIC TRIGGER ---
+        audio.addEventListener('ended', () => {
+            if (trackList.length > 0) {
+                // Next index pointer calculation loops to 0 if out of range bounds
+                let nextIndex = (currentPlayingIndex + 1) % trackList.length;
+                playTrack(nextIndex);
+            }
+        });
 
         function searchSongs() {
             const query = document.getElementById('searchInput').value.toLowerCase();
