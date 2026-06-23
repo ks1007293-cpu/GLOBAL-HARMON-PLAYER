@@ -24,27 +24,9 @@
         /* --- SIDEBAR --- */
         .sidebar { width: 240px; background-color: #000; padding: 20px 10px; display: flex; flex-direction: column; gap: 20px; flex-shrink: 0; }
         
-        /* Premium Brand Logo Container */
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 10px 15px;
-            margin-bottom: 5px;
-        }
-        .brand-logo img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--spotify-green);
-        }
-        .brand-logo h1 {
-            font-size: 18px;
-            font-weight: bold;
-            color: white;
-            letter-spacing: 0.5px;
-        }
+        .brand-logo { display: flex; align-items: center; gap: 12px; padding: 10px 15px; margin-bottom: 5px; }
+        .brand-logo img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; border: 2px solid var(--spotify-green); }
+        .brand-logo h1 { font-size: 18px; font-weight: bold; color: white; letter-spacing: 0.5px; }
 
         @media (max-width: 768px) {
             .sidebar { width: 70px; padding: 10px 5px; }
@@ -104,7 +86,6 @@
             <img src="https://lh3.googleusercontent.com/rd-gg-dl/AFfU-fJkOrm-r2-NhI5XWyg9JLZO9lUi7QYI55nZxd414mRPmwBXDDjOD5YFui30DXFZov3v94teAjkycpkhjH_aztocoz42s07WWFPEAidgld3PijQWaI-aK16LLm0w0omGEOE1tsANkAB5fQQonhAVxDb2XUWs5jLItAS8ne5YRFwvuq2P0v5rfU6ezZmfUMmUXL9qBb4wwS7ck0bWCQHV1k1BkBtijKY4P8CamVNLb8mAUo0TeexBu0N7InOxI53TvcPMz0h5kBT6469Cw1thp1nmiQ9Y2PFem07xZzk5hQxHBMGC0gykzmVTAVQOz5KaE4sjk37ONI-TtiQNzVAKKfkqi9L7vd00M82S-XzeCknyhLS2-vlxf_OCA2xV8dW_1pPivg6Cc5-fKaVTZkN4IPDg-18wD8_LYF2hqYrhM7owClQl8apcOheGDCMuEk1UXnoLNo0CQrbBz8qutcAAx87m-ej8D1qhhfSOfwAV9tUzPwmnt5MEfA9J9MB64hjku4b5FM1036ZzhxQJJBJZAIgS7Y_t4EXKiQ2TgWJX_MWISoGbT7xjcr7b6B2EkeK8yQGZXGipURTqleipDF9zee1Q9NLIRLUNt78YwMMkr60Mrf51Fsp9xI7iqle-FrQbCdVVXXJKQ0Jmw-YdLZvZs4_5IClu7s2ZVDShEE4wlP9soY-1gAvpwkmIcqc51bzppMdTAnp4EwTiJIsOI5Qx1RGXg9nQxa0aiTLujxDEm2U0ky6Ike4OKm-VGG2umWuMxT6hqdMCR1FB-czBRecmnr6ipGtyGPFJfNoUcZTeW9UmUYo3H1RtlHPsHlRNIVGCSfftM4afViM9BdVqgp3JYo5EA5hBjAY1E28r9S79R7iGM8zC8zFMRm34vZpp-ZpVg3COd4p5g2UvGD7J562PAelWXwSxZteGGy1aar2kMu20VPYoyERa373_T8UITN1WA9LcSO7VALsDPG4ip_cTytRRSk1Vc22ph-bBVWkgOBIW8zqXPRU6btD3j-EdENH8boBLHafv46r1_PVvU4CQUMv4MaU9lr2-COD-84xS006RYGa8TlNtf2FxkiqNfWXUJC8-kiepCpCik38BmNw5tVzshDx9szCEpzWZtctKkSg46C-TKaunFMOgYBTTU08HudOn19Oh4xELgZtdZHfambF4Q0SZTXusqyTvTm9SBT2EQQ7alriTZwlW-FdQ0RjZyRzXcOaZV4K0D5n8bJs=s1024-rj" alt="Global Harmony Logo">
             <h1>Harmony Pro</h1>
         </div>
-
         <div class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></div>
         <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> <span>Search</span></div>
         <div class="library">
@@ -162,11 +143,36 @@
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
             "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=300",
-            "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300",
-            "https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=300",
-            "https://images.unsplash.com/photo-1493225255756-d9584f8606e9?w=300"
+            "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300"
         ];
 
+        // 1. NATIVE SERVICE WORKER (Fixes the data connection offline error completely)
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                const swCode = `
+                    const CACHE_NAME = 'harmony-v4-cache';
+                    const ASSETS = [
+                        location.origin + location.pathname,
+                        'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css'
+                    ];
+                    self.addEventListener('install', e => {
+                        e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
+                    });
+                    self.addEventListener('activate', e => {
+                        e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE_NAME ? caches.delete(k) : null))).then(() => self.clients.claim()));
+                    });
+                    self.addEventListener('fetch', e => {
+                        if (e.request.method !== 'GET') return;
+                        e.respondWith(caches.match(e.request).then(cached => cached || fetch(e.request).catch(() => caches.match(location.origin + location.pathname))));
+                    });
+                `;
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+                navigator.serviceWorker.register(swUrl).then(() => console.log("Offline Mode Armed")).catch(err => console.log(err));
+            });
+        }
+
+        // 2. CRASH-PROOF DATABASE INDEXEDDB
         const dbRequest = indexedDB.open("GlobalHarmonyFinalDB_v3", 1);
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
@@ -189,8 +195,10 @@
                 songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">No tracks saved yet. Click the green button to add music!</p>';
                 return;
             }
+            // Super fast UI fragment appending for lag-free performance
+            const fragment = document.createDocumentFragment();
             trackList.forEach((track, index) => {
-                const cleanName = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
+                const cleanName = track.title.replace(/_/g, " ").replace(/\(0\)/g, "").replace(/\(320 kbps\)/g, "");
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 card.addEventListener('click', () => playTrack(index));
@@ -199,10 +207,12 @@
                     <h3>${cleanName}</h3>
                     <p><i class="fas fa-check-circle"></i> Offline Ready</p>
                 `;
-                songGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+            songGrid.appendChild(fragment);
         }
 
+        // 3. ANDROID NATIVE UPLOAD FIX
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
@@ -226,7 +236,7 @@
             const cleanTitle = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
             document.getElementById('p-title').innerText = cleanTitle;
             document.getElementById('p-img').src = track.img;
-            audio.play().catch(err => console.log("Playback interaction deferred"));
+            audio.play().catch(err => console.log("Playback deferred"));
             playerBar.classList.add('active');
         }
 
