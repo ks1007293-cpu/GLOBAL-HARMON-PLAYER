@@ -25,12 +25,12 @@
         .sidebar { width: 240px; background-color: #000; padding: 15px 10px; display: flex; flex-direction: column; gap: 15px; flex-shrink: 0; }
         
         .brand-logo { display: flex; align-items: center; gap: 12px; padding: 10px 15px; }
-        .brand-logo i { font-size: 28px; color: var(--spotify-green); flex-shrink: 0; } /* Fixed Vector Icon instead of broken link */
+        .brand-logo i { font-size: 24px; color: var(--spotify-green); flex-shrink: 0; }
         .brand-logo h1 { font-size: 18px; font-weight: bold; color: white; letter-spacing: 0.5px; white-space: nowrap; }
 
         @media (max-width: 768px) {
             .sidebar { width: 70px; padding: 10px 5px; }
-            .sidebar .nav-item span, .sidebar .library h3, .sidebar .support-btn span, .sidebar .brand-logo h1 { display: none; }
+            .sidebar .nav-item span, .sidebar .library h3, .sidebar .brand-logo h1 { display: none; }
             .brand-logo { padding: 10px 0; justify-content: center; }
         }
 
@@ -45,12 +45,6 @@
         .search-bar { background: white; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 280px; }
         .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; background: transparent; }
         .search-bar i { color: #000; }
-
-        .auth-buttons { display: flex; gap: 10px; align-items: center; flex-shrink: 0; }
-        @media (max-width: 480px) { 
-            .search-bar { max-width: 140px; padding: 6px 10px; }
-            .btn-premium { padding: 6px 12px !important; font-size: 12px !important; }
-        }
 
         .btn-premium { background: var(--spotify-green); color: white; padding: 8px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 13px; border: none; }
         .btn-premium:hover { transform: scale(1.05); }
@@ -93,7 +87,8 @@
 
     <div class="sidebar">
         <div class="brand-logo">
-            <i class="fas fa-music"></i> <h1>Harmony Pro</h1>
+            <i class="fas fa-music"></i>
+            <h1>Harmony Pro</h1>
         </div>
         <div class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></div>
         <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> <span>Search</span></div>
@@ -157,16 +152,27 @@
             "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300"
         ];
 
-        const dbRequest = indexedDB.open("GlobalHarmonyFinalDB_v3", 1);
+        // AUTO-ADAPTIVE UNIVERSAL DATABASE OPENING
+        const dbRequest = indexedDB.open("GlobalHarmonyFinalDB_v3");
+        
+        dbRequest.onupgradeneeded = (e) => {
+            let database = e.target.result;
+            if (!database.objectStoreNames.contains("offline_tracks")) {
+                database.createObjectStore("offline_tracks", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
             loadTracksFromDB();
         };
 
         function loadTracksFromDB() {
+            if (!db) return;
             const transaction = db.transaction(["offline_tracks"], "readonly");
             const store = transaction.objectStore("offline_tracks");
             const getAllRequest = store.getAll();
+            
             getAllRequest.onsuccess = () => {
                 trackList = getAllRequest.result;
                 renderSongGrid();
@@ -176,7 +182,7 @@
         function renderSongGrid() {
             songGrid.innerHTML = '';
             if (trackList.length === 0) {
-                songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">No tracks saved yet.</p>';
+                songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">No tracks saved yet. Click the green button to add music!</p>';
                 return;
             }
             const fragment = document.createDocumentFragment();
