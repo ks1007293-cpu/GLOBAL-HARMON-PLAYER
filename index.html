@@ -6,7 +6,7 @@
     <meta name="description" content="Global Harmony Pro - Play your favorite music tracks offline with a premium Spotify-inspired UI, created by Karan.">
     <meta name="keywords" content="Global Harmony Pro, Global Harmony, Music Player, Offline Player, Karan Music Player">
     <meta name="author" content="Karan">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Harmony Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
@@ -19,79 +19,298 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        body { background-color: #000; color: white; height: 100vh; display: flex; overflow: hidden; }
+        body { background-color: #000; color: white; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* --- TOP HEADER / APP BAR --- */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #000; padding: 15px 20px; border-bottom: 1px solid #1a1a1a; }
+        .brand-logo { display: flex; align-items: center; gap: 10px; }
+        .brand-logo i { font-size: 22px; color: var(--spotify-green); }
+        .brand-logo h1 { font-size: 18px; font-weight: bold; color: white; }
+
+        /* --- MAIN CONTAINER --- */
+        .app-container { display: flex; flex: 1; }
 
         /* --- SIDEBAR --- */
-        .sidebar { width: 240px; background-color: #000; padding: 15px 10px; display: flex; flex-direction: column; gap: 15px; flex-shrink: 0; }
-        
-        .brand-logo { display: flex; align-items: center; gap: 12px; padding: 10px 15px; }
-        .brand-logo i { font-size: 24px; color: var(--spotify-green); flex-shrink: 0; }
-        .brand-logo h1 { font-size: 18px; font-weight: bold; color: white; letter-spacing: 0.5px; white-space: nowrap; }
-
-        @media (max-width: 768px) {
-            .sidebar { width: 70px; padding: 10px 5px; }
-            .sidebar .nav-item span, .sidebar .library h3, .sidebar .brand-logo h1 { display: none; }
-            .brand-logo { padding: 10px 0; justify-content: center; }
-        }
-
-        .nav-item { display: flex; align-items: center; gap: 15px; color: var(--spotify-grey); font-weight: bold; padding: 12px 15px; border-radius: 5px; cursor: pointer; transition: 0.3s; }
+        .sidebar { width: 230px; background-color: #000; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; color: var(--spotify-grey); font-weight: bold; padding: 10px 12px; border-radius: 5px; cursor: pointer; transition: 0.2s; font-size: 14px; }
         .nav-item:hover, .nav-item.active { color: white; background: #1a1a1a; }
-        .library { background: #121212; border-radius: 8px; flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 15px; overflow: hidden; }
+        .library { background: #121212; border-radius: 8px; flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
 
-        /* --- MAIN CONTENT --- */
-        .main { flex: 1; background: linear-gradient(to bottom, #222, var(--spotify-black)); overflow-y: auto; padding: 15px 15px 140px 15px; border-radius: 8px; margin: 8px 8px 8px 0; }
-        header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; background: rgba(0,0,0,0.5); padding: 10px 15px; border-radius: 8px; gap: 10px; }
+        /* --- MAIN CONTENT AREA --- */
+        .main { flex: 1; background: linear-gradient(to bottom, #222, var(--spotify-black)); padding: 20px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 140px; }
         
-        .search-bar { background: white; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 280px; }
+        .search-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
+        .search-bar { background: white; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 300px; }
         .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; background: transparent; }
         .search-bar i { color: #000; }
 
-        /* --- AI MIC INDICATOR --- */
         .ai-mic-btn { background: #282828; color: #fff; padding: 8px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; border: 1px solid #404040; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; transition: 0.3s; }
         .ai-mic-btn.listening { background: #d31d1d; color: white; border-color: #ff4d4d; box-shadow: 0 0 10px rgba(255, 77, 77, 0.6); }
+        .btn-premium { background: var(--spotify-green); color: white; padding: 8px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; border: none; font-size: 13px; }
 
-        .btn-premium { background: var(--spotify-green); color: white; padding: 8px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 13px; border: none; }
-        .btn-premium:hover { transform: scale(1.05); }
+        .upload-label { background: var(--spotify-green); color: white; padding: 12px 20px; font-size: 14px; font-weight: bold; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; width: max-content; transition: 0.2s; }
 
-        .upload-label { background: var(--spotify-green); color: white; padding: 12px 20px; font-size: 15px; font-weight: bold; border-radius: 30px; cursor: pointer; margin-bottom: 25px; display: inline-flex; align-items: center; gap: 10px; transition: 0.2s; user-select: none; }
-        .upload-label:active { transform: scale(0.98); background: #1aa34a; }
+        .section-title { font-size: 20px; margin-top: 10px; border-bottom: 1px solid #282828; padding-bottom: 8px; }
+        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; width: 100%; }
 
-        .section-title { font-size: 22px; margin-bottom: 15px; }
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px; width: 100%; }
-
-        .song-card { background: #181818; padding: 12px; border-radius: 10px; transition: 0.3s; cursor: pointer; text-align: center; border: 1px solid #282828; }
+        .song-card { background: #181818; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center; border: 1px solid #282828; transition: 0.2s; }
         .song-card:hover { background: #282828; }
-        .song-card img { width: 100%; border-radius: 8px; margin-bottom: 10px; box-shadow: 0 6px 12px rgba(0,0,0,0.5); aspect-ratio: 1/1; object-fit: cover; }
-        .song-card h3 { font-size: 13px; margin-bottom: 5px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .song-card img { width: 100%; border-radius: 8px; margin-bottom: 8px; aspect-ratio: 1/1; object-fit: cover; }
+        .song-card h3 { font-size: 13px; margin-bottom: 4px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .song-card p { color: var(--spotify-green); font-size: 11px; font-weight: bold; }
 
-        /* --- PLAYER BAR --- */
-        .player-bar { position: fixed; bottom: -130px; left: 0; width: 100%; height: 110px; background: #121212; display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; transition: 0.4s ease-in-out; z-index: 1000; border-top: 1px solid #282828; flex-wrap: wrap; }
-        .player-bar.active { bottom: 0; }
-        .now-playing { display: flex; align-items: center; gap: 10px; width: 35%; min-width: 120px; }
-        .now-playing img { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; }
-        .song-info h4 { font-size: 12px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 110px; }
-        .song-info p { font-size: 10px; color: var(--spotify-grey); }
-
-        .controls { width: 60%; display: flex; flex-direction: column; align-items: center; gap: 5px; }
-        .btn-row { display: flex; gap: 25px; align-items: center; margin-bottom: 2px; }
-        .control-icon { color: var(--spotify-grey); font-size: 18px; cursor: pointer; transition: 0.2s; }
-        .control-icon:hover { color: white; transform: scale(1.1); }
-
-        .audio-element-custom { width: 100%; height: 32px; }
+        /* --- FIXED BOTTOM PLAYER --- */
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 100px; background: #121212; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-top: 1px solid #282828; z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease; }
+        .player-bar.active { transform: translateY(0); }
         
-        @media (max-width: 600px) {
-            .player-bar { height: 125px; padding: 8px; }
-            .now-playing { width: 100%; justify-content: center; margin-bottom: 5px; }
-            .controls { width: 100%; }
+        .now-playing { display: flex; align-items: center; gap: 12px; width: 30%; min-width: 150px; }
+        .now-playing img { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; }
+        .song-info h4 { font-size: 13px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .song-info p { font-size: 11px; color: var(--spotify-grey); }
+
+        .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .btn-row { display: flex; gap: 30px; align-items: center; }
+        .control-icon { color: var(--spotify-grey); font-size: 20px; cursor: pointer; transition: 0.2s; }
+        .control-icon:hover { color: white; }
+        .audio-element-custom { width: 100%; height: 30px; }
+
+        /* --- RESPONSIVE MOBILE FIXES --- */
+        @media (max-width: 768px) {
+            .sidebar { display: none; } /* Mobile par sidebar hide kar diya taaki layout na toote */
+            .search-row { flex-direction: column; align-items: flex-start; }
+            .search-bar { max-width: 100%; }
+            .now-playing { width: 100%; justify-content: center; }
+            .controls { width: 100%; margin-top: 5px; }
+            .player-bar { flex-direction: column; height: 130px; justify-content: center; padding: 5px; }
+            .main { padding-bottom: 160px; }
         }
     </style>
 </head>
 <body>
 
-    <div class="sidebar">
+    <div class="top-bar">
         <div class="brand-logo">
             <i class="fas fa-music"></i>
             <h1>Harmony Pro</h1>
         </div>
-        <div class="nav-item active"><i class="fas fa-house"></i> <span>
+        <button class="btn-premium">Premium</button>
+    </div>
+
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></div>
+            <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> <span>Search</span></div>
+            <div class="library">
+                <div class="nav-item" style="padding: 0;"><i class="fas fa-layer-group"></i> <span>Library</span></div>
+                <ul id="playlist-list" style="list-style: none; color: var(--spotify-grey); font-size: 14px;"></ul>
+            </div>
+        </div>
+
+        <div class="main">
+            <div class="search-row">
+                <div class="search-bar">
+                    <i class="fas fa-magnifying-glass"></i>
+                    <input type="text" id="searchInput" placeholder="Search from saved songs..." onkeyup="searchSongs()">
+                </div>
+                <button id="micBtn" class="ai-mic-btn" onclick="toggleVoiceAI()"><i class="fas fa-microphone"></i> <span>AI Mode OFF</span></button>
+            </div>
+
+            <label for="multiFileInput" class="upload-label">
+                <i class="fas fa-cloud-upload-alt"></i> Ek Saath Saare Gaane Save Karein
+            </label>
+            <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
+
+            <h2 class="section-title">Your Tracks</h2>
+            <div class="song-grid" id="songGrid"></div>
+        </div>
+    </div>
+
+    <footer class="player-bar" id="playerBar">
+        <div class="now-playing">
+            <img id="p-img" src="">
+            <div class="song-info">
+                <h4 id="p-title">Song Title</h4>
+                <p id="p-artist">Offline Player</p>
+            </div>
+        </div>
+        <div class="controls">
+            <div class="btn-row">
+                <i class="fas fa-step-backward control-icon" onclick="playPreviousTrack()"></i>
+                <i class="fas fa-step-forward control-icon" onclick="playNextTrack()"></i>
+            </div>
+            <audio id="audioElement" class="audio-element-custom" controls></audio>
+        </div>
+    </footer>
+
+    <script>
+        const audio = document.getElementById('audioElement');
+        const multiFileInput = document.getElementById('multiFileInput');
+        const songGrid = document.getElementById('songGrid');
+        const playerBar = document.getElementById('playerBar');
+        const micBtn = document.getElementById('micBtn');
+        
+        let trackList = [];
+        let db;
+        let currentBlobUrl = null;
+        let currentPlayingIndex = -1; 
+        let recognition;
+        let isListening = false;
+
+        const imagesPool = [
+            "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
+            "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?w=300",
+            "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300"
+        ];
+
+        const dbRequest = indexedDB.open("HarmonyGlobalCoreDB", 5);
+        dbRequest.onsuccess = (e) => {
+            db = e.target.result;
+            loadTracksFromDB();
+        };
+
+        function loadTracksFromDB() {
+            if (!db) return;
+            const transaction = db.transaction(["offline_tracks"], "readonly");
+            const store = transaction.objectStore("offline_tracks");
+            const getAllRequest = store.getAll();
+            getAllRequest.onsuccess = () => {
+                trackList = getAllRequest.result;
+                renderSongGrid();
+            };
+        }
+
+        function renderSongGrid() {
+            songGrid.innerHTML = '';
+            if (trackList.length === 0) {
+                songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">No tracks saved yet. Click the green button to add music!</p>';
+                return;
+            }
+            const fragment = document.createDocumentFragment();
+            trackList.forEach((track, index) => {
+                const cleanName = track.title.replace(/_/g, " ").replace(/\(0\)/g, "").replace(/\(320 kbps\)/g, "");
+                const card = document.createElement('div');
+                card.className = 'song-card';
+                card.addEventListener('click', () => playTrack(index));
+                card.innerHTML = `
+                    <img src="${track.img}">
+                    <h3>${cleanName}</h3>
+                    <p><i class="fas fa-check-circle"></i> Offline Ready</p>
+                `;
+                fragment.appendChild(card);
+            });
+            songGrid.appendChild(fragment);
+        }
+
+        multiFileInput.addEventListener('change', (e) => {
+            const files = e.target.files;
+            if (!files || files.length === 0) return;
+            const transaction = db.transaction(["offline_tracks"], "readwrite");
+            const store = transaction.objectStore("offline_tracks");
+            Array.from(files).forEach((file) => {
+                const cleanName = file.name.replace(/\.[^/.]+$/, "");
+                const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
+                const trackData = { title: cleanName, img: randomImg, audioBlob: file };
+                store.add(trackData);
+            });
+            transaction.oncomplete = () => { loadTracksFromDB(); };
+        });
+
+        function playTrack(index) {
+            const track = trackList[index];
+            if (!track) return;
+            currentPlayingIndex = index;
+            if (currentBlobUrl) { URL.revokeObjectURL(currentBlobUrl); }
+            currentBlobUrl = URL.createObjectURL(track.audioBlob);
+            audio.src = currentBlobUrl; 
+            const cleanTitle = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
+            document.getElementById('p-title').innerText = cleanTitle;
+            document.getElementById('p-img').src = track.img;
+            audio.play().catch(() => {});
+            playerBar.classList.add('active');
+        }
+
+        function playNextTrack() {
+            if (trackList.length > 0 && currentPlayingIndex !== -1) {
+                let nextIndex = (currentPlayingIndex + 1) % trackList.length;
+                playTrack(nextIndex);
+            }
+        }
+
+        function playPreviousTrack() {
+            if (trackList.length > 0 && currentPlayingIndex !== -1) {
+                let prevIndex = (currentPlayingIndex - 1 + trackList.length) % trackList.length;
+                playTrack(prevIndex);
+            }
+        }
+
+        audio.addEventListener('ended', playNextTrack);
+
+        // --- ADVANCED AI VOICE COMMAND ENGINE ---
+        if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            recognition = new SpeechRecognition();
+            recognition.continuous = true;
+            recognition.lang = 'en-US'; 
+
+            recognition.onresult = (event) => {
+                const latestResultIndex = event.results.length - 1;
+                const command = event.results[latestResultIndex][0].transcript.toLowerCase().trim();
+                console.log("AI Heard Voice Command:", command);
+
+                if (command.includes("next") || command.includes("harmony next")) {
+                    playNextTrack();
+                } else if (command.includes("back") || command.includes("previous") || command.includes("harmony back")) {
+                    playPreviousTrack();
+                } else if (command.includes("stop") || command.includes("pause")) {
+                    audio.pause();
+                } else if (command.includes("play") || command.includes("start")) {
+                    audio.play().catch(() => {});
+                } else if (command.includes("forward") || command.includes("skip") || command.includes("aage")) {
+                    audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+                } else if (command.includes("backward") || command.includes("rewind") || command.includes("piche")) {
+                    audio.currentTime = Math.max(0, audio.currentTime - 10);
+                } else if (command.includes("volume up") || command.includes("loud")) {
+                    audio.volume = Math.min(1.0, audio.volume + 0.2);
+                } else if (command.includes("volume down") || command.includes("kam")) {
+                    audio.volume = Math.max(0.0, audio.volume - 0.2);
+                } else if (command.includes("mute")) {
+                    audio.muted = true;
+                } else if (command.includes("unmute")) {
+                    audio.muted = false;
+                }
+            };
+
+            recognition.onend = () => {
+                if (isListening) recognition.start();
+            };
+        }
+
+        function toggleVoiceAI() {
+            if (!recognition) {
+                alert("Aapka device voice command engine support nahi karta.");
+                return;
+            }
+            if (!isListening) {
+                recognition.start();
+                isListening = true;
+                micBtn.classList.add('listening');
+                micBtn.querySelector('span').innerText = "AI Listening...";
+            } else {
+                isListening = false;
+                recognition.stop();
+                micBtn.classList.remove('listening');
+                micBtn.querySelector('span').innerText = "AI Mode OFF";
+            }
+        }
+
+        function searchSongs() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.song-card');
+            cards.forEach(card => {
+                const titleText = card.querySelector('h3').innerText.toLowerCase();
+                card.style.display = titleText.includes(query) ? "block" : "none";
+            });
+        }
+    </script>
+</body>
+</html>
