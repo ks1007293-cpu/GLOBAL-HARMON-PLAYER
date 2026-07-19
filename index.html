@@ -3,8 +3,8 @@
 <head>
     <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
     <meta charset="UTF-8">
-    <meta name="description" content="Global Harmony Pro - Play your favorite music tracks offline with a premium Spotify-inspired UI, created by Karan.">
-    <meta name="keywords" content="Global Harmony Pro, Global Harmony, Music Player, Offline Player, Karan Music Player">
+    <meta name="description" content="Global Harmony Pro - Premium Cyberpunk-inspired Offline Music Player with Voice AI Assistant, created by Karan.">
+    <meta name="keywords" content="Global Harmony Pro, Music Player, Offline Player, AI Music Player, Karan">
     <meta name="author" content="Karan">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Harmony Pro</title>
@@ -12,125 +12,155 @@
     <style>
         :root {
             --spotify-green: #1DB954;
-            --spotify-black: #121212;
-            --spotify-light: #282828;
-            --spotify-grey: #b3b3b3;
+            --neon-blue: #00f0ff;
+            --neon-glow: rgba(0, 240, 255, 0.4);
+            --spotify-black: #0c0c0c;
+            --spotify-light: #181818;
+            --spotify-grey: #a7a7a7;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; -webkit-tap-highlight-color: transparent; }
 
-        body { background-color: #000; color: white; min-height: 100vh; display: flex; flex-direction: column; }
+        body { background-color: #000; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #000; padding: 15px 20px; border-bottom: 1px solid #1a1a1a; }
-        .brand-logo { display: flex; align-items: center; gap: 10px; }
-        .brand-logo i { font-size: 22px; color: var(--spotify-green); }
-        .brand-logo h1 { font-size: 18px; font-weight: bold; color: white; }
+        /* --- TOP HEADER / CYBERPUNK APP BAR --- */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: var(--spotify-black); padding: 15px 25px; border-bottom: 2px solid #1a1a1a; box-shadow: 0 4px 20px rgba(0,0,0,0.8); }
+        .brand-logo { display: flex; align-items: center; gap: 12px; }
+        .brand-logo i { font-size: 24px; color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-glow); }
+        .brand-logo h1 { font-size: 20px; font-weight: bold; letter-spacing: 1px; color: white; }
 
         .app-container { display: flex; flex: 1; }
 
-        .sidebar { width: 230px; background-color: #000; padding: 15px; display: flex; flex-direction: column; gap: 10px; }
-        .nav-item { display: flex; align-items: center; gap: 12px; color: var(--spotify-grey); font-weight: bold; padding: 10px 12px; border-radius: 5px; cursor: pointer; transition: 0.2s; font-size: 14px; }
-        .nav-item:hover, .nav-item.active { color: white; background: #1a1a1a; }
-        .library { background: #121212; border-radius: 8px; flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+        /* --- PREMIUM SIDEBAR --- */
+        .sidebar { width: 245px; background-color: var(--spotify-black); padding: 20px 15px; display: flex; flex-direction: column; gap: 12px; border-right: 1px solid #1a1a1a; }
+        .nav-item { display: flex; align-items: center; gap: 14px; color: var(--spotify-grey); font-weight: bold; padding: 12px 15px; border-radius: 8px; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        .nav-item:hover, .nav-item.active { color: white; background: #1a1a1a; box-shadow: inset 3px 0 0 var(--neon-blue); }
+        .library { background: var(--spotify-light); border-radius: 12px; flex: 1; padding: 15px; display: flex; flex-direction: column; gap: 12px; margin-top: 10px; border: 1px solid #282828; }
 
-        .main { flex: 1; background: linear-gradient(to bottom, #222, var(--spotify-black)); padding: 20px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 140px; }
+        /* --- MAIN AREA WAITING GRID --- */
+        .main { flex: 1; background: linear-gradient(to bottom, #141414, var(--spotify-black)); padding: 25px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 160px; }
         
         .search-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .search-bar { background: white; border-radius: 30px; padding: 8px 15px; display: flex; align-items: center; gap: 10px; flex: 1; max-width: 300px; }
+        .search-bar { background: #fff; border-radius: 30px; padding: 10px 18px; display: flex; align-items: center; gap: 12px; flex: 1; max-width: 340px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
         .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; background: transparent; }
-        .search-bar i { color: #000; }
+        .search-bar i { color: #555; }
 
-        .ai-mic-btn { background: #282828; color: #fff; padding: 8px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; border: 1px solid #404040; display: inline-flex; align-items: center; gap: 8px; font-size: 13px; transition: 0.3s; }
-        .ai-mic-btn.listening { background: #d31d1d; color: white; border-color: #ff4d4d; box-shadow: 0 0 10px rgba(255, 77, 77, 0.6); }
-        .btn-premium { background: var(--spotify-green); color: white; padding: 8px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; border: none; font-size: 13px; }
-
-        .upload-label { background: var(--spotify-green); color: white; padding: 12px 20px; font-size: 14px; font-weight: bold; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; width: max-content; transition: 0.2s; }
-
-        .section-title { font-size: 20px; margin-top: 10px; border-bottom: 1px solid #282828; padding-bottom: 8px; }
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 15px; width: 100%; }
-
-        .song-card { background: #181818; padding: 12px; border-radius: 10px; cursor: pointer; text-align: center; border: 1px solid #282828; transition: 0.2s; }
-        .song-card:hover { background: #282828; }
-        .song-card img { width: 100%; border-radius: 8px; margin-bottom: 8px; aspect-ratio: 1/1; object-fit: cover; }
-        .song-card h3 { font-size: 13px; margin-bottom: 4px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .song-card p { color: var(--spotify-green); font-size: 11px; font-weight: bold; }
-
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 100px; background: #121212; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; border-top: 1px solid #282828; z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease; }
-        .player-bar.active { transform: translateY(0); }
+        /* --- NEON AI MIC TOGGLE BUTTON --- */
+        .ai-mic-btn { background: #222; color: var(--neon-blue); padding: 10px 20px; border-radius: 30px; font-weight: bold; cursor: pointer; border: 1px solid var(--neon-blue); display: inline-flex; align-items: center; gap: 10px; font-size: 13px; transition: 0.3s; box-shadow: 0 0 10px var(--neon-glow); }
+        .ai-mic-btn.listening { background: #d31d1d; color: white; border-color: #ff4d4d; box-shadow: 0 0 15px rgba(255, 77, 77, 0.8); animation: pulseGlow 1.5s infinite; }
+        .btn-action-panel { display: flex; gap: 10px; }
         
-        .now-playing { display: flex; align-items: center; gap: 12px; width: 30%; min-width: 150px; }
-        .now-playing img { width: 45px; height: 45px; border-radius: 4px; object-fit: cover; }
-        .song-info h4 { font-size: 13px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .btn-clear-db { background: #333; color: #ff4d4d; border: 1px solid #555; padding: 10px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .btn-clear-db:hover { background: #ff4d4d; color: white; border-color: #ff4d4d; }
+
+        .upload-label { background: linear-gradient(135deg, var(--spotify-green), #1ed760); color: white; padding: 14px 24px; font-size: 14px; font-weight: bold; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; width: max-content; transition: 0.3s; box-shadow: 0 5px 15px rgba(29, 185, 84, 0.4); }
+        .upload-label:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(29, 185, 84, 0.6); }
+
+        .section-title { font-size: 22px; margin-top: 10px; font-weight: bold; border-bottom: 2px solid #222; padding-bottom: 10px; letter-spacing: 0.5px; display: flex; justify-content: space-between; align-items: center; }
+        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; width: 100%; }
+
+        .song-card { background: var(--spotify-light); padding: 14px; border-radius: 12px; cursor: pointer; text-align: center; border: 1px solid #222; transition: 0.3s; position: relative; }
+        .song-card:hover { background: #252525; border-color: var(--neon-blue); box-shadow: 0 4px 15px var(--neon-glow); transform: translateY(-3px); }
+        .song-card img { width: 100%; border-radius: 8px; margin-bottom: 10px; aspect-ratio: 1/1; object-fit: cover; }
+        .song-card h3 { font-size: 13px; margin-bottom: 6px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .song-card p { color: var(--neon-blue); font-size: 11px; font-weight: bold; }
+
+        /* --- IMMERSIVE GLOWING BOTTOM PLAYER --- */
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 115px; background: rgba(18, 18, 18, 0.95); backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; border-top: 2px solid #222; z-index: 1000; transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow: 0 -5px 25px rgba(0,0,0,0.9); }
+        .player-bar.active { transform: translateY(0); border-top-color: var(--neon-blue); box-shadow: 0 -5px 20px var(--neon-glow); }
+        
+        .now-playing { display: flex; align-items: center; gap: 15px; width: 30%; min-width: 160px; }
+        .now-playing img { width: 55px; height: 55px; border-radius: 6px; object-fit: cover; border: 1px solid #333; }
+        .song-info h4 { font-size: 14px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; }
         .song-info p { font-size: 11px; color: var(--spotify-grey); }
 
-        .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .btn-row { display: flex; gap: 30px; align-items: center; }
-        .control-icon { color: var(--spotify-grey); font-size: 20px; cursor: pointer; transition: 0.2s; }
-        .control-icon:hover { color: white; }
-        .audio-element-custom { width: 100%; height: 30px; }
+        .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .btn-row { display: flex; gap: 35px; align-items: center; }
+        .control-icon { color: var(--spotify-grey); font-size: 22px; cursor: pointer; transition: 0.2s; }
+        .control-icon:hover { color: var(--neon-blue); transform: scale(1.1); }
+        .audio-element-custom { width: 100%; height: 32px; border-radius: 4px; }
 
+        @keyframes pulseGlow {
+            0% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.6); }
+            50% { box-shadow: 0 0 20px rgba(255, 77, 77, 0.9); }
+            100% { box-shadow: 0 0 5px rgba(255, 77, 77, 0.6); }
+        }
+
+        /* --- RESPONSIVE MOBILE FIXES --- */
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .search-row { flex-direction: column; align-items: flex-start; }
+            .search-row { flex-direction: column; align-items: stretch; gap: 10px; }
             .search-bar { max-width: 100%; }
+            .btn-action-panel { justify-content: space-between; width: 100%; }
             .now-playing { width: 100%; justify-content: center; }
-            .controls { width: 100%; margin-top: 5px; }
-            .player-bar { flex-direction: column; height: 130px; justify-content: center; padding: 5px; }
-            .main { padding-bottom: 160px; }
+            .controls { width: 100%; }
+            .player-bar { flex-direction: column; height: 155px; justify-content: center; padding: 10px; gap: 8px; }
+            .main { padding-bottom: 180px; }
         }
     </style>
 </head>
 <body>
 
+    <!-- Cyberpunk Header -->
     <div class="top-bar">
         <div class="brand-logo">
-            <i class="fas fa-music"></i>
-            <h1>Harmony Pro</h1>
+            <i class="fas fa-satellite-dish"></i>
+            <h1>Harmony Global Pro</h1>
         </div>
-        <button class="btn-premium">Premium</button>
     </div>
 
     <div class="app-container">
+        <!-- Premium Sidebar -->
         <div class="sidebar">
-            <div class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></div>
-            <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-magnifying-glass"></i> <span>Search</span></div>
+            <div class="nav-item active"><i class="fas fa-home"></i> <span>Home Studio</span></div>
+            <div class="nav-item" onclick="document.getElementById('searchInput').focus()"><i class="fas fa-search"></i> <span>Voice Search</span></div>
             <div class="library">
-                <div class="nav-item" style="padding: 0;"><i class="fas fa-layer-group"></i> <span>Library</span></div>
-                <ul id="playlist-list" style="list-style: none; color: var(--spotify-grey); font-size: 14px;"></ul>
+                <div class="nav-item" style="padding: 0; color: white;"><i class="fas fa-database"></i> <span>Core Vault</span></div>
+                <ul id="playlist-list" style="list-style: none; color: var(--spotify-grey); font-size: 13px;">
+                    <li style="margin-top: 5px;"><i class="fas fa-circle" style="font-size: 8px; color: var(--neon-blue);"></i> Local Storage Active</li>
+                </ul>
             </div>
         </div>
 
+        <!-- Main Workspace -->
         <div class="main">
             <div class="search-row">
                 <div class="search-bar">
-                    <i class="fas fa-magnifying-glass"></i>
-                    <input type="text" id="searchInput" placeholder="Search from saved songs..." onkeyup="searchSongs()">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Type or use Voice Mode to filter songs..." onkeyup="searchSongs()">
                 </div>
-                <button id="micBtn" class="ai-mic-btn" onclick="toggleVoiceAI()"><i class="fas fa-microphone"></i> <span>AI Mode OFF</span></button>
+                <div class="btn-action-panel">
+                    <button id="micBtn" class="ai-mic-btn" onclick="toggleVoiceAI()"><i class="fas fa-microphone"></i> <span>AI Engine OFF</span></button>
+                    <button class="btn-clear-db" onclick="clearStorageData()"><i class="fas fa-trash-alt"></i> Reset</button>
+                </div>
             </div>
 
             <label for="multiFileInput" class="upload-label">
-                <i class="fas fa-cloud-upload-alt"></i> Ek Saath Saare Gaane Save Karein
+                <i class="fas fa-folder-open"></i> Sync Audio Files Directory
             </label>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
-            <h2 class="section-title">Your Tracks</h2>
+            <h2 class="section-title">
+                <span>Stored Audio Tracks</span>
+                <span id="trackCount" style="font-size: 14px; color: var(--neon-blue);">0 Tracks Loaded</span>
+            </h2>
             <div class="song-grid" id="songGrid"></div>
         </div>
     </div>
 
+    <!-- Immersive Glowing Player Bar -->
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
             <img id="p-img" src="">
             <div class="song-info">
-                <h4 id="p-title">Song Title</h4>
-                <p id="p-artist">Offline Player</p>
+                <h4 id="p-title">Ready System</h4>
+                <p id="p-artist">AI Standby</p>
             </div>
         </div>
         <div class="controls">
             <div class="btn-row">
-                <i class="fas fa-step-backward control-icon" onclick="playPreviousTrack()"></i>
-                <i class="fas fa-step-forward control-icon" onclick="playNextTrack()"></i>
+                <i class="fas fa-backward-step control-icon" onclick="playPreviousTrack()"></i>
+                <i class="fas fa-forward-step control-icon" onclick="playNextTrack()"></i>
             </div>
             <audio id="audioElement" class="audio-element-custom" controls></audio>
         </div>
@@ -142,11 +172,12 @@
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const micBtn = document.getElementById('micBtn');
+        const trackCount = document.getElementById('trackCount');
         
         let trackList = [];
-        let currentPlayingIndex = -1; 
-        let recognition;
+        let db;
         let isListening = false;
+        let recognition;
 
         const imagesPool = [
             "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=300",
@@ -154,11 +185,39 @@
             "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300"
         ];
 
-        // CRASH-PROOF MEMORY DIRECT INJECTOR
+        // 100% FIXED PERMANENT LAUNCH INDEXEDDB STORAGE
+        const dbRequest = indexedDB.open("HarmonyVaultCoreDB", 6);
+        
+        dbRequest.onupgradeneeded = (e) => {
+            let database = e.target.result;
+            if (!database.objectStoreNames.contains("vault_music")) {
+                database.createObjectStore("vault_music", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        dbRequest.onsuccess = (e) => {
+            db = e.target.result;
+            loadTracksFromDB();
+        };
+
+        function loadTracksFromDB() {
+            if (!db) return;
+            const transaction = db.transaction(["vault_music"], "readonly");
+            const store = transaction.objectStore("vault_music");
+            const getAllRequest = store.getAll();
+            
+            getAllRequest.onsuccess = () => {
+                trackList = getAllRequest.result;
+                renderSongGrid();
+            };
+        }
+
         function renderSongGrid() {
             songGrid.innerHTML = '';
+            trackCount.innerText = `${trackList.length} Tracks Loaded`;
+            
             if (trackList.length === 0) {
-                songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">No tracks loaded yet. Click the green button to select music!</p>';
+                songGrid.innerHTML = '<p style="color: var(--spotify-grey); padding: 10px;">Vault is empty. Click green button to store tracks permanently!</p>';
                 return;
             }
             const fragment = document.createDocumentFragment();
@@ -170,36 +229,41 @@
                 card.innerHTML = `
                     <img src="${track.img}">
                     <h3>${cleanName}</h3>
-                    <p><i class="fas fa-check-circle"></i> Ready</p>
+                    <p><i class="fas fa-shield-halved"></i> Vault Saved</p>
                 `;
                 fragment.appendChild(card);
             });
             songGrid.appendChild(fragment);
         }
 
-        // Direct Runtime Blob Allocation to bypass browser lockouts
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
             
-            trackList = []; // Clear previous array to accept fresh payload safely
+            const transaction = db.transaction(["vault_music"], "readwrite");
+            const store = transaction.objectStore("vault_music");
+            
             Array.from(files).forEach((file) => {
                 const cleanName = file.name.replace(/\.[^/.]+$/, "");
                 const randomImg = imagesPool[Math.floor(Math.random() * imagesPool.length)];
-                trackList.push({ title: cleanName, img: randomImg, audioBlob: file });
+                const trackData = { title: cleanName, img: randomImg, audioBlob: file };
+                store.add(trackData);
             });
             
-            renderSongGrid();
+            transaction.oncomplete = () => {
+                loadTracksFromDB();
+            };
         });
 
         function playTrack(index) {
-            const track = trackList[index];
-            if (!track) return;
+            if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
+            const track = trackList[index];
             
             audio.src = URL.createObjectURL(track.audioBlob); 
             const cleanTitle = track.title.replace(/_/g, " ").replace(/\(0\)/g, "");
             document.getElementById('p-title').innerText = cleanTitle;
+            document.getElementById('p-artist').innerText = "Offline Vault Player";
             document.getElementById('p-img').src = track.img;
             audio.play().catch(() => {});
             playerBar.classList.add('active');
@@ -221,29 +285,31 @@
 
         audio.addEventListener('ended', playNextTrack);
 
-        // --- ADVANCED AI VOICE COMMAND ENGINE ---
+        // --- HIGH SENSITIVITY AI VOICE CONTROL ENGINE ---
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
             recognition.continuous = true;
+            recognition.interimResults = false;
             recognition.lang = 'en-US'; 
 
             recognition.onresult = (event) => {
                 const latestResultIndex = event.results.length - 1;
                 const command = event.results[latestResultIndex][0].transcript.toLowerCase().trim();
-                console.log("AI Heard Voice Command:", command);
+                console.log("AI Logged Speech:", command);
 
-                if (command.includes("next") || command.includes("harmony next")) {
+                // Multi-phrase recognition maps
+                if (command.includes("next") || command.includes("harmony next") || command.includes("aage")) {
                     playNextTrack();
-                } else if (command.includes("back") || command.includes("previous") || command.includes("harmony back")) {
+                } else if (command.includes("back") || command.includes("previous") || command.includes("harmony back") || command.includes("piche")) {
                     playPreviousTrack();
-                } else if (command.includes("stop") || command.includes("pause")) {
+                } else if (command.includes("stop") || command.includes("pause") || command.includes("ruko")) {
                     audio.pause();
-                } else if (command.includes("play") || command.includes("start")) {
+                } else if (command.includes("play") || command.includes("start") || command.includes("chalo")) {
                     audio.play().catch(() => {});
-                } else if (command.includes("forward") || command.includes("skip") || command.includes("aage")) {
+                } else if (command.includes("forward") || command.includes("skip")) {
                     audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
-                } else if (command.includes("backward") || command.includes("rewind") || command.includes("piche")) {
+                } else if (command.includes("backward") || command.includes("rewind")) {
                     audio.currentTime = Math.max(0, audio.currentTime - 10);
                 } else if (command.includes("volume up") || command.includes("loud")) {
                     audio.volume = Math.min(1.0, audio.volume + 0.2);
@@ -256,26 +322,44 @@
                 }
             };
 
+            recognition.onerror = (err) => {
+                console.log("AI Microphone Engine Timeout. Resetting standard loops.", err);
+            };
+
             recognition.onend = () => {
-                if (isListening) recognition.start();
+                if (isListening) recognition.start(); // Strict loop locking mechanism
             };
         }
 
         function toggleVoiceAI() {
             if (!recognition) {
-                alert("Aapka device voice command engine support nahi karta.");
+                alert("Voice command architecture is missing on this browser platform.");
                 return;
             }
             if (!isListening) {
                 recognition.start();
                 isListening = true;
                 micBtn.classList.add('listening');
-                micBtn.querySelector('span').innerText = "AI Listening...";
+                micBtn.querySelector('span').innerText = "AI Active";
             } else {
                 isListening = false;
                 recognition.stop();
                 micBtn.classList.remove('listening');
-                micBtn.querySelector('span').innerText = "AI Mode OFF";
+                micBtn.querySelector('span').innerText = "AI Engine OFF";
+            }
+        }
+
+        function clearStorageData() {
+            if (confirm("Kya aap saare gaane permanent database se delete karna chahte hain?")) {
+                const transaction = db.transaction(["vault_music"], "readwrite");
+                const store = transaction.objectStore("vault_music");
+                const clearReq = store.clear();
+                clearReq.onsuccess = () => {
+                    trackList = [];
+                    renderSongGrid();
+                    playerBar.classList.remove('active');
+                    audio.src = '';
+                };
             }
         }
 
