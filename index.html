@@ -8,8 +8,8 @@
     <meta name="theme-color" content="#00f0ff">
     <title>Global Harmony Pro - Master Deck</title>
 
-    <!-- AUTOMATIC INLINE WEB MANIFEST FOR PWABUILDER -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"Global Harmony Pro","short_name":"HarmonyPro","description":"Ultimate Cyberpunk Audio Deck","start_url":"/GLOBAL-HARMON-PLAYER/","display":"standalone","background_color":"#080808","theme_color":"#00f0ff","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/4712/4712109.png","sizes":"512x512","type":"image/png"}]}'>
+    <!-- UPDATED PWA MANIFEST LINK -->
+    <link rel="manifest" href="manifest.json">
     
     <!-- APP LOGO & FAVICON -->
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
@@ -326,16 +326,10 @@
         });
     </script>
 
-    <!-- INLINE SERVICE WORKER FOR PWA/APK -->
+    <!-- REGISTER EXTERNAL SERVICE WORKER FOR PWA/APK -->
     <script>
         if ('serviceWorker' in navigator) {
-            const swCode = `
-                self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
-                self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
-                self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
-            `;
-            const blob = new Blob([swCode], { type: 'text/javascript' });
-            navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(() => {});
+            navigator.serviceWorker.register('sw.js').catch(() => {});
         }
     </script>
 
