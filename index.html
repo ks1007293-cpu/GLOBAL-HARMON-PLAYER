@@ -3,10 +3,11 @@
 <head>
     <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
     <meta charset="UTF-8">
-    <meta name="description" content="Global Harmony Pro - Ultimate Cyberpunk Offline Music Vault with 15 Pro Audio Engines, created by Karan.">
+    <meta name="description" content="Global Harmony Pro - Ultimate Offline & Cloud Audio Deck with Integrated Firebase Auth.">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Global Harmony Pro</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
     <style>
         :root {
             --primary-glow: #00f0ff;
@@ -16,7 +17,6 @@
             --text-grey: #b3b3b3;
         }
 
-        /* THEME PRESETS */
         body.theme-red { --primary-glow: #ff0044; --secondary-glow: #ff6600; }
         body.theme-gold { --primary-glow: #ffd700; --secondary-glow: #ff8c00; }
         body.theme-emerald { --primary-glow: #00ff88; --secondary-glow: #00bfff; }
@@ -30,8 +30,9 @@
         .brand-logo i { font-size: 24px; color: var(--primary-glow); text-shadow: 0 0 12px var(--primary-glow); }
         .brand-logo h1 { font-size: 20px; font-weight: bold; letter-spacing: 0.5px; }
 
-        .profile-badge { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 6px 14px; border-radius: 20px; border: 1px solid #333; cursor: pointer; }
-        .profile-badge i { color: var(--primary-glow); }
+        .profile-badge { display: flex; align-items: center; gap: 10px; background: #1a1a1a; padding: 8px 16px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+        .profile-badge:hover { background: var(--primary-glow); color: #000; }
+        .profile-badge i { color: inherit; }
 
         .app-container { display: flex; flex: 1; }
 
@@ -48,7 +49,7 @@
         .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; background: transparent; }
 
         .btn-action-panel { display: flex; gap: 10px; flex-wrap: wrap; }
-        .ai-mic-btn { background: #1a1a1a; color: var(--primary-glow); padding: 10px 18px; border-radius: 30px; font-weight: bold; cursor: pointer; border: 1px solid var(--primary-glow); display: inline-flex; align-items: center; gap: 8px; font-size: 13px; transition: 0.3s; box-shadow: 0 0 10px rgba(0,240,255,0.2); }
+        .ai-mic-btn { background: #1a1a1a; color: var(--primary-glow); padding: 10px 18px; border-radius: 30px; font-weight: bold; cursor: pointer; border: 1px solid var(--primary-glow); display: inline-flex; align-items: center; gap: 8px; font-size: 13px; transition: 0.3s; }
         .ai-mic-btn.listening { background: #d31d1d; color: white; border-color: #ff4d4d; box-shadow: 0 0 15px rgba(255, 77, 77, 0.8); }
         
         .btn-panel { background: #1a1a1a; color: #fff; border: 1px solid #333; padding: 10px 16px; border-radius: 30px; font-weight: bold; cursor: pointer; font-size: 13px; transition: 0.2s; }
@@ -68,11 +69,11 @@
         .song-card.active-track .playing-indicator { display: block; }
         .song-card.active-track h3 { color: var(--primary-glow); }
 
-        /* --- HIGH DYNAMIC LIGHTS VISUALIZER RIBBON --- */
+        /* --- VISUALIZER RIBBON --- */
         .visualizer-container { width: 100%; height: 8px; position: fixed; bottom: 115px; left: 0; z-index: 999; background: rgba(0,0,0,0.5); }
         #canvasLights { width: 100%; height: 100%; display: block; }
 
-        /* --- PLAYER CONTROLLER BAR --- */
+        /* --- PLAYER BAR --- */
         .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 115px; background: rgba(10, 10, 10, 0.96); backdrop-filter: blur(12px); display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; border-top: 2px solid #1a1a1a; z-index: 1000; transform: translateY(100%); transition: transform 0.4s ease; }
         .player-bar.active { transform: translateY(0); border-top-color: var(--primary-glow); }
         
@@ -87,7 +88,7 @@
         .control-icon:hover, .control-icon.active { color: var(--primary-glow); }
         .audio-element-custom { width: 100%; height: 32px; filter: invert(1); opacity: 0.85; }
 
-        /* --- MODAL POPUPS --- */
+        /* --- MODALS --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 2000; justify-content: center; align-items: center; }
         .modal-card { background: #111; border: 1px solid #222; border-radius: 16px; width: 90%; max-width: 460px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 10px; }
@@ -96,7 +97,7 @@
 
         .setting-item { display: flex; flex-direction: column; gap: 6px; }
         .setting-item label { font-size: 12px; color: var(--text-grey); font-weight: bold; }
-        .setting-item select, .setting-item input[type="text"] { background: #1a1a1a; border: 1px solid #333; padding: 10px; border-radius: 6px; color: #fff; outline: none; }
+        .setting-item select { background: #1a1a1a; border: 1px solid #333; padding: 10px; border-radius: 6px; color: #fff; outline: none; }
         
         .eq-slider-group { display: flex; justify-content: space-between; padding: 10px 0; }
         .eq-slider { display: flex; flex-direction: column; align-items: center; gap: 8px; font-size: 11px; color: var(--text-grey); }
@@ -119,11 +120,11 @@
     <div class="top-bar">
         <div class="brand-logo">
             <i class="fas fa-compact-disc"></i>
-            <h1>Harmony Pro Engine</h1>
+            <h1>Global Harmony Pro</h1>
         </div>
-        <div class="profile-badge" onclick="openModal('profileModal')">
-            <i class="fas fa-user-astronaut"></i>
-            <span id="profileNameDisplay">Sign In</span>
+        <div class="profile-badge" onclick="window.loginWithGoogle()">
+            <i class="fab fa-google"></i>
+            <span id="profileNameDisplay">Sign In with Google</span>
         </div>
     </div>
 
@@ -160,12 +161,10 @@
         </div>
     </div>
 
-    <!-- HIGH DYNAMIC LIGHTS VISUALIZER -->
     <div class="visualizer-container">
         <canvas id="canvasLights"></canvas>
     </div>
 
-    <!-- PLAYER FOOTER CONTROLLER -->
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
             <img id="p-img" src="">
@@ -185,7 +184,7 @@
         </div>
     </footer>
 
-    <!-- SETTINGS & FX MODAL -->
+    <!-- SETTINGS MODAL -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -229,7 +228,7 @@
         </div>
     </div>
 
-    <!-- UP NEXT QUEUE MODAL -->
+    <!-- QUEUE MODAL -->
     <div class="modal-overlay" id="queueModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -239,21 +238,6 @@
             <div id="queueList" style="display:flex; flex-direction:column; gap:8px; font-size:13px; color:var(--text-grey);">
                 <p>Loading queue sequence...</p>
             </div>
-        </div>
-    </div>
-
-    <!-- PROFILE MODAL -->
-    <div class="modal-overlay" id="profileModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3><i class="fas fa-user-astronaut"></i> Profile Configuration</h3>
-                <i class="fas fa-times close-btn" onclick="closeModal('profileModal')"></i>
-            </div>
-            <div class="setting-item">
-                <label>User Alias</label>
-                <input type="text" id="usernameInput" placeholder="Enter name...">
-            </div>
-            <button class="btn-panel" style="background:var(--primary-glow); color:#000;" onclick="saveProfileAccount()">Save Profile</button>
         </div>
     </div>
 
@@ -269,12 +253,52 @@
                 <p id="topTrackLabel" style="font-size:15px; font-weight:bold; color:var(--primary-glow);">No data yet.</p>
             </div>
             <div class="setting-item">
-                <label>Total Offline Playback Sessions</label>
+                <label>Total Playback Sessions</label>
                 <p id="totalPlayLabel" style="font-size:14px; color:#fff;">0 Sessions</p>
             </div>
         </div>
     </div>
 
+    <!-- FIREBASE AUTHENTICATION SCRIPT -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Aapka copied Firebase Config
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
+            authDomain: "global-harmony-pro.firebaseapp.com",
+            projectId: "global-harmony-pro",
+            storageBucket: "global-harmony-pro.firebasestorage.app",
+            messagingSenderId: "709699775213",
+            appId: "1:709699775213:web:fc7b76bb24b7a699b17ae4",
+            measurementId: "G-QT9YJYY8Y1"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        window.loginWithGoogle = async function() {
+            try {
+                const result = await signInWithPopup(auth, provider);
+                const user = result.user;
+                document.getElementById('profileNameDisplay').innerText = user.displayName;
+                alert(`Welcome ${user.displayName}! Google Sign-In Successful.`);
+            } catch (error) {
+                console.error("Login Error:", error);
+                alert("Login failed: " + error.message);
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('profileNameDisplay').innerText = user.displayName;
+            }
+        });
+    </script>
+
+    <!-- MAIN PLAYER CORE SCRIPT -->
     <script>
         const audio = document.getElementById('audioElement');
         const multiFileInput = document.getElementById('multiFileInput');
@@ -289,7 +313,6 @@
         let recognition;
         let currentPlayingIndex = -1;
 
-        // Web Audio Nodes
         let audioCtx, audioSource, bassFilter, midFilter, trebleFilter, pannerNode, analyser, canvas, canvasCtx;
         let isBassBoosted = false, isSpatialActive = false, pannerAngle = 0;
 
@@ -299,7 +322,6 @@
             "https://images.unsplash.com/photo-1506157786151-b8491531f063?w=300"
         ];
 
-        // INDEXEDDB VAULT
         const dbRequest = indexedDB.open("HarmonyStudioMasterDB", 10);
         dbRequest.onupgradeneeded = (e) => {
             let database = e.target.result;
@@ -310,7 +332,6 @@
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
             loadTracksFromDB();
-            initializeProfileSystem();
         };
 
         function loadTracksFromDB() {
@@ -327,7 +348,7 @@
             songGrid.innerHTML = '';
             trackCount.innerText = `${trackList.length} Tracks Configured`;
             if (trackList.length === 0) {
-                songGrid.innerHTML = '<p style="color:var(--text-grey); padding:10px;">Vault empty. Select files to populate.</p>';
+                songGrid.innerHTML = '<p style="color:var(--text-grey); padding:10px;">Vault empty. Import local files to populate.</p>';
                 return;
             }
             trackList.forEach((track, index) => {
@@ -358,7 +379,6 @@
             transaction.oncomplete = () => loadTracksFromDB();
         });
 
-        // HIGH DYNAMIC LIGHTS & AUDIO ENGINE
         function initializeAudioEngine() {
             if (audioCtx) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -369,7 +389,7 @@
             trebleFilter = audioCtx.createBiquadFilter(); trebleFilter.type = "highshelf"; trebleFilter.frequency.value = 3000;
             
             pannerNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
-            analyser = audioCtx.createAnalyser(); analyser.fftSize = 128; // High resolution FFT
+            analyser = audioCtx.createAnalyser(); analyser.fftSize = 128;
             
             audioSource.connect(bassFilter);
             bassFilter.connect(midFilter);
@@ -420,14 +440,14 @@
                 canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
                 
                 let bassSum = dataArray[0] + dataArray[1] + dataArray[2] + dataArray[3];
-                let intensity = Math.min(1.0, bassSum / 400); // Amplified sensitivity
+                let intensity = Math.min(1.0, bassSum / 400);
                 
                 document.getElementById('playerBar').style.boxShadow = `0 -${10 + intensity * 35}px ${20 + intensity * 30}px rgba(0, 240, 255, ${0.4 + intensity * 0.6})`;
                 
                 let barWidth = (canvas.width / bufferLength) * 1.5;
                 let x = 0;
                 for (let i = 0; i < bufferLength; i++) {
-                    let barHeight = (dataArray[i] / 255) * canvas.height * 2.5; // Amplified height
+                    let barHeight = (dataArray[i] / 255) * canvas.height * 2.5;
                     let gradient = canvasCtx.createLinearGradient(0, canvas.height, 0, 0);
                     gradient.addColorStop(0, 'rgba(0, 240, 255, 0.2)');
                     gradient.addColorStop(1, 'rgba(255, 0, 127, 0.9)');
@@ -491,7 +511,6 @@
             }
         }
 
-        // BILINGUAL AI ENGINE
         if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
             const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
             recognition = new SpeechRecognition();
@@ -525,19 +544,6 @@
         function openModal(id) { document.getElementById(id).style.display = 'flex'; if(id === 'analyticsModal') buildWrappedAnalytics(); }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        function initializeProfileSystem() {
-            let user = localStorage.getItem('harmony_username') || "Karan";
-            document.getElementById('profileNameDisplay').innerText = user;
-            document.getElementById('usernameInput').value = user;
-        }
-
-        function saveProfileAccount() {
-            let val = document.getElementById('usernameInput').value || "Karan";
-            localStorage.setItem('harmony_username', val);
-            document.getElementById('profileNameDisplay').innerText = val;
-            closeModal('profileModal');
-        }
-
         function buildWrappedAnalytics() {
             let total = 0; let topTrack = "None"; let maxCount = 0;
             trackList.forEach(t => {
@@ -557,7 +563,6 @@
             }
         }
 
-        // SHORTCUTS (Spacebar, Arrows)
         window.addEventListener('keydown', (e) => {
             if (document.activeElement.tagName === 'INPUT') return;
             if (e.code === 'Space') { e.preventDefault(); audio.paused ? audio.play() : audio.pause(); }
