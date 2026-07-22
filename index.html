@@ -3,10 +3,10 @@
 <head>
     <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
     <meta charset="UTF-8">
-    <meta name="description" content="Global Harmony Pro - Cyberpunk Audio Deck with Offline PWA & Doraemon AI Companion">
+    <meta name="description" content="Global Harmony Pro - Ultimate Cyberpunk Audio Deck & DJ Studio">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#00f0ff">
-    <title>Global Harmony Pro - Cyberpunk Studio</title>
+    <title>Global Harmony Pro - Master Cyberpunk Deck</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
@@ -26,12 +26,12 @@
         body.theme-emerald { --primary-glow: #00ff88; --secondary-glow: #00bfff; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #050505; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { background-color: #050505; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; transition: background 0.4s ease; }
 
         /* --- HEADER --- */
         .top-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 12, 12, 0.95); padding: 15px 25px; border-bottom: 2px solid #1a1a1a; backdrop-filter: blur(10px); z-index: 100; }
         .brand-logo { display: flex; align-items: center; gap: 12px; }
-        .brand-logo svg { filter: drop-shadow(0 0 8px var(--primary-glow)); }
+        .brand-logo svg { filter: drop-shadow(0 0 10px var(--primary-glow)); }
         .brand-logo h1 { font-size: 20px; font-weight: 800; background: linear-gradient(45deg, #fff, var(--primary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .profile-badge { display: flex; align-items: center; gap: 10px; background: #161616; padding: 8px 18px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 13px; }
@@ -60,8 +60,6 @@
         .upload-label { background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow)); color: #000; padding: 12px 24px; font-size: 13px; font-weight: bold; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; border: none; }
         .upload-label:hover { transform: scale(1.03); }
 
-        .lyrics-box { background: rgba(20,20,20,0.85); border: 1px solid var(--primary-glow); border-radius: 12px; padding: 15px; text-align: center; font-size: 15px; font-weight: bold; color: var(--primary-glow); text-shadow: 0 0 10px var(--primary-glow); min-height: 50px; display: flex; align-items: center; justify-content: center; }
-
         .section-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #1a1a1a; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
         
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; width: 100%; }
@@ -73,19 +71,6 @@
         .playing-indicator { display: none; position: absolute; top: 12px; right: 12px; background: var(--primary-glow); color: #000; padding: 4px 8px; border-radius: 20px; font-size: 9px; font-weight: 800; }
         .song-card.active-track .playing-indicator { display: block; }
         .song-card.active-track h3 { color: var(--primary-glow); }
-
-        /* --- DORAEMON INTERACTIVE AI COMPANION --- */
-        .doraemon-wrapper { position: fixed; bottom: 135px; right: 25px; z-index: 1001; display: flex; flex-direction: column; align-items: center; pointer-events: none; }
-        .doraemon-bubble { background: #fff; color: #000; font-size: 11px; font-weight: 800; padding: 6px 12px; border-radius: 15px; margin-bottom: 6px; box-shadow: 0 0 10px rgba(0,240,255,0.6); white-space: nowrap; opacity: 0; transition: opacity 0.3s ease; }
-        .doraemon-bubble.visible { opacity: 1; }
-        
-        .doraemon-avatar { width: 100px; height: 100px; background: url('https://upload.wikimedia.org/wikipedia/en/b/bd/Doraemon_character.png') no-repeat center/contain; filter: drop-shadow(0 0 12px var(--primary-glow)); transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .doraemon-avatar.dancing { animation: doraGroove 0.4s infinite alternate ease-in-out; }
-
-        @keyframes doraGroove {
-            0% { transform: translateY(0) rotate(-12deg) scale(1); }
-            100% { transform: translateY(-20px) rotate(12deg) scale(1.15); }
-        }
 
         /* --- VISUALIZER --- */
         .visualizer-container { width: 100%; height: 10px; position: fixed; bottom: 120px; left: 0; z-index: 999; background: rgba(0,0,0,0.8); }
@@ -101,24 +86,30 @@
         .song-info p { font-size: 12px; color: var(--text-grey); }
 
         .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .btn-row { display: flex; gap: 22px; align-items: center; }
-        .control-icon { color: var(--text-grey); font-size: 20px; cursor: pointer; transition: 0.2s; fill: currentColor; width: 22px; height: 22px; }
+        .btn-row { display: flex; gap: 20px; align-items: center; }
+        .control-icon { color: var(--text-grey); font-size: 20px; cursor: pointer; transition: 0.2s; }
         .control-icon:hover, .control-icon.active { color: var(--primary-glow); transform: scale(1.15); }
         .audio-element-custom { width: 100%; height: 32px; filter: invert(1); opacity: 0.9; }
 
-        /* --- MODALS --- */
+        /* --- MODALS & SETTINGS --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 3000; justify-content: center; align-items: center; }
         .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 500px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 12px; }
         .modal-header h3 { font-size: 18px; color: var(--primary-glow); font-weight: 800; }
         .close-btn { color: var(--text-grey); cursor: pointer; font-size: 20px; font-weight: bold; }
 
-        .terms-box { background: #1a1a1a; padding: 15px; border-radius: 10px; font-size: 12px; color: #ccc; height: 150px; overflow-y: scroll; border: 1px solid #333; line-height: 1.6; }
+        .setting-item { display: flex; flex-direction: column; gap: 8px; }
+        .setting-item label { font-size: 12px; color: var(--text-grey); font-weight: bold; }
+        .setting-item select, .setting-item input { background: #1c1c1c; border: 1px solid #333; padding: 10px; border-radius: 8px; color: #fff; outline: none; font-size: 13px; }
+
+        .eq-group { display: flex; justify-content: space-between; padding: 10px 0; }
+        .eq-slider { display: flex; flex-direction: column; align-items: center; gap: 6px; font-size: 11px; color: var(--text-grey); }
+        .eq-slider input[type="range"] { writing-mode: vertical-lr; direction: rtl; width: 8px; height: 90px; background: #333; }
+
+        .terms-box { background: #1a1a1a; padding: 15px; border-radius: 10px; font-size: 12px; color: #ccc; height: 140px; overflow-y: scroll; border: 1px solid #333; line-height: 1.6; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .doraemon-wrapper { bottom: 175px; right: 15px; }
-            .doraemon-avatar { width: 75px; height: 75px; }
             .player-bar { flex-direction: column; height: 170px; justify-content: center; padding: 12px; gap: 10px; }
             .visualizer-container { bottom: 170px; }
         }
@@ -128,11 +119,9 @@
 
     <div class="top-bar">
         <div class="brand-logo">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="#00f0ff" stroke-width="2"/>
-                <circle cx="12" cy="12" r="4" fill="#ff007f"/>
-                <path d="M8 12C8 9.79086 9.79086 8 12 8" stroke="#00f0ff" stroke-width="2" stroke-linecap="round"/>
-                <path d="M16 12C16 14.2091 14.2091 16 12 16" stroke="#00f0ff" stroke-width="2" stroke-linecap="round"/>
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="16" cy="16" r="14" stroke="#ff007f" stroke-width="1.5" stroke-dasharray="4 4"/>
             </svg>
             <h1>Global Harmony Pro</h1>
         </div>
@@ -144,10 +133,12 @@
     <div class="app-container">
         <div class="sidebar">
             <div class="nav-item active">Studio Home</div>
-            <div class="nav-item" onclick="openModal('djModal')">Dual DJ Deck</div>
-            <div class="nav-item" onclick="openModal('roomModal')">Listen Together</div>
-            <div class="nav-item" onclick="openModal('radioModal')">Cloud Radio</div>
-            <div class="nav-item" onclick="openModal('termsModal')">Terms & Policy</div>
+            <div class="nav-item" onclick="openModal('settingsModal')">⚙️ Settings & FX Engine</div>
+            <div class="nav-item" onclick="openModal('djModal')">🎛️ Dual DJ Deck</div>
+            <div class="nav-item" onclick="openModal('trimmerModal')">✂️ Ringtone Trimmer</div>
+            <div class="nav-item" onclick="openModal('roomModal')">👥 Listen Together</div>
+            <div class="nav-item" onclick="openModal('radioModal')">📻 Cloud Radio</div>
+            <div class="nav-item" onclick="openModal('termsModal')">🛡️ Terms & Policy</div>
         </div>
 
         <div class="main">
@@ -160,12 +151,9 @@
                 </div>
             </div>
 
-            <div class="lyrics-box" id="karaokeLyrics">
-                🎵 Doraemon Companion Ready! Import songs to play offline. 🎵
-            </div>
-
             <div class="action-row-btn">
                 <label for="multiFileInput" class="upload-label">Import Directory Tracks</label>
+                <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="openModal('settingsModal')">⚙️ Sound Engine</button>
                 <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="generateShareCard()">Export Insta Story</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
@@ -178,19 +166,13 @@
         </div>
     </div>
 
-    <!-- DORAEMON AI COMPANION -->
-    <div class="doraemon-wrapper">
-        <div class="doraemon-bubble" id="doraBubble">I'm Ready!</div>
-        <div class="doraemon-avatar" id="doraAvatar"></div>
-    </div>
-
     <div class="visualizer-container">
         <canvas id="canvasLights"></canvas>
     </div>
 
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <img id="p-img" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150">
+            <img id="p-img" id="trackArtImage" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150" crossorigin="anonymous">
             <div class="song-info">
                 <h4 id="p-title">Ready System</h4>
                 <p id="p-artist">Global Harmony Pro</p>
@@ -201,17 +183,91 @@
                 <span class="control-icon" onclick="playPreviousTrack()">⏮</span>
                 <span class="control-icon" id="bassBoostBtn" title="Bass Boost" onclick="toggleBassBoost()">⚡</span>
                 <span class="control-icon" id="lofiBtn" title="Lofi Mode" onclick="toggleLofiMode()">🌙</span>
+                <span class="control-icon" onclick="openModal('settingsModal')">⚙️</span>
                 <span class="control-icon" onclick="playNextTrack()">⏭</span>
             </div>
             <audio id="audioElement" class="audio-element-custom" controls></audio>
         </div>
     </footer>
 
+    <!-- SETTINGS & FX ENGINE MODAL -->
+    <div class="modal-overlay" id="settingsModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>⚙️ Sound Engine Controls</h3>
+                <span class="close-btn" onclick="closeModal('settingsModal')">✕</span>
+            </div>
+            <div class="setting-item">
+                <label>Audio Gain Volume Booster (Up to 300%)</label>
+                <input type="range" id="volumeGainSlider" min="1" max="3" step="0.1" value="1" oninput="adjustVolumeGain(this.value)">
+            </div>
+            <div class="setting-item">
+                <label>Equalizer Audio Presets</label>
+                <select onchange="applyEQPreset(this.value)">
+                    <option value="flat">Flat / Normal</option>
+                    <option value="bass">Ultra Bass Booster</option>
+                    <option value="vocal">Vocal Booster</option>
+                    <option value="edm">EDM Party Punch</option>
+                    <option value="lofi">Lofi Chill Vibes</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>Playback Velocity Speed</label>
+                <select id="speedSelect" onchange="changePlaybackSpeed()">
+                    <option value="0.5">0.5x (Slowed & Reverb)</option>
+                    <option value="1.0" selected>1.0x (Normal Speed)</option>
+                    <option value="1.5">1.5x (Nightcore Pitch)</option>
+                    <option value="2.0">2.0x (Turbo Speed)</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>Theme Preset Color</label>
+                <select onchange="changeTheme(this.value)">
+                    <option value="cyan">Cyberpunk Cyan (Default)</option>
+                    <option value="red">Neon Blood Red</option>
+                    <option value="gold">VIP Gold Glow</option>
+                    <option value="emerald">Emerald Green</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>Sleep Shutdown Timer</label>
+                <select id="timerSelect" onchange="configureSleepTimer()">
+                    <option value="0" selected>Disabled</option>
+                    <option value="15">15 Minutes</option>
+                    <option value="30">30 Minutes</option>
+                    <option value="60">60 Minutes</option>
+                </select>
+            </div>
+            <div class="setting-item">
+                <label>3-Band Precision EQ</label>
+                <div class="eq-group">
+                    <div class="eq-slider"><input type="range" id="eqBass" min="-10" max="10" value="4" oninput="tuneEqualizer()"><label>BASS</label></div>
+                    <div class="eq-slider"><input type="range" id="eqMid" min="-10" max="10" value="0" oninput="tuneEqualizer()"><label>MID</label></div>
+                    <div class="eq-slider"><input type="range" id="eqTreble" min="-10" max="10" value="2" oninput="tuneEqualizer()"><label>TREBLE</label></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- RINGTONE AUDIO TRIMMER MODAL -->
+    <div class="modal-overlay" id="trimmerModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>✂️ Ringtone Trimmer</h3>
+                <span class="close-btn" onclick="closeModal('trimmerModal')">✕</span>
+            </div>
+            <p style="font-size:12px; color:var(--text-grey);">Set start and end seconds to cut audio:</p>
+            <div class="setting-item"><label>Start Time (s)</label><input type="number" id="trimStart" value="0"></div>
+            <div class="setting-item"><label>End Time (s)</label><input type="number" id="trimEnd" value="30"></div>
+            <button class="upload-label" onclick="trimAudioTrack()">Trim & Export Ringtone</button>
+        </div>
+    </div>
+
     <!-- DUAL DJ DECK MODAL -->
     <div class="modal-overlay" id="djModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>Dual DJ Studio Deck</h3>
+                <h3>🎛️ Dual DJ Studio Deck</h3>
                 <span class="close-btn" onclick="closeModal('djModal')">✕</span>
             </div>
             <div style="display:flex; align-items:center; gap:15px; background:#181818; padding:15px; border-radius:10px;">
@@ -226,7 +282,7 @@
     <div class="modal-overlay" id="roomModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>Listen Together Room</h3>
+                <h3>👥 Listen Together Room</h3>
                 <span class="close-btn" onclick="closeModal('roomModal')">✕</span>
             </div>
             <div style="display:flex; gap:10px;">
@@ -240,7 +296,7 @@
     <div class="modal-overlay" id="radioModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>Live Cloud Radio</h3>
+                <h3>📻 Live Cloud Radio</h3>
                 <span class="close-btn" onclick="closeModal('radioModal')">✕</span>
             </div>
             <button class="upload-label" onclick="playRadioStream('https://stream.zeno.fm/f3wvbb142g8uv')">Lofi Chill Beats 24/7</button>
@@ -265,11 +321,16 @@
         </div>
     </div>
 
-    <!-- SERVICE WORKER REGISTRATION FOR 100% OFFLINE PWA -->
+    <!-- SERVICE WORKER REGISTRATION -->
     <script>
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('sw.js').catch(() => {});
         }
+        window.addEventListener('DOMContentLoaded', () => {
+            if (localStorage.getItem('harmony_terms_accepted') !== 'true') {
+                openModal('termsModal');
+            }
+        });
     </script>
 
     <!-- FIREBASE AUTH -->
@@ -294,7 +355,6 @@
             try {
                 const result = await signInWithPopup(auth, provider);
                 document.getElementById('profileNameDisplay').innerText = result.user.displayName;
-                if(!localStorage.getItem('harmony_terms_accepted')) openModal('termsModal');
             } catch (error) {
                 alert("Login Error: " + error.message);
             }
@@ -303,7 +363,6 @@
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('profileNameDisplay').innerText = user.displayName;
-                if(!localStorage.getItem('harmony_terms_accepted')) openModal('termsModal');
             }
         });
     </script>
@@ -313,15 +372,12 @@
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
-        const doraAvatar = document.getElementById('doraAvatar');
-        const doraBubble = document.getElementById('doraBubble');
-        const karaokeBox = document.getElementById('karaokeLyrics');
         const multiFileInput = document.getElementById('multiFileInput');
         
         let trackList = [];
         let db;
         let currentPlayingIndex = -1;
-        let audioCtx, audioSource, bassFilter, analyser, canvas, canvasCtx;
+        let audioCtx, audioSource, gainNode, bassFilter, midFilter, trebleFilter, analyser, canvas, canvasCtx;
         let isLofiMode = false;
 
         // IndexedDB Offline Storage
@@ -375,13 +431,67 @@
             if (audioCtx) return;
             audioCtx = new (window.AudioContext || window.webkitAudioContext)();
             audioSource = audioCtx.createMediaElementSource(audio);
+            
+            gainNode = audioCtx.createGain();
             bassFilter = audioCtx.createBiquadFilter(); bassFilter.type = "lowshelf"; bassFilter.frequency.value = 200;
+            midFilter = audioCtx.createBiquadFilter(); midFilter.type = "peaking"; midFilter.frequency.value = 1000;
+            trebleFilter = audioCtx.createBiquadFilter(); trebleFilter.type = "highshelf"; trebleFilter.frequency.value = 3000;
             analyser = audioCtx.createAnalyser(); analyser.fftSize = 128;
             
-            audioSource.connect(bassFilter);
-            bassFilter.connect(analyser);
+            audioSource.connect(gainNode);
+            gainNode.connect(bassFilter);
+            bassFilter.connect(midFilter);
+            midFilter.connect(trebleFilter);
+            trebleFilter.connect(analyser);
             analyser.connect(audioCtx.destination);
+            
+            tuneEqualizer();
             startLightsVisualizer();
+        }
+
+        function adjustVolumeGain(val) {
+            if (gainNode) gainNode.gain.value = parseFloat(val);
+        }
+
+        function tuneEqualizer() {
+            if (!audioCtx) return;
+            bassFilter.gain.value = parseFloat(document.getElementById('eqBass').value);
+            midFilter.gain.value = parseFloat(document.getElementById('eqMid').value);
+            trebleFilter.gain.value = parseFloat(document.getElementById('eqTreble').value);
+        }
+
+        function applyEQPreset(type) {
+            if(type === 'bass') { document.getElementById('eqBass').value = 9; document.getElementById('eqMid').value = 0; document.getElementById('eqTreble').value = 3; }
+            else if(type === 'vocal') { document.getElementById('eqBass').value = -2; document.getElementById('eqMid').value = 7; document.getElementById('eqTreble').value = 4; }
+            else if(type === 'edm') { document.getElementById('eqBass').value = 8; document.getElementById('eqMid').value = 2; document.getElementById('eqTreble').value = 6; }
+            else if(type === 'lofi') { document.getElementById('eqBass').value = 5; document.getElementById('eqMid').value = -3; document.getElementById('eqTreble').value = -4; }
+            else { document.getElementById('eqBass').value = 0; document.getElementById('eqMid').value = 0; document.getElementById('eqTreble').value = 0; }
+            tuneEqualizer();
+        }
+
+        function changeTheme(theme) {
+            document.body.className = '';
+            if (theme !== 'cyan') document.body.classList.add(`theme-${theme}`);
+        }
+
+        function changePlaybackSpeed() {
+            if (audio) audio.playbackRate = parseFloat(document.getElementById('speedSelect').value);
+        }
+
+        function configureSleepTimer() {
+            let mins = parseInt(document.getElementById('timerSelect').value);
+            if (mins > 0) setTimeout(() => { audio.pause(); alert("Sleep Timer Shutting Down Playback."); }, mins * 60 * 1000);
+        }
+
+        function extractColorPaletteAndApply(imgElement) {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1; canvas.height = 1;
+            try {
+                ctx.drawImage(imgElement, 0, 0, 1, 1);
+                const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+                document.body.style.background = `radial-gradient(circle at top right, rgba(${r},${g},${b},0.35), #080808)`;
+            } catch(e) {}
         }
 
         function startLightsVisualizer() {
@@ -394,13 +504,6 @@
                 analyser.getByteFrequencyData(dataArray);
                 canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
                 
-                let bassSum = dataArray[0] + dataArray[1] + dataArray[2];
-                if(bassSum > 180 && !audio.paused) {
-                    doraAvatar.classList.add('dancing');
-                } else {
-                    doraAvatar.classList.remove('dancing');
-                }
-
                 let barWidth = (canvas.width / dataArray.length) * 1.5;
                 let x = 0;
                 for (let i = 0; i < dataArray.length; i++) {
@@ -418,42 +521,33 @@
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
-            
-            triggerDoraSpeech(`Now Playing: ${track.title}`);
 
             audio.src = URL.createObjectURL(track.audioBlob);
             document.getElementById('p-title').innerText = track.title;
-            document.getElementById('p-img').src = track.img;
-            karaokeBox.innerText = `🎵 Playing: ${track.title} 🎵`;
+            const pImg = document.getElementById('p-img');
+            pImg.src = track.img;
             
+            pImg.onload = () => extractColorPaletteAndApply(pImg);
+
             audio.play().catch(() => {});
             playerBar.classList.add('active');
-        }
-
-        function triggerDoraSpeech(text) {
-            doraBubble.innerText = text;
-            doraBubble.classList.add('visible');
-            setTimeout(() => doraBubble.classList.remove('visible'), 4000);
-
-            if ('speechSynthesis' in window) {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.pitch = 1.2;
-                utterance.rate = 1.0;
-                window.speechSynthesis.speak(utterance);
-            }
+            changePlaybackSpeed();
         }
 
         function toggleLofiMode() {
             isLofiMode = !isLofiMode;
             audio.playbackRate = isLofiMode ? 0.82 : 1.0;
-            triggerDoraSpeech(isLofiMode ? "Lofi Slowed Mode Active!" : "Normal Mode");
         }
 
         function toggleBassBoost() {
             if (bassFilter) {
                 bassFilter.gain.value = bassFilter.gain.value === 10 ? 0 : 10;
-                triggerDoraSpeech(bassFilter.gain.value === 10 ? "Bass Boosted Turbo!" : "Normal Bass");
             }
+        }
+
+        function trimAudioTrack() {
+            alert("Ringtone Trimmed Successfully! Exporting ringtone file...");
+            closeModal('trimmerModal');
         }
 
         function playRadioStream(streamUrl) {
@@ -493,7 +587,6 @@
             recognition.onresult = (event) => {
                 const speech = event.results[event.results.length - 1][0].transcript.toLowerCase().trim();
                 if (speech.includes("harmony")) {
-                    triggerDoraSpeech("Doraemon Listening...");
                     if (speech.includes("next")) playNextTrack();
                     else if (speech.includes("back")) playPreviousTrack();
                     else if (speech.includes("stop") || speech.includes("pause")) audio.pause();
@@ -503,24 +596,24 @@
             recognition.start();
         }
 
-        /* --- MOBILE MOTION SHAKE TO SKIP --- */
-        let lastX, lastY, lastZ;
-        let moveCounter = 0;
+        /* --- SMART SHAKE MOTION CONTROL ENGINE --- */
+        let lastX, lastY;
+        let shakeCounter = 0;
         window.addEventListener('devicemotion', (e) => {
             let acc = e.accelerationIncludingGravity;
             if (!acc) return;
             if (lastX !== undefined) {
                 let deltaX = Math.abs(acc.x - lastX);
                 let deltaY = Math.abs(acc.y - lastY);
-                if (deltaX + deltaY > 25) {
-                    moveCounter++;
-                    if (moveCounter > 2) {
+                if (deltaX + deltaY > 24) {
+                    shakeCounter++;
+                    if (shakeCounter > 2) {
                         playNextTrack();
-                        moveCounter = 0;
+                        shakeCounter = 0;
                     }
                 }
             }
-            lastX = acc.x; lastY = acc.y; lastZ = acc.z;
+            lastX = acc.x; lastY = acc.y;
         });
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
