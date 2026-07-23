@@ -74,12 +74,10 @@
 
         .playing-indicator { display: none; position: absolute; top: 12px; right: 12px; background: var(--primary-glow); color: #000; padding: 4px 8px; border-radius: 20px; font-size: 9px; font-weight: 800; }
         .song-card.active-track .playing-indicator { display: block; }
-        .song-card.active-track h3 { color: var(--primary-glow); }
 
-        /* --- BOTTOM VIP AD TICKER --- */
+        /* --- BOTTOM TICKER --- */
         .vip-ad-ticker { position: fixed; bottom: 120px; left: 0; width: 100%; background: linear-gradient(90deg, #ff007f, #7928ca, #00f0ff); color: #fff; padding: 8px 20px; font-size: 12px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; z-index: 998; box-shadow: 0 -4px 15px rgba(255, 0, 127, 0.4); }
         .vip-ad-ticker.hidden { display: none; }
-        .ad-content { display: flex; align-items: center; gap: 10px; overflow: hidden; white-space: nowrap; }
 
         /* --- VISUALIZER --- */
         .visualizer-container { width: 100%; height: 10px; position: fixed; bottom: 120px; left: 0; z-index: 997; background: rgba(0,0,0,0.8); }
@@ -102,16 +100,10 @@
 
         /* --- MODALS & TABLES --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 540px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
+        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 560px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 12px; }
         .modal-header h3 { font-size: 18px; color: var(--primary-glow); font-weight: 800; }
         .close-btn { color: var(--text-grey); cursor: pointer; font-size: 20px; font-weight: bold; }
-
-        .setting-item { display: flex; flex-direction: column; gap: 8px; }
-        .setting-item label { font-size: 12px; color: var(--text-grey); font-weight: bold; }
-        .setting-item select, .setting-item input { background: #1c1c1c; border: 1px solid #333; padding: 10px; border-radius: 8px; color: #fff; outline: none; font-size: 13px; }
-
-        .trust-badge-box { background: rgba(255, 215, 0, 0.08); border: 1px solid var(--gold-glow); padding: 12px; border-radius: 10px; text-align: center; font-size: 11px; color: #ddd; line-height: 1.5; }
 
         .user-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
         .user-table th, .user-table td { padding: 10px; border-bottom: 1px solid #222; text-align: left; }
@@ -140,7 +132,6 @@
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <!-- SECRET FOUNDER BUTTON (Only visible to Karan) -->
             <div class="founder-badge" id="founderBadge" onclick="openFounderPanel()">👑 FOUNDER ADMIN</div>
             <button class="get-vip-btn" id="upgradeVipBtn" onclick="openModal('vipGateModal')">💎 GET VIP PASS</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
@@ -171,7 +162,6 @@
                 <label for="multiFileInput" class="upload-label">Import Directory Tracks</label>
                 <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="triggerVipGate('8D Spatial 360 Audio', toggle8DSpatialAudio)">🎧 8D Spatial Mode 🔒</button>
                 <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="openModal('settingsModal')">⚙️ Sound Engine</button>
-                <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="generateShareCard()">Export Insta Story</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
@@ -183,11 +173,11 @@
         </div>
     </div>
 
-    <!-- BOTTOM VIP AD TICKER -->
+    <!-- BOTTOM TICKER -->
     <div class="vip-ad-ticker" id="vipAdTicker">
         <div class="ad-content">
             <span style="font-size:14px;">⚡</span>
-            <span class="ad-text" id="adTextDisplay">Upgrade to Global Harmony VIP for ₹99/mo - Get 8D Spatial Audio & Ad-Free Music!</span>
+            <span class="ad-text">Upgrade to Global Harmony VIP for ₹99/mo - Get 8D Spatial Audio & Ad-Free Music!</span>
         </div>
         <button style="background:#fff; color:#000; border:none; padding:4px 12px; border-radius:15px; font-weight:bold; font-size:10px; cursor:pointer;" onclick="openModal('vipGateModal')">UPGRADE NOW</button>
     </div>
@@ -217,14 +207,14 @@
         </div>
     </footer>
 
-    <!-- SECRET FOUNDER ADMIN PANEL (LOGGED-IN USER DATABASE) -->
+    <!-- REALTIME CLOUD USER DATABASE (FOUNDER PANEL) -->
     <div class="modal-overlay" id="founderAdminModal">
         <div class="modal-card" style="border-color: var(--gold-glow); max-width: 620px;">
             <div class="modal-header">
                 <h3 style="color: var(--gold-glow);">👑 FOUNDER EMAIL DATABASE & ACCESS VAULT</h3>
                 <span class="close-btn" onclick="closeModal('founderAdminModal')">✕</span>
             </div>
-            <p style="font-size:12px; color:#ccc;">Registered Logged-In Users List (Only accessible by Founder Karan Nag):</p>
+            <p style="font-size:12px; color:#ccc;">Cloud Realtime Logged-In Users (Realtime Cloud Database):</p>
             
             <table class="user-table">
                 <thead>
@@ -240,18 +230,12 @@
         </div>
     </div>
 
-    <!-- VIP PAYWALL MODAL WITH TRUST GUARANTEE -->
+    <!-- VIP PAYWALL MODAL -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card" style="border-color: #ff007f;">
             <div class="modal-header">
                 <h3 style="color: #ff007f;">💎 Global Harmony VIP Pass (₹99/mo)</h3>
                 <span class="close-btn" onclick="closeModal('vipGateModal')">✕</span>
-            </div>
-            
-            <div class="trust-badge-box">
-                <strong style="color: var(--gold-glow);">🛡️ Official Founder Trust Guarantee</strong><br>
-                Instant Key Delivery on email: <strong>kn863422@gmail.com</strong>.<br>
-                Your activation key is 100% locked to your Google Account Email.
             </div>
 
             <button class="upload-label" style="justify-content:center; background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000;" onclick="sendVipPurchaseEmail()">
@@ -259,40 +243,17 @@
             </button>
 
             <div style="display: flex; gap: 8px; margin-top: 5px;">
-                <input type="text" id="activationKeyInput" placeholder="Enter Email-Locked VIP Code" style="background:#1a1a1a; border:1px solid #333; padding:10px 12px; border-radius:8px; color:#fff; font-size:12px; flex:1;">
+                <input type="text" id="activationKeyInput" placeholder="Enter VIP Key" style="background:#1a1a1a; border:1px solid #333; padding:10px 12px; border-radius:8px; color:#fff; font-size:12px; flex:1;">
                 <button class="upload-label" style="padding: 10px 18px; font-size:11px;" onclick="verifyEmailLockedKey()">Activate Key</button>
             </div>
         </div>
     </div>
 
-    <!-- SETTINGS MODAL -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>⚙️ Sound Engine Controls</h3>
-                <span class="close-btn" onclick="closeModal('settingsModal')">✕</span>
-            </div>
-            <div class="setting-item">
-                <label>Audio Gain Booster (Up to 300%) [VIP]</label>
-                <input type="range" id="volumeGainSlider" min="1" max="3" step="0.1" value="1" oninput="adjustVolumeGain(this.value)">
-            </div>
-            <div class="setting-item">
-                <label>Equalizer Audio Presets</label>
-                <select onchange="applyEQPreset(this.value)">
-                    <option value="flat">Flat / Normal</option>
-                    <option value="bass">Ultra Bass Booster</option>
-                    <option value="vocal">Vocal Booster</option>
-                    <option value="edm">EDM Party Punch</option>
-                    <option value="lofi">Lofi Chill Vibes</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!-- FIREBASE AUTH & PERMANENT LOGIN -->
+    <!-- FIREBASE AUTH & REALTIME FIRESTORE DATABASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
@@ -305,6 +266,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
+        const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
         setPersistence(auth, browserLocalPersistence);
@@ -312,54 +274,73 @@
         window.loginWithGoogle = async function() {
             try {
                 const result = await signInWithPopup(auth, provider);
-                handleUserLoginSuccess(result.user);
+                await syncUserToCloudDatabase(result.user);
             } catch (error) { alert("Login Error: " + error.message); }
         };
 
-        onAuthStateChanged(auth, (user) => {
-            if (user) handleUserLoginSuccess(user);
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('profileNameDisplay').innerText = user.displayName;
+                await syncUserToCloudDatabase(user);
+            }
         });
 
-        function handleUserLoginSuccess(user) {
-            document.getElementById('profileNameDisplay').innerText = user.displayName;
-            localStorage.setItem('harmony_user_name', user.displayName);
-            localStorage.setItem('harmony_user_email', user.email);
-            
-            registerAppUser(user.displayName, user.email);
+        // REALTIME DATABASE SYNC
+        async function syncUserToCloudDatabase(user) {
+            const userRef = doc(db, "app_users", user.uid);
+            const userSnap = await getDoc(userRef);
 
-            if (user.email.toLowerCase().includes("kn863422") || user.displayName.toLowerCase().includes("karan")) {
+            if (!userSnap.exists()) {
+                await setDoc(userRef, {
+                    name: user.displayName,
+                    email: user.email,
+                    isVip: user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293"),
+                    lastLogin: new Date().toISOString()
+                });
+            }
+
+            // Realtime VIP Check
+            onSnapshot(userRef, (docSnap) => {
+                if(docSnap.exists()) {
+                    const data = docSnap.data();
+                    if(data.isVip) enableFounderPrivileges();
+                }
+            });
+
+            if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293")) {
                 enableFounderPrivileges();
+                listenToAllUsersCloud();
             }
         }
+
+        // FOUNDER REALTIME USER LISTENER
+        function listenToAllUsersCloud() {
+            onSnapshot(collection(db, "app_users"), (snapshot) => {
+                const tbody = document.getElementById('userListTable');
+                tbody.innerHTML = '';
+                snapshot.forEach((docSnap) => {
+                    const usr = docSnap.data();
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${usr.name}</strong></td>
+                        <td style="color:#00f0ff;">${usr.email}</td>
+                        <td><span style="color:${usr.isVip ? '#00ff88':'#ff0055'}; font-weight:bold;">${usr.isVip ? 'VIP PRO' : 'FREE'}</span></td>
+                        <td><button class="btn-access ${usr.isVip ? 'btn-revoke':'btn-grant'}" onclick="toggleCloudVip('${docSnap.id}', ${!usr.isVip})">${usr.isVip ? 'Revoke' : 'Grant VIP'}</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        window.toggleCloudVip = async function(uid, status) {
+            await setDoc(doc(db, "app_users", uid), { isVip: status }, { merge: true });
+        };
     </script>
 
-    <!-- CORE ENGINE SCRIPT -->
+    <!-- CORE LOGIC SCRIPT -->
     <script>
-        const audio = document.getElementById('audioElement');
-        const songGrid = document.getElementById('songGrid');
-        const playerBar = document.getElementById('playerBar');
-        const multiFileInput = document.getElementById('multiFileInput');
-        
-        let trackList = [];
-        let db;
-        let currentPlayingIndex = -1;
         let logoClickCount = 0;
 
-        // Dynamic Registered Users Database
-        let userRegistry = JSON.parse(localStorage.getItem('harmony_user_registry') || '[]');
-
-        function registerAppUser(name, email) {
-            if (!userRegistry.find(u => u.email === email)) {
-                userRegistry.push({ name: name, email: email, isVip: false, date: new Date().toLocaleDateString() });
-                localStorage.setItem('harmony_user_registry', JSON.stringify(userRegistry));
-            }
-        }
-
-        function isUserVip() {
-            return localStorage.getItem('harmony_is_vip') === 'true';
-        }
-
-        /* --- SECRET FOUNDER ACCESS --- */
         function handleLogoTripleClick() {
             logoClickCount++;
             if (logoClickCount >= 3) {
@@ -380,110 +361,11 @@
             document.getElementById('upgradeVipBtn').innerText = "👑 PRO VIP ACTIVE";
         }
 
-        function openFounderPanel() {
-            renderUserAdminTable();
-            openModal('founderAdminModal');
-        }
-
-        function renderUserAdminTable() {
-            const tbody = document.getElementById('userListTable');
-            tbody.innerHTML = '';
-            if(userRegistry.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#666;">No logged-in users registered yet.</td></tr>';
-                return;
-            }
-            userRegistry.forEach((usr, idx) => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${usr.name}</strong></td>
-                    <td style="color:#00f0ff;">${usr.email}</td>
-                    <td><span style="color:${usr.isVip ? '#00ff88':'#ff0055'}; font-weight:bold;">${usr.isVip ? 'VIP PRO' : 'FREE'}</span></td>
-                    <td><button class="btn-access ${usr.isVip ? 'btn-revoke':'btn-grant'}" onclick="toggleUserVipStatus(${idx})">${usr.isVip ? 'Revoke' : 'Grant VIP'}</button></td>
-                `;
-                tbody.appendChild(tr);
-            });
-        }
-
-        function toggleUserVipStatus(index) {
-            userRegistry[index].isVip = !userRegistry[index].isVip;
-            localStorage.setItem('harmony_user_registry', JSON.stringify(userRegistry));
-            renderUserAdminTable();
-        }
-
-        function sendVipPurchaseEmail() {
-            const userEmail = localStorage.getItem('harmony_user_email') || 'Guest';
-            const mailSubject = encodeURIComponent(`[VIP PURCHASE] Global Harmony Pass - ${userEmail}`);
-            const mailBody = encodeURIComponent(`Hi Founder Karan Nag,\n\nI want to purchase the VIP Pass for ₹99/mo.\nMy Email: ${userEmail}\n\nPlease reply with UPI details!`);
-            window.location.href = `mailto:kn863422@gmail.com?subject=${mailSubject}&body=${mailBody}`;
-        }
-
-        function verifyEmailLockedKey() {
-            const key = document.getElementById('activationKeyInput').value.trim().toUpperCase();
-            if (key === "KARANVIP" || key === "HARMONY99" || key === "VIP2026") {
-                localStorage.setItem('harmony_is_vip', 'true');
-                enableFounderPrivileges();
-                closeModal('vipGateModal');
-                alert("Mubarak ho! VIP Pass Activated Successfully!");
-            } else { alert("Invalid Key. Contact kn863422@gmail.com"); }
-        }
-
-        function triggerVipGate(featureName, callback) {
-            if (isUserVip()) callback();
-            else openModal('vipGateModal');
-        }
-
-        // IndexedDB Offline Storage
-        const dbRequest = indexedDB.open("HarmonyStudioMasterDB", 10);
-        dbRequest.onupgradeneeded = (e) => {
-            let database = e.target.result;
-            if (!database.objectStoreNames.contains("vault_music")) {
-                database.createObjectStore("vault_music", { keyPath: "id", autoIncrement: true });
-            }
-        };
-        dbRequest.onsuccess = (e) => { db = e.target.result; loadTracksFromDB(); };
-
-        function loadTracksFromDB() {
-            if (!db) return;
-            const transaction = db.transaction(["vault_music"], "readonly");
-            transaction.objectStore("vault_music").getAll().onsuccess = (event) => {
-                trackList = event.target.result;
-                renderSongGrid();
-            };
-        }
-
-        function renderSongGrid() {
-            songGrid.innerHTML = '';
-            document.getElementById('trackCount').innerText = `${trackList.length} Tracks Configured`;
-            trackList.forEach((track, index) => {
-                const cleanName = track.title.replace(/_/g, " ").replace(/\(320 kbps\)/g, "");
-                const card = document.createElement('div');
-                card.className = 'song-card';
-                card.onclick = () => playTrack(index);
-                card.innerHTML = `<div class="playing-indicator">LIVE</div><img src="${track.img}"><h3>${cleanName}</h3>`;
-                songGrid.appendChild(card);
-            });
-        }
-
-        function playTrack(index) {
-            if (index < 0 || index >= trackList.length) return;
-            currentPlayingIndex = index;
-            const track = trackList[index];
-
-            audio.src = URL.createObjectURL(track.audioBlob);
-            document.getElementById('p-title').innerText = track.title;
-            document.getElementById('p-img').src = track.img;
-            audio.play().catch(() => {});
-            playerBar.classList.add('active');
-        }
-
+        function openFounderPanel() { openModal('founderAdminModal'); }
+        function isUserVip() { return localStorage.getItem('harmony_is_vip') === 'true'; }
+        function triggerVipGate(featureName, callback) { if (isUserVip()) callback(); else openModal('vipGateModal'); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function searchSongs() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.song-card').forEach(card => {
-                card.style.display = card.querySelector('h3').innerText.toLowerCase().includes(query) ? "block" : "none";
-            });
-        }
     </script>
 </body>
 </html>
