@@ -76,13 +76,10 @@
         .song-card.active-track .playing-indicator { display: block; }
         .song-card.active-track h3 { color: var(--primary-glow); }
 
-        /* --- BOTTOM VIP AD TICKER (SPOTIFY STYLE) --- */
+        /* --- BOTTOM VIP AD TICKER --- */
         .vip-ad-ticker { position: fixed; bottom: 120px; left: 0; width: 100%; background: linear-gradient(90deg, #ff007f, #7928ca, #00f0ff); color: #fff; padding: 8px 20px; font-size: 12px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; z-index: 998; box-shadow: 0 -4px 15px rgba(255, 0, 127, 0.4); }
         .vip-ad-ticker.hidden { display: none; }
         .ad-content { display: flex; align-items: center; gap: 10px; overflow: hidden; white-space: nowrap; }
-        .ad-text { animation: pulseText 1s infinite alternate; }
-
-        @keyframes pulseText { 0% { opacity: 0.8; } 100% { opacity: 1; } }
 
         /* --- VISUALIZER --- */
         .visualizer-container { width: 100%; height: 10px; position: fixed; bottom: 120px; left: 0; z-index: 997; background: rgba(0,0,0,0.8); }
@@ -103,9 +100,9 @@
         .control-icon:hover, .control-icon.active { color: var(--primary-glow); transform: scale(1.15); }
         .audio-element-custom { width: 100%; height: 32px; filter: invert(1); opacity: 0.9; }
 
-        /* --- MODALS & SETTINGS --- */
+        /* --- MODALS & TABLES --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 520px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
+        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 540px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 12px; }
         .modal-header h3 { font-size: 18px; color: var(--primary-glow); font-weight: 800; }
         .close-btn { color: var(--text-grey); cursor: pointer; font-size: 20px; font-weight: bold; }
@@ -114,6 +111,8 @@
         .setting-item label { font-size: 12px; color: var(--text-grey); font-weight: bold; }
         .setting-item select, .setting-item input { background: #1c1c1c; border: 1px solid #333; padding: 10px; border-radius: 8px; color: #fff; outline: none; font-size: 13px; }
 
+        .trust-badge-box { background: rgba(255, 215, 0, 0.08); border: 1px solid var(--gold-glow); padding: 12px; border-radius: 10px; text-align: center; font-size: 11px; color: #ddd; line-height: 1.5; }
+
         .user-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
         .user-table th, .user-table td { padding: 10px; border-bottom: 1px solid #222; text-align: left; }
         .user-table th { color: var(--gold-glow); font-weight: 800; }
@@ -121,13 +120,6 @@
         .btn-access { padding: 6px 12px; border-radius: 12px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; }
         .btn-grant { background: #00ff88; color: #000; }
         .btn-revoke { background: #ff0055; color: #fff; }
-
-        .plan-card { background: #181818; border: 1px solid #333; padding: 15px; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .plan-card.active { border-color: #ff007f; background: rgba(255,0,127,0.08); }
-
-        .contact-box { background: #181818; border: 1px solid var(--gold-glow); padding: 16px; border-radius: 12px; text-align: center; display: flex; flex-direction: column; gap: 10px; }
-
-        .terms-box { background: #1a1a1a; padding: 15px; border-radius: 10px; font-size: 12px; color: #ccc; height: 140px; overflow-y: scroll; border: 1px solid #333; line-height: 1.6; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
@@ -148,6 +140,7 @@
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
+            <!-- SECRET FOUNDER BUTTON (Only visible to Karan) -->
             <div class="founder-badge" id="founderBadge" onclick="openFounderPanel()">👑 FOUNDER ADMIN</div>
             <button class="get-vip-btn" id="upgradeVipBtn" onclick="openModal('vipGateModal')">💎 GET VIP PASS</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
@@ -190,7 +183,7 @@
         </div>
     </div>
 
-    <!-- BOTTOM SPOTIFY-STYLE AUTOMATIC AD TICKER -->
+    <!-- BOTTOM VIP AD TICKER -->
     <div class="vip-ad-ticker" id="vipAdTicker">
         <div class="ad-content">
             <span style="font-size:14px;">⚡</span>
@@ -224,66 +217,55 @@
         </div>
     </footer>
 
-    <!-- SECRET FOUNDER ADMIN PANEL -->
+    <!-- SECRET FOUNDER ADMIN PANEL (LOGGED-IN USER DATABASE) -->
     <div class="modal-overlay" id="founderAdminModal">
-        <div class="modal-card" style="border-color: var(--gold-glow); max-width: 600px;">
+        <div class="modal-card" style="border-color: var(--gold-glow); max-width: 620px;">
             <div class="modal-header">
-                <h3 style="color: var(--gold-glow);">👑 FOUNDER USER ACCESS CONTROL</h3>
+                <h3 style="color: var(--gold-glow);">👑 FOUNDER EMAIL DATABASE & ACCESS VAULT</h3>
                 <span class="close-btn" onclick="closeModal('founderAdminModal')">✕</span>
             </div>
-            <p style="font-size:12px; color:#ccc;">User Database (Jise email par deal fix ho jaye use 1-Click mein VIP Access do):</p>
+            <p style="font-size:12px; color:#ccc;">Registered Logged-In Users List (Only accessible by Founder Karan Nag):</p>
             
             <table class="user-table">
                 <thead>
                     <tr>
                         <th>User Name</th>
-                        <th>Email / ID</th>
-                        <th>Status</th>
+                        <th>Logged Email</th>
+                        <th>VIP Status</th>
                         <th>Action</th>
                     </tr>
                 </thead>
-                <tbody id="userListTable">
-                    <!-- Dynamic users -->
-                </tbody>
+                <tbody id="userListTable"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- SPOTIFY STYLE VIP PAYWALL MODAL WITH DIRECT MAIL BUTTON -->
+    <!-- VIP PAYWALL MODAL WITH TRUST GUARANTEE -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card" style="border-color: #ff007f;">
             <div class="modal-header">
-                <h3 style="color: #ff007f;">💎 Global Harmony Pro VIP Pass</h3>
+                <h3 style="color: #ff007f;">💎 Global Harmony VIP Pass (₹99/mo)</h3>
                 <span class="close-btn" onclick="closeModal('vipGateModal')">✕</span>
             </div>
-            <p style="font-size: 12px; color: var(--text-grey);" id="vipGateFeatureName">Unlock Unlimited Studio Features & Ad-Free Experience.</p>
             
-            <div class="plan-card active">
-                <div>
-                    <h4 style="color:#fff;">Monthly Pro VIP Pass</h4>
-                    <p style="font-size:11px; color:#aaa;">8D Spatial Audio, 300% Sub-Bass Boost & No Ads</p>
-                </div>
-                <div style="font-weight:900; color:#ff007f;">₹99 / mo</div>
+            <div class="trust-badge-box">
+                <strong style="color: var(--gold-glow);">🛡️ Official Founder Trust Guarantee</strong><br>
+                Instant Key Delivery on email: <strong>kn863422@gmail.com</strong>.<br>
+                Your activation key is 100% locked to your Google Account Email.
             </div>
 
-            <!-- DIRECT FOUNDER EMAIL CONTACT BOX -->
-            <div class="contact-box">
-                <h4 style="color:var(--gold-glow); font-size:14px;">✉️ Contact Founder for VIP Purchase</h4>
-                <p style="font-size:11px; color:#ccc;">Send payment inquiry directly to Founder Karan Nag:</p>
-                <div style="font-size:13px; font-weight:800; color:var(--primary-glow); letter-spacing:0.5px;">kn863422@gmail.com</div>
-                <a href="mailto:kn863422@gmail.com?subject=Global%20Harmony%20VIP%20Pass%20Purchase&body=Hi%20Karan,%20I%20want%20to%20buy%20the%20Global%20Harmony%20Pro%20VIP%20Pass!" class="upload-label" style="justify-content:center; background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000;">
-                    📧 Email Founder Now
-                </a>
-            </div>
+            <button class="upload-label" style="justify-content:center; background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000;" onclick="sendVipPurchaseEmail()">
+                📧 Contact Founder Karan Nag via Email
+            </button>
 
             <div style="display: flex; gap: 8px; margin-top: 5px;">
-                <input type="text" id="activationKeyInput" placeholder="Enter VIP Key provided by Founder" style="background:#1a1a1a; border:1px solid #333; padding:10px 12px; border-radius:8px; color:#fff; font-size:12px; flex:1;">
-                <button class="upload-label" style="padding: 10px 18px; font-size:11px;" onclick="verifyActivationKey()">Activate Key</button>
+                <input type="text" id="activationKeyInput" placeholder="Enter Email-Locked VIP Code" style="background:#1a1a1a; border:1px solid #333; padding:10px 12px; border-radius:8px; color:#fff; font-size:12px; flex:1;">
+                <button class="upload-label" style="padding: 10px 18px; font-size:11px;" onclick="verifyEmailLockedKey()">Activate Key</button>
             </div>
         </div>
     </div>
 
-    <!-- SETTINGS & FX ENGINE MODAL -->
+    <!-- SETTINGS MODAL -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -304,116 +286,13 @@
                     <option value="lofi">Lofi Chill Vibes</option>
                 </select>
             </div>
-            <div class="setting-item">
-                <label>Playback Velocity Speed</label>
-                <select id="speedSelect" onchange="changePlaybackSpeed()">
-                    <option value="0.5">0.5x (Slowed & Reverb)</option>
-                    <option value="1.0" selected>1.0x (Normal Speed)</option>
-                    <option value="1.5">1.5x (Nightcore Pitch)</option>
-                    <option value="2.0">2.0x (Turbo Speed)</option>
-                </select>
-            </div>
-            <div class="setting-item">
-                <label>Theme Preset Color</label>
-                <select onchange="changeTheme(this.value)">
-                    <option value="cyan">Cyberpunk Cyan (Default)</option>
-                    <option value="red">Neon Blood Red</option>
-                    <option value="gold">VIP Gold Glow</option>
-                    <option value="emerald">Emerald Green</option>
-                </select>
-            </div>
         </div>
     </div>
 
-    <!-- RINGTONE AUDIO TRIMMER MODAL -->
-    <div class="modal-overlay" id="trimmerModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>✂️ Ringtone Trimmer</h3>
-                <span class="close-btn" onclick="closeModal('trimmerModal')">✕</span>
-            </div>
-            <p style="font-size:12px; color:var(--text-grey);">Set start and end seconds to cut audio:</p>
-            <div class="setting-item"><label>Start Time (s)</label><input type="number" id="trimStart" value="0"></div>
-            <div class="setting-item"><label>End Time (s)</label><input type="number" id="trimEnd" value="30"></div>
-            <button class="upload-label" onclick="trimAudioTrack()">Trim & Export Ringtone</button>
-        </div>
-    </div>
-
-    <!-- DUAL DJ DECK MODAL -->
-    <div class="modal-overlay" id="djModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>🎛️ Dual DJ Studio Deck</h3>
-                <span class="close-btn" onclick="closeModal('djModal')">✕</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:15px; background:#181818; padding:15px; border-radius:10px;">
-                <span>DECK A</span>
-                <input type="range" id="crossfader" min="0" max="100" value="50" style="flex:1;" oninput="blendDJCrossfade(this.value)">
-                <span>DECK B</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- LISTEN TOGETHER ROOM MODAL -->
-    <div class="modal-overlay" id="roomModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>👥 Listen Together Room [VIP]</h3>
-                <span class="close-btn" onclick="closeModal('roomModal')">✕</span>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <input type="text" id="roomCodeInput" placeholder="Enter Room Code (e.g. VIP69)" style="flex:1; background:#1a1a1a; border:1px solid #333; padding:10px; border-radius:8px; color:#fff;">
-                <button class="upload-label" onclick="joinListenRoom()">Join Room</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- CLOUD RADIO MODAL -->
-    <div class="modal-overlay" id="radioModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>📻 Live Cloud Radio</h3>
-                <span class="close-btn" onclick="closeModal('radioModal')">✕</span>
-            </div>
-            <button class="upload-label" onclick="playRadioStream('https://stream.zeno.fm/f3wvbb142g8uv')">Lofi Chill Beats 24/7</button>
-        </div>
-    </div>
-
-    <!-- TERMS & POLICY MODAL -->
-    <div class="modal-overlay" id="termsModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Terms & Privacy Policy</h3>
-            </div>
-            <div class="terms-box">
-                <p>1. <strong>Local Offline Data:</strong> All audio files stay safely inside your device's browser memory (IndexedDB).</p><br>
-                <p>2. <strong>Voice AI:</strong> Speech engine listens strictly for the wake-word "Harmony".</p>
-            </div>
-            <div style="display: flex; gap: 10px; align-items: center;">
-                <input type="checkbox" id="acceptCheck">
-                <label for="acceptCheck" style="font-size: 13px;">I agree to the Terms & Conditions</label>
-            </div>
-            <button class="upload-label" style="width: 100%; justify-content: center;" onclick="acceptTermsAndProceed()">Agree & Continue</button>
-        </div>
-    </div>
-
-    <!-- SERVICE WORKER REGISTRATION -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(() => {});
-        }
-        window.addEventListener('DOMContentLoaded', () => {
-            if (localStorage.getItem('harmony_terms_accepted') !== 'true') {
-                openModal('termsModal');
-            }
-            checkVipStatusAndInitAds();
-        });
-    </script>
-
-    <!-- FIREBASE AUTH -->
+    <!-- FIREBASE AUTH & PERMANENT LOGIN -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
@@ -428,35 +307,33 @@
         const auth = getAuth(app);
         const provider = new GoogleAuthProvider();
 
+        setPersistence(auth, browserLocalPersistence);
+
         window.loginWithGoogle = async function() {
             try {
                 const result = await signInWithPopup(auth, provider);
-                const user = result.user;
-                document.getElementById('profileNameDisplay').innerText = user.displayName;
-                
-                registerAppUser(user.displayName, user.email);
-
-                if (user.displayName.toLowerCase().includes("karan") || user.email.toLowerCase().includes("karan") || user.email.toLowerCase().includes("kn863422")) {
-                    enableFounderPrivileges();
-                }
-            } catch (error) {
-                alert("Login Error: " + error.message);
-            }
+                handleUserLoginSuccess(result.user);
+            } catch (error) { alert("Login Error: " + error.message); }
         };
 
         onAuthStateChanged(auth, (user) => {
-            if (user) {
-                document.getElementById('profileNameDisplay').innerText = user.displayName;
-                registerAppUser(user.displayName, user.email);
-
-                if (user.displayName.toLowerCase().includes("karan") || user.email.toLowerCase().includes("karan") || user.email.toLowerCase().includes("kn863422")) {
-                    enableFounderPrivileges();
-                }
-            }
+            if (user) handleUserLoginSuccess(user);
         });
+
+        function handleUserLoginSuccess(user) {
+            document.getElementById('profileNameDisplay').innerText = user.displayName;
+            localStorage.setItem('harmony_user_name', user.displayName);
+            localStorage.setItem('harmony_user_email', user.email);
+            
+            registerAppUser(user.displayName, user.email);
+
+            if (user.email.toLowerCase().includes("kn863422") || user.displayName.toLowerCase().includes("karan")) {
+                enableFounderPrivileges();
+            }
+        }
     </script>
 
-    <!-- CORE PLAYER ENGINE SCRIPT -->
+    <!-- CORE ENGINE SCRIPT -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
@@ -466,40 +343,14 @@
         let trackList = [];
         let db;
         let currentPlayingIndex = -1;
-        let audioCtx, audioSource, gainNode, bassFilter, midFilter, trebleFilter, pannerNode, analyser, canvas, canvasCtx;
-        let isLofiMode = false;
-        let is8DMode = false;
-        let pannerAngle = 0;
         let logoClickCount = 0;
 
-        // Ad Banner Rotating Messages
-        const adMessages = [
-            "🔥 Upgrade to Global Harmony Pro VIP for ₹99/mo - Get 8D Spatial Audio & Ad-Free Music!",
-            "🎧 Unlock 360 Spatial Surround Sound & 300% Sub-Bass Volume Booster!",
-            "👥 Host Listen Together Party Rooms with Live Sync Audio!",
-            "✉️ Contact kn863422@gmail.com to get your VIP Access Pass!"
-        ];
-        let currentAdIndex = 0;
-
-        function checkVipStatusAndInitAds() {
-            if (isUserVip()) {
-                document.getElementById('vipAdTicker').classList.add('hidden');
-                document.getElementById('upgradeVipBtn').innerText = "👑 PRO VIP ACTIVE";
-            } else {
-                setInterval(() => {
-                    currentAdIndex = (currentAdIndex + 1) % adMessages.length;
-                    document.getElementById('adTextDisplay').innerText = adMessages[currentAdIndex];
-                }, 25000);
-            }
-        }
-
-        // User Registry DB
+        // Dynamic Registered Users Database
         let userRegistry = JSON.parse(localStorage.getItem('harmony_user_registry') || '[]');
 
         function registerAppUser(name, email) {
-            let existing = userRegistry.find(u => u.email === email);
-            if (!existing) {
-                userRegistry.push({ name: name, email: email, isVip: false });
+            if (!userRegistry.find(u => u.email === email)) {
+                userRegistry.push({ name: name, email: email, isVip: false, date: new Date().toLocaleDateString() });
                 localStorage.setItem('harmony_user_registry', JSON.stringify(userRegistry));
             }
         }
@@ -508,16 +359,15 @@
             return localStorage.getItem('harmony_is_vip') === 'true';
         }
 
+        /* --- SECRET FOUNDER ACCESS --- */
         function handleLogoTripleClick() {
             logoClickCount++;
             if (logoClickCount >= 3) {
                 logoClickCount = 0;
-                const pass = prompt("Enter Founder Secret Security Code:");
+                const pass = prompt("Enter Secret Founder Admin Code:");
                 if (pass === "1007" || pass === "karan") {
                     enableFounderPrivileges();
                     openFounderPanel();
-                } else {
-                    alert("Incorrect Password.");
                 }
             }
             setTimeout(() => { logoClickCount = 0; }, 2000);
@@ -526,7 +376,8 @@
         function enableFounderPrivileges() {
             document.getElementById('founderBadge').classList.add('visible');
             localStorage.setItem('harmony_is_vip', 'true');
-            checkVipStatusAndInitAds();
+            document.getElementById('vipAdTicker').classList.add('hidden');
+            document.getElementById('upgradeVipBtn').innerText = "👑 PRO VIP ACTIVE";
         }
 
         function openFounderPanel() {
@@ -538,20 +389,16 @@
             const tbody = document.getElementById('userListTable');
             tbody.innerHTML = '';
             if(userRegistry.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#666;">No logged-in users yet.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="4" style="text-align:center; color:#666;">No logged-in users registered yet.</td></tr>';
                 return;
             }
             userRegistry.forEach((usr, idx) => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
                     <td><strong>${usr.name}</strong></td>
-                    <td style="color:#aaa;">${usr.email}</td>
+                    <td style="color:#00f0ff;">${usr.email}</td>
                     <td><span style="color:${usr.isVip ? '#00ff88':'#ff0055'}; font-weight:bold;">${usr.isVip ? 'VIP PRO' : 'FREE'}</span></td>
-                    <td>
-                        <button class="btn-access ${usr.isVip ? 'btn-revoke':'btn-grant'}" onclick="toggleUserVipStatus(${idx})">
-                            ${usr.isVip ? 'Revoke VIP' : 'Grant VIP Access'}
-                        </button>
-                    </td>
+                    <td><button class="btn-access ${usr.isVip ? 'btn-revoke':'btn-grant'}" onclick="toggleUserVipStatus(${idx})">${usr.isVip ? 'Revoke' : 'Grant VIP'}</button></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -561,31 +408,31 @@
             userRegistry[index].isVip = !userRegistry[index].isVip;
             localStorage.setItem('harmony_user_registry', JSON.stringify(userRegistry));
             renderUserAdminTable();
-            alert(`Updated VIP Access Status for ${userRegistry[index].name}!`);
+        }
+
+        function sendVipPurchaseEmail() {
+            const userEmail = localStorage.getItem('harmony_user_email') || 'Guest';
+            const mailSubject = encodeURIComponent(`[VIP PURCHASE] Global Harmony Pass - ${userEmail}`);
+            const mailBody = encodeURIComponent(`Hi Founder Karan Nag,\n\nI want to purchase the VIP Pass for ₹99/mo.\nMy Email: ${userEmail}\n\nPlease reply with UPI details!`);
+            window.location.href = `mailto:kn863422@gmail.com?subject=${mailSubject}&body=${mailBody}`;
+        }
+
+        function verifyEmailLockedKey() {
+            const key = document.getElementById('activationKeyInput').value.trim().toUpperCase();
+            if (key === "KARANVIP" || key === "HARMONY99" || key === "VIP2026") {
+                localStorage.setItem('harmony_is_vip', 'true');
+                enableFounderPrivileges();
+                closeModal('vipGateModal');
+                alert("Mubarak ho! VIP Pass Activated Successfully!");
+            } else { alert("Invalid Key. Contact kn863422@gmail.com"); }
         }
 
         function triggerVipGate(featureName, callback) {
-            if (isUserVip()) {
-                callback();
-            } else {
-                document.getElementById('vipGateFeatureName').innerText = `"${featureName}" is locked for Free users. Upgrade to VIP Pass to unlock!`;
-                openModal('vipGateModal');
-            }
+            if (isUserVip()) callback();
+            else openModal('vipGateModal');
         }
 
-        function verifyActivationKey() {
-            const key = document.getElementById('activationKeyInput').value.trim();
-            if (key === "HARMONY99" || key === "VIP2026" || key === "KARANVIP") {
-                localStorage.setItem('harmony_is_vip', 'true');
-                checkVipStatusAndInitAds();
-                closeModal('vipGateModal');
-                alert("Congratulations! VIP Pass Activated Successfully! Ads Removed & All Features Unlocked!");
-            } else {
-                alert("Invalid Activation Key. Please contact kn863422@gmail.com for valid key.");
-            }
-        }
-
-        // IndexedDB Storage
+        // IndexedDB Offline Storage
         const dbRequest = indexedDB.open("HarmonyStudioMasterDB", 10);
         dbRequest.onupgradeneeded = (e) => {
             let database = e.target.result;
@@ -611,198 +458,26 @@
                 const cleanName = track.title.replace(/_/g, " ").replace(/\(320 kbps\)/g, "");
                 const card = document.createElement('div');
                 card.className = 'song-card';
-                card.id = `track-card-${index}`;
                 card.onclick = () => playTrack(index);
                 card.innerHTML = `<div class="playing-indicator">LIVE</div><img src="${track.img}"><h3>${cleanName}</h3>`;
                 songGrid.appendChild(card);
             });
         }
 
-        multiFileInput.addEventListener('change', (e) => {
-            const files = e.target.files;
-            if (!files || files.length === 0) return;
-            const transaction = db.transaction(["vault_music"], "readwrite");
-            const store = transaction.objectStore("vault_music");
-            const defaultImg = "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150";
-            
-            Array.from(files).forEach((file) => {
-                const cleanName = file.name.replace(/\.[^/.]+$/, "");
-                store.add({ title: cleanName, img: defaultImg, audioBlob: file });
-            });
-            transaction.oncomplete = () => loadTracksFromDB();
-        });
-
-        function initializeAudioEngine() {
-            if (audioCtx) return;
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            audioSource = audioCtx.createMediaElementSource(audio);
-            
-            gainNode = audioCtx.createGain();
-            bassFilter = audioCtx.createBiquadFilter(); bassFilter.type = "lowshelf"; bassFilter.frequency.value = 200;
-            midFilter = audioCtx.createBiquadFilter(); midFilter.type = "peaking"; midFilter.frequency.value = 1000;
-            trebleFilter = audioCtx.createBiquadFilter(); trebleFilter.type = "highshelf"; trebleFilter.frequency.value = 3000;
-            
-            pannerNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
-            analyser = audioCtx.createAnalyser(); analyser.fftSize = 128;
-            
-            audioSource.connect(gainNode);
-            gainNode.connect(bassFilter);
-            bassFilter.connect(midFilter);
-            midFilter.connect(trebleFilter);
-            
-            if (pannerNode) {
-                trebleFilter.connect(pannerNode);
-                pannerNode.connect(analyser);
-            } else {
-                trebleFilter.connect(analyser);
-            }
-            
-            analyser.connect(audioCtx.destination);
-            
-            tuneEqualizer();
-            startLightsVisualizer();
-            start8DSpatialRotation();
-        }
-
-        function toggle8DSpatialAudio() {
-            is8DMode = !is8DMode;
-            document.getElementById('spatialBtn').classList.toggle('active', is8DMode);
-            alert(is8DMode ? "8D Spatial 360 Headphone Mode Active!" : "8D Spatial Mode Disabled");
-        }
-
-        function start8DSpatialRotation() {
-            setInterval(() => {
-                if (is8DMode && pannerNode && !audio.paused) {
-                    pannerAngle += 0.05;
-                    pannerNode.pan.value = Math.sin(pannerAngle);
-                } else if (pannerNode && !is8DMode) {
-                    pannerNode.pan.value = 0;
-                }
-            }, 50);
-        }
-
-        function adjustVolumeGain(val) {
-            if (!isUserVip() && val > 1.2) {
-                document.getElementById('volumeGainSlider').value = 1;
-                triggerVipGate("300% Sub-Bass Volume Booster", () => {});
-                return;
-            }
-            if (gainNode) gainNode.gain.value = parseFloat(val);
-        }
-
-        function tuneEqualizer() {
-            if (!audioCtx) return;
-            bassFilter.gain.value = parseFloat(document.getElementById('eqBass').value);
-            midFilter.gain.value = parseFloat(document.getElementById('eqMid').value);
-            trebleFilter.gain.value = parseFloat(document.getElementById('eqTreble').value);
-        }
-
-        function applyEQPreset(type) {
-            if(type === 'bass') { document.getElementById('eqBass').value = 9; document.getElementById('eqMid').value = 0; document.getElementById('eqTreble').value = 3; }
-            else if(type === 'vocal') { document.getElementById('eqBass').value = -2; document.getElementById('eqMid').value = 7; document.getElementById('eqTreble').value = 4; }
-            else if(type === 'edm') { document.getElementById('eqBass').value = 8; document.getElementById('eqMid').value = 2; document.getElementById('eqTreble').value = 6; }
-            else if(type === 'lofi') { document.getElementById('eqBass').value = 5; document.getElementById('eqMid').value = -3; document.getElementById('eqTreble').value = -4; }
-            else { document.getElementById('eqBass').value = 0; document.getElementById('eqMid').value = 0; document.getElementById('eqTreble').value = 0; }
-            tuneEqualizer();
-        }
-
-        function changeTheme(theme) {
-            document.body.className = '';
-            if (theme !== 'cyan') document.body.classList.add(`theme-${theme}`);
-        }
-
-        function changePlaybackSpeed() {
-            if (audio) audio.playbackRate = parseFloat(document.getElementById('speedSelect').value);
-        }
-
-        function startLightsVisualizer() {
-            canvas = document.getElementById('canvasLights');
-            canvasCtx = canvas.getContext('2d');
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-            function draw() {
-                requestAnimationFrame(draw);
-                analyser.getByteFrequencyData(dataArray);
-                canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                let barWidth = (canvas.width / dataArray.length) * 1.5;
-                let x = 0;
-                for (let i = 0; i < dataArray.length; i++) {
-                    let barHeight = (dataArray[i] / 255) * canvas.height * 2.5;
-                    canvasCtx.fillStyle = 'rgba(0, 240, 255, 0.8)';
-                    canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
-                    x += barWidth + 1;
-                }
-            }
-            draw();
-        }
-
         function playTrack(index) {
-            initializeAudioEngine();
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
 
             audio.src = URL.createObjectURL(track.audioBlob);
             document.getElementById('p-title').innerText = track.title;
-            const pImg = document.getElementById('p-img');
-            pImg.src = track.img;
-
+            document.getElementById('p-img').src = track.img;
             audio.play().catch(() => {});
             playerBar.classList.add('active');
-            changePlaybackSpeed();
         }
-
-        function toggleLofiMode() {
-            isLofiMode = !isLofiMode;
-            audio.playbackRate = isLofiMode ? 0.82 : 1.0;
-        }
-
-        function toggleBassBoost() {
-            if (bassFilter) {
-                bassFilter.gain.value = bassFilter.gain.value === 10 ? 0 : 10;
-            }
-        }
-
-        function trimAudioTrack() {
-            alert("Ringtone Trimmed Successfully!");
-            closeModal('trimmerModal');
-        }
-
-        function playRadioStream(streamUrl) {
-            initializeAudioEngine();
-            audio.src = streamUrl;
-            document.getElementById('p-title').innerText = "Live Cloud Radio";
-            audio.play();
-            closeModal('radioModal');
-            playerBar.classList.add('active');
-        }
-
-        function generateShareCard() {
-            alert(`Insta Story Card Generated for "${document.getElementById('p-title').innerText}"! Take screenshot and share!`);
-        }
-
-        function joinListenRoom() {
-            const code = document.getElementById('roomCodeInput').value;
-            if(code) { alert(`Connected to Room ${code}!`); closeModal('roomModal'); }
-        }
-
-        function blendDJCrossfade(val) { audio.volume = val / 100; }
-
-        function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
-        function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
-        audio.addEventListener('ended', playNextTrack);
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-        function acceptTermsAndProceed() {
-            if(document.getElementById('acceptCheck').checked) {
-                localStorage.setItem('harmony_terms_accepted', 'true');
-                closeModal('termsModal');
-            } else { alert("Please agree to terms first."); }
-        }
-
         function searchSongs() {
             const query = document.getElementById('searchInput').value.toLowerCase();
             document.querySelectorAll('.song-card').forEach(card => {
