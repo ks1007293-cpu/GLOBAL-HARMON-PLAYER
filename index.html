@@ -3,14 +3,13 @@
 <head>
     <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
     <meta charset="UTF-8">
-    <meta name="description" content="Global Harmony Pro - Ultimate Cyberpunk Audio Deck & DJ Studio">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Global Harmony Pro - Cyberpunk Audio Studio">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#00f0ff">
     <title>Global Harmony Pro - Cyberpunk Studio</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
-    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
 
     <style>
         :root {
@@ -27,106 +26,74 @@
         body.theme-emerald { --primary-glow: #00ff88; --secondary-glow: #00bfff; }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #050505; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; transition: background 0.4s ease; }
+        body { background-color: #050505; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
         /* --- HEADER --- */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 12, 12, 0.95); padding: 15px 25px; border-bottom: 2px solid #1a1a1a; backdrop-filter: blur(10px); z-index: 100; }
-        .brand-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
-        .brand-logo svg { filter: drop-shadow(0 0 10px var(--primary-glow)); }
-        .brand-logo h1 { font-size: 20px; font-weight: 800; background: linear-gradient(45deg, #fff, var(--primary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 12, 12, 0.95); padding: 12px 15px; border-bottom: 2px solid #1a1a1a; position: sticky; top:0; z-index: 100; }
+        .brand-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .brand-logo h1 { font-size: 16px; font-weight: 800; background: linear-gradient(45deg, #fff, var(--primary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
-        .header-actions { display: flex; align-items: center; gap: 12px; }
-
-        .founder-badge { display: none; align-items: center; gap: 8px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; padding: 8px 16px; border-radius: 20px; font-weight: 900; font-size: 11px; cursor: pointer; box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); text-transform: uppercase; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .founder-badge { display: none; align-items: center; gap: 5px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; padding: 6px 12px; border-radius: 20px; font-weight: 900; font-size: 10px; cursor: pointer; }
         .founder-badge.visible { display: flex; }
 
-        .get-vip-btn { background: linear-gradient(135deg, #ff007f, #7928ca); color: #fff; border: none; padding: 7px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 0, 127, 0.4); }
-        .get-vip-btn:hover { transform: scale(1.05); }
-
-        .profile-badge { display: flex; align-items: center; gap: 10px; background: #161616; padding: 8px 18px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 13px; }
-        .profile-badge:hover { background: var(--primary-glow); color: #000; }
+        .get-vip-btn { background: linear-gradient(135deg, #ff007f, #7928ca); color: #fff; border: none; padding: 6px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; cursor: pointer; }
+        .profile-badge { display: flex; align-items: center; gap: 6px; background: #161616; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 11px; }
 
         .app-container { display: flex; flex: 1; }
 
-        /* --- SIDEBAR --- */
-        .sidebar { width: 250px; background-color: var(--bg-black); padding: 25px 15px; display: flex; flex-direction: column; gap: 12px; border-right: 1px solid #1a1a1a; }
-        .nav-item { display: flex; align-items: center; gap: 12px; color: var(--text-grey); font-weight: bold; padding: 12px 18px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        /* --- SIDEBAR (DESKTOP) --- */
+        .sidebar { width: 220px; background-color: var(--bg-black); padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid #1a1a1a; }
+        .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px; }
         .nav-item:hover, .nav-item.active { color: white; background: #141414; box-shadow: inset 4px 0 0 var(--primary-glow); }
 
+        /* --- MOBILE BOTTOM NAV BAR --- */
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c0c; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
+        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: #888; cursor: pointer; }
+        .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary-glow); }
+        .mobile-nav-item span { font-size: 18px; }
+
         /* --- MAIN DASHBOARD --- */
-        .main { flex: 1; background: radial-gradient(circle at top right, #111, var(--bg-black)); padding: 25px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 240px; position: relative; }
+        .main { flex: 1; background: radial-gradient(circle at top right, #111, var(--bg-black)); padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 200px; }
         
-        .search-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .search-bar { background: #fff; border-radius: 30px; padding: 10px 20px; display: flex; align-items: center; gap: 12px; flex: 1; max-width: 380px; }
-        .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; color: #000; font-weight: 500; }
+        .search-bar { background: #fff; border-radius: 30px; padding: 8px 16px; display: flex; align-items: center; gap: 10px; width: 100%; }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; }
 
-        .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
-        .upload-label { background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow)); color: #000; padding: 12px 24px; font-size: 13px; font-weight: bold; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; border: none; text-decoration: none; }
-        .upload-label:hover { transform: scale(1.03); }
+        .action-row-btn { display: flex; gap: 8px; flex-wrap: wrap; }
+        .upload-label { background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow)); color: #000; padding: 10px 16px; font-size: 11px; font-weight: bold; border-radius: 20px; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
 
-        .section-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #1a1a1a; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+        .section-title { font-size: 15px; font-weight: bold; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; width: 100%; }
-        .song-card { background: var(--card-bg); padding: 12px; border-radius: 14px; cursor: pointer; text-align: center; border: 1px solid #1e1e1e; transition: 0.3s; position: relative; }
-        .song-card:hover { border-color: var(--primary-glow); transform: translateY(-4px); }
-        .song-card img { width: 100%; border-radius: 10px; margin-bottom: 10px; aspect-ratio: 1/1; object-fit: cover; }
-        .song-card h3 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; }
-
-        .playing-indicator { display: none; position: absolute; top: 12px; right: 12px; background: var(--primary-glow); color: #000; padding: 4px 8px; border-radius: 20px; font-size: 9px; font-weight: 800; }
-        .song-card.active-track .playing-indicator { display: block; }
-
-        /* --- BOTTOM VIP AD TICKER --- */
-        .vip-ad-ticker { position: fixed; bottom: 120px; left: 0; width: 100%; background: linear-gradient(90deg, #ff007f, #7928ca, #00f0ff); color: #fff; padding: 8px 20px; font-size: 12px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; z-index: 998; box-shadow: 0 -4px 15px rgba(255, 0, 127, 0.4); }
-        .vip-ad-ticker.hidden { display: none; }
-
-        /* --- VISUALIZER --- */
-        .visualizer-container { width: 100%; height: 10px; position: fixed; bottom: 120px; left: 0; z-index: 997; background: rgba(0,0,0,0.8); }
-        #canvasLights { width: 100%; height: 100%; display: block; }
+        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; width: 100%; }
+        .song-card { background: var(--card-bg); padding: 8px; border-radius: 12px; cursor: pointer; text-align: center; border: 1px solid #1e1e1e; }
+        .song-card img { width: 100%; border-radius: 8px; margin-bottom: 6px; aspect-ratio: 1/1; object-fit: cover; }
+        .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; }
 
         /* --- PLAYER BAR --- */
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 120px; background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 15px 35px; border-top: 2px solid #1a1a1a; z-index: 1000; transform: translateY(100%); transition: transform 0.4s ease; }
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-top: 2px solid #1a1a1a; z-index: 1500; transform: translateY(100%); transition: transform 0.4s ease; }
         .player-bar.active { transform: translateY(0); border-top-color: var(--primary-glow); }
-        
-        .now-playing { display: flex; align-items: center; gap: 15px; width: 30%; min-width: 180px; }
-        .now-playing img { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; }
-        .song-info h4 { font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; }
-        .song-info p { font-size: 12px; color: var(--text-grey); }
+        .now-playing { display: flex; align-items: center; gap: 10px; width: 40%; }
+        .now-playing img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; }
+        .song-info h4 { font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
-        .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .btn-row { display: flex; gap: 20px; align-items: center; }
-        .control-icon { color: var(--text-grey); font-size: 20px; cursor: pointer; transition: 0.2s; }
-        .control-icon:hover, .control-icon.active { color: var(--primary-glow); transform: scale(1.15); }
-        .audio-element-custom { width: 100%; height: 32px; filter: invert(1); opacity: 0.9; }
+        .controls { width: 50%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .btn-row { display: flex; gap: 12px; align-items: center; }
+        .control-icon { color: var(--text-grey); font-size: 16px; cursor: pointer; }
+        .audio-element-custom { width: 100%; height: 28px; filter: invert(1); }
 
-        /* --- MODALS & TABLES --- */
+        /* --- MODALS --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 560px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 12px; }
-        .modal-header h3 { font-size: 18px; color: var(--primary-glow); font-weight: 800; }
-        .close-btn { color: var(--text-grey); cursor: pointer; font-size: 20px; font-weight: bold; }
+        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 16px; width: 92%; max-width: 520px; padding: 20px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 8px; }
 
-        .setting-item { display: flex; flex-direction: column; gap: 8px; }
-        .setting-item label { font-size: 12px; color: var(--text-grey); font-weight: bold; }
-        .setting-item select, .setting-item input { background: #1c1c1c; border: 1px solid #333; padding: 10px; border-radius: 8px; color: #fff; outline: none; font-size: 13px; }
-
-        .user-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-        .user-table th, .user-table td { padding: 10px; border-bottom: 1px solid #222; text-align: left; }
-        .user-table th { color: var(--gold-glow); font-weight: 800; }
-
-        .btn-access { padding: 6px 12px; border-radius: 12px; border: none; font-weight: bold; font-size: 11px; cursor: pointer; }
-        .btn-grant { background: #00ff88; color: #000; }
-        .btn-revoke { background: #ff0055; color: #fff; }
-
-        .room-box { background: #181818; padding: 20px; border-radius: 12px; border: 1px solid #333; display: flex; flex-direction: column; gap: 12px; text-align: center; }
-        .room-code-badge { font-size: 24px; font-weight: 900; letter-spacing: 2px; color: var(--primary-glow); background: #101010; padding: 10px; border-radius: 10px; border: 1px dashed var(--primary-glow); }
-
-        .terms-box { background: #1a1a1a; padding: 15px; border-radius: 10px; font-size: 12px; color: #ccc; height: 140px; overflow-y: scroll; border: 1px solid #333; line-height: 1.6; }
+        .user-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 11px; }
+        .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #222; text-align: left; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .player-bar { flex-direction: column; height: 170px; justify-content: center; padding: 12px; gap: 10px; }
-            .vip-ad-ticker { bottom: 170px; font-size: 10px; padding: 6px 12px; }
-            .visualizer-container { bottom: 170px; }
+            .mobile-nav { display: flex; }
+            .main { padding-bottom: 160px; }
+            .player-bar { bottom: 50px; height: 80px; padding: 8px 12px; }
         }
     </style>
 </head>
@@ -134,16 +101,12 @@
 
     <div class="top-bar">
         <div class="brand-logo" onclick="handleLogoTripleClick()">
-            <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="16" cy="16" r="14" stroke="#ff007f" stroke-width="1.5" stroke-dasharray="4 4"/>
-            </svg>
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3"/></svg>
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <!-- SECRET FOUNDER BUTTON (Only visible to Karan) -->
-            <div class="founder-badge" id="founderBadge" onclick="openModal('founderAdminModal')">👑 FOUNDER ADMIN</div>
-            <button class="get-vip-btn" id="upgradeVipBtn" onclick="openModal('vipGateModal')">💎 GET VIP PASS</button>
+            <div class="founder-badge" id="founderBadge" onclick="openModal('founderAdminModal')">👑 ADMIN</div>
+            <button class="get-vip-btn" id="upgradeVipBtn" onclick="openModal('vipGateModal')">💎 VIP</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
                 <span id="profileNameDisplay">Sign In</span>
             </div>
@@ -151,9 +114,10 @@
     </div>
 
     <div class="app-container">
+        <!-- DESKTOP SIDEBAR -->
         <div class="sidebar">
             <div class="nav-item active">Studio Home</div>
-            <div class="nav-item" onclick="openModal('settingsModal')">⚙️ Settings & FX Engine</div>
+            <div class="nav-item" onclick="openModal('settingsModal')">⚙️ Settings & FX</div>
             <div class="nav-item" onclick="openModal('djModal')">🎛️ Dual DJ Deck</div>
             <div class="nav-item" onclick="openModal('trimmerModal')">✂️ Ringtone Trimmer</div>
             <div class="nav-item" onclick="triggerVipGate('Listen Together Room', () => openModal('roomModal'))">👥 Listen Together 🔒</div>
@@ -162,39 +126,32 @@
         </div>
 
         <div class="main">
-            <div class="search-row">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="Search local songs..." onkeyup="searchSongs()">
-                </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search songs..." onkeyup="searchSongs()">
             </div>
 
             <div class="action-row-btn">
-                <label for="multiFileInput" class="upload-label">📁 Import Directory Tracks MP3</label>
-                <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="triggerVipGate('8D Spatial 360 Audio', toggle8DSpatialAudio)">🎧 8D Spatial Mode 🔒</button>
-                <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="openModal('settingsModal')">⚙️ Sound Engine</button>
-                <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="generateShareCard()">📸 Export Insta Story</button>
+                <label for="multiFileInput" class="upload-label">📁 Import MP3</label>
+                <button class="upload-label" style="background:#1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="triggerVipGate('8D Spatial Mode', toggle8DSpatialAudio)">🎧 8D Spatial 🔒</button>
+                <button class="upload-label" style="background:#1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="openModal('settingsModal')">⚙️ FX Engine</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
             <h2 class="section-title">
                 <span>Offline Core Vault</span>
-                <span id="trackCount" style="font-size: 13px; color: var(--primary-glow);">0 Tracks</span>
+                <span id="trackCount" style="color: var(--primary-glow);">0 Tracks</span>
             </h2>
             <div class="song-grid" id="songGrid"></div>
         </div>
     </div>
 
-    <!-- BOTTOM VIP AD TICKER -->
-    <div class="vip-ad-ticker" id="vipAdTicker">
-        <div class="ad-content">
-            <span style="font-size:14px;">⚡</span>
-            <span class="ad-text" id="adTextDisplay">Upgrade to Global Harmony VIP for ₹99/mo - Get 8D Spatial Audio & Ad-Free Music!</span>
-        </div>
-        <button style="background:#fff; color:#000; border:none; padding:4px 12px; border-radius:15px; font-weight:bold; font-size:10px; cursor:pointer;" onclick="openModal('vipGateModal')">UPGRADE NOW</button>
-    </div>
-
-    <div class="visualizer-container">
-        <canvas id="canvasLights"></canvas>
+    <!-- MOBILE NAVIGATION BOTTOM BAR -->
+    <div class="mobile-nav">
+        <div class="mobile-nav-item active" onclick="window.scrollTo(0,0)"><span>🏠</span>Home</div>
+        <div class="mobile-nav-item" onclick="openModal('settingsModal')"><span>⚙️</span>Sound FX</div>
+        <div class="mobile-nav-item" onclick="openModal('djModal')"><span>🎛️</span>DJ Deck</div>
+        <div class="mobile-nav-item" onclick="openModal('trimmerModal')"><span>✂️</span>Trimmer</div>
+        <div class="mobile-nav-item" onclick="triggerVipGate('Listen Together', () => openModal('roomModal'))"><span>👥</span>Listen VIP</div>
     </div>
 
     <footer class="player-bar" id="playerBar">
@@ -202,15 +159,12 @@
             <img id="p-img" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150" crossorigin="anonymous">
             <div class="song-info">
                 <h4 id="p-title">Ready System</h4>
-                <p id="p-artist">Global Harmony Pro</p>
             </div>
         </div>
         <div class="controls">
             <div class="btn-row">
                 <span class="control-icon" onclick="playPreviousTrack()">⏮</span>
-                <span class="control-icon" id="spatialBtn" title="8D Spatial Surround" onclick="triggerVipGate('8D Spatial Mode', toggle8DSpatialAudio)">🎧</span>
-                <span class="control-icon" id="bassBoostBtn" title="Bass Boost" onclick="toggleBassBoost()">⚡</span>
-                <span class="control-icon" id="lofiBtn" title="Lofi Mode" onclick="toggleLofiMode()">🌙</span>
+                <span class="control-icon" id="spatialBtn" title="8D Spatial" onclick="triggerVipGate('8D Spatial Mode', toggle8DSpatialAudio)">🎧</span>
                 <span class="control-icon" onclick="openModal('settingsModal')">⚙️</span>
                 <span class="control-icon" onclick="playNextTrack()">⏭</span>
             </div>
@@ -218,48 +172,19 @@
         </div>
     </footer>
 
-    <!-- FOUNDER REALTIME USER DATABASE PANEL -->
+    <!-- FOUNDER REALTIME USER DATABASE MODAL -->
     <div class="modal-overlay" id="founderAdminModal">
-        <div class="modal-card" style="border-color: var(--gold-glow); max-width: 620px;">
+        <div class="modal-card">
             <div class="modal-header">
-                <h3 style="color: var(--gold-glow);">👑 FOUNDER EMAIL DATABASE & ACCESS VAULT</h3>
-                <span class="close-btn" onclick="closeModal('founderAdminModal')">✕</span>
+                <h3 style="color: var(--gold-glow); font-size:14px;">👑 FOUNDER USER DATABASE</h3>
+                <span style="cursor:pointer;" onclick="closeModal('founderAdminModal')">✕</span>
             </div>
-            <p style="font-size:12px; color:#ccc;">All Logged-In App Users (Realtime Cloud Database):</p>
-            
             <table class="user-table">
                 <thead>
-                    <tr>
-                        <th>User Name</th>
-                        <th>Logged Email</th>
-                        <th>VIP Status</th>
-                        <th>Action</th>
-                    </tr>
+                    <tr><th>User Name</th><th>Logged Email</th><th>VIP</th><th>Action</th></tr>
                 </thead>
                 <tbody id="userListTable"></tbody>
             </table>
-        </div>
-    </div>
-
-    <!-- LISTEN TOGETHER PARTY ROOM MODAL -->
-    <div class="modal-overlay" id="roomModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>👥 Listen Together Party Deck</h3>
-                <span class="close-btn" onclick="closeModal('roomModal')">✕</span>
-            </div>
-            <div class="room-box">
-                <h4 style="color:#fff; font-size:13px;">Create New Live Room:</h4>
-                <div class="room-code-badge" id="generatedRoomCode">GH-100799</div>
-                <button class="upload-label" style="justify-content:center;" onclick="generateNewRoomCode()">🎲 Generate New Room Code</button>
-            </div>
-            <div class="room-box" style="margin-top:5px;">
-                <h4 style="color:#ccc; font-size:12px;">Or Join Friend's Room:</h4>
-                <div style="display:flex; gap:8px;">
-                    <input type="text" id="roomCodeInput" placeholder="Enter 6-Digit Room Code" style="flex:1; background:#1a1a1a; border:1px solid #333; padding:10px; border-radius:8px; color:#fff;">
-                    <button class="upload-label" onclick="joinListenRoom()">Join Room</button>
-                </div>
-            </div>
         </div>
     </div>
 
@@ -267,17 +192,15 @@
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card" style="border-color: #ff007f;">
             <div class="modal-header">
-                <h3 style="color: #ff007f;">💎 Global Harmony VIP Pass (₹99/mo)</h3>
-                <span class="close-btn" onclick="closeModal('vipGateModal')">✕</span>
+                <h3 style="color: #ff007f; font-size:14px;">💎 Global Harmony VIP Pass (₹99/mo)</h3>
+                <span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span>
             </div>
-
-            <button class="upload-label" style="justify-content:center; background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000;" onclick="sendVipPurchaseEmail()">
-                📧 Contact Founder Karan Nag via Email
+            <button class="upload-label" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000; justify-content:center;" onclick="window.location.href='mailto:kn863422@gmail.com?subject=VIP Purchase Request'">
+                📧 Email Founder Karan Nag
             </button>
-
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <input type="text" id="activationKeyInput" placeholder="Enter VIP Key" style="background:#1a1a1a; border:1px solid #333; padding:10px 12px; border-radius:8px; color:#fff; font-size:12px; flex:1;">
-                <button class="upload-label" style="padding: 10px 18px; font-size:11px;" onclick="verifyKey()">Activate Key</button>
+            <div style="display: flex; gap: 8px; margin-top: 8px;">
+                <input type="text" id="activationKeyInput" placeholder="Enter VIP Key" style="background:#1a1a1a; border:1px solid #333; padding:8px; border-radius:6px; color:#fff; font-size:11px; flex:1;">
+                <button class="upload-label" style="padding: 8px 12px; font-size:10px;" onclick="verifyKey()">Activate</button>
             </div>
         </div>
     </div>
@@ -285,132 +208,46 @@
     <!-- SETTINGS & FX ENGINE MODAL -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3>⚙️ Sound Engine Controls</h3>
-                <span class="close-btn" onclick="closeModal('settingsModal')">✕</span>
-            </div>
-            <div class="setting-item">
-                <label>Audio Gain Booster (Up to 300%) [VIP]</label>
-                <input type="range" id="volumeGainSlider" min="1" max="3" step="0.1" value="1" oninput="adjustVolumeGain(this.value)">
-            </div>
-            <div class="setting-item">
-                <label>Equalizer Audio Presets</label>
-                <select onchange="applyEQPreset(this.value)">
-                    <option value="flat">Flat / Normal</option>
-                    <option value="bass">Ultra Bass Booster</option>
-                    <option value="vocal">Vocal Booster</option>
-                    <option value="edm">EDM Party Punch</option>
-                    <option value="lofi">Lofi Chill Vibes</option>
-                </select>
-            </div>
-            <div class="setting-item">
-                <label>Playback Velocity Speed</label>
-                <select id="speedSelect" onchange="changePlaybackSpeed()">
-                    <option value="0.5">0.5x (Slowed & Reverb)</option>
-                    <option value="1.0" selected>1.0x (Normal Speed)</option>
-                    <option value="1.5">1.5x (Nightcore Pitch)</option>
-                    <option value="2.0">2.0x (Turbo Speed)</option>
-                </select>
-            </div>
-            <div class="setting-item">
-                <label>Theme Preset Color</label>
-                <select onchange="changeTheme(this.value)">
-                    <option value="cyan">Cyberpunk Cyan (Default)</option>
-                    <option value="red">Neon Blood Red</option>
-                    <option value="gold">VIP Gold Glow</option>
-                    <option value="emerald">Emerald Green</option>
-                </select>
-            </div>
-            <div class="setting-item">
-                <label>Sleep Shutdown Timer</label>
-                <select id="timerSelect" onchange="configureSleepTimer()">
-                    <option value="0" selected>Disabled</option>
-                    <option value="15">15 Minutes</option>
-                    <option value="30">30 Minutes</option>
-                    <option value="60">60 Minutes</option>
+            <div class="modal-header"><h3>⚙️ Sound Controls</h3><span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span></div>
+            <div style="display:flex; flex-direction:column; gap:10px;">
+                <label style="font-size:11px;">Volume Booster (Up to 300%)</label>
+                <input type="range" id="volumeGainSlider" min="1" max="3" step="0.1" value="1" oninput="if(gainNode) gainNode.gain.value = parseFloat(this.value)">
+                <label style="font-size:11px;">Playback Speed</label>
+                <select id="speedSelect" onchange="audio.playbackRate = parseFloat(this.value)" style="background:#1a1a1a; color:#fff; padding:8px; border-radius:6px;">
+                    <option value="0.5">0.5x Slowed</option>
+                    <option value="1.0" selected>1.0x Normal</option>
+                    <option value="1.5">1.5x Fast</option>
                 </select>
             </div>
         </div>
     </div>
 
-    <!-- RINGTONE TRIMMER MODAL -->
-    <div class="modal-overlay" id="trimmerModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>✂️ Ringtone Trimmer</h3>
-                <span class="close-btn" onclick="closeModal('trimmerModal')">✕</span>
-            </div>
-            <p style="font-size:12px; color:var(--text-grey);">Set start and end seconds to cut audio:</p>
-            <div class="setting-item"><label>Start Time (s)</label><input type="number" id="trimStart" value="0"></div>
-            <div class="setting-item"><label>End Time (s)</label><input type="number" id="trimEnd" value="30"></div>
-            <button class="upload-label" onclick="alert('Ringtone Trimmed Successfully!')">Trim & Export Ringtone</button>
-        </div>
-    </div>
-
-    <!-- DUAL DJ DECK MODAL -->
+    <!-- DJ DECK MODAL -->
     <div class="modal-overlay" id="djModal">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3>🎛️ Dual DJ Studio Deck</h3>
-                <span class="close-btn" onclick="closeModal('djModal')">✕</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:15px; background:#181818; padding:15px; border-radius:10px;">
-                <span>DECK A</span>
-                <input type="range" id="crossfader" min="0" max="100" value="50" style="flex:1;" oninput="audio.volume = this.value/100;">
-                <span>DECK B</span>
-            </div>
+            <div class="modal-header"><h3>🎛️ DJ Deck Crossfader</h3><span style="cursor:pointer;" onclick="closeModal('djModal')">✕</span></div>
+            <input type="range" min="0" max="100" value="50" oninput="audio.volume = this.value/100" style="width:100%;">
         </div>
     </div>
 
-    <!-- CLOUD RADIO MODAL -->
-    <div class="modal-overlay" id="radioModal">
+    <!-- TRIMMER MODAL -->
+    <div class="modal-overlay" id="trimmerModal">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3>📻 Live Cloud Radio</h3>
-                <span class="close-btn" onclick="closeModal('radioModal')">✕</span>
-            </div>
-            <button class="upload-label" onclick="playRadioStream('https://stream.zeno.fm/f3wvbb142g8uv')">Lofi Chill Beats 24/7</button>
+            <div class="modal-header"><h3>✂️ Ringtone Trimmer</h3><span style="cursor:pointer;" onclick="closeModal('trimmerModal')">✕</span></div>
+            <button class="upload-label" onclick="alert('Audio Trimmed!')">Trim Current Audio</button>
         </div>
     </div>
 
-    <!-- TERMS & POLICY MODAL -->
-    <div class="modal-overlay" id="termsModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Terms & Privacy Policy</h3>
-                <span class="close-btn" onclick="closeModal('termsModal')">✕</span>
-            </div>
-            <div class="terms-box">
-                <p>1. <strong>Local Offline Data:</strong> All audio files stay safely inside your device's browser memory (IndexedDB).</p><br>
-                <p>2. <strong>Voice AI:</strong> Speech engine listens strictly for the wake-word "Harmony".</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- MAIN PLAYER CORE SCRIPT -->
+    <!-- MAIN JAVASCRIPT -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
-        
         let trackList = [];
-        let db;
-        let logoClickCount = 0;
-        let currentPlayingIndex = -1;
-        let audioCtx, audioSource, gainNode, bassFilter, pannerNode, analyser, canvas, canvasCtx;
-        let is8DMode = false;
-        let isLofiMode = false;
-        let pannerAngle = 0;
+        let db, logoClickCount = 0, currentPlayingIndex = -1, audioCtx, audioSource, gainNode;
 
-        // INDEXED DB (LOCAL TRACKS STORAGE)
         const dbRequest = indexedDB.open("HarmonyStudioMasterDB", 10);
-        dbRequest.onupgradeneeded = (e) => {
-            let database = e.target.result;
-            if (!database.objectStoreNames.contains("vault_music")) {
-                database.createObjectStore("vault_music", { keyPath: "id", autoIncrement: true });
-            }
-        };
         dbRequest.onsuccess = (e) => { db = e.target.result; loadTracksFromDB(); };
 
         function loadTracksFromDB() {
@@ -439,77 +276,16 @@
             if (!files || files.length === 0) return;
             const transaction = db.transaction(["vault_music"], "readwrite");
             const store = transaction.objectStore("vault_music");
-            const defaultImg = "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150";
-            
             Array.from(files).forEach((file) => {
-                const cleanName = file.name.replace(/\.[^/.]+$/, "");
-                store.add({ title: cleanName, img: defaultImg, audioBlob: file });
+                store.add({ title: file.name.replace(/\.[^/.]+$/, ""), img: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150", audioBlob: file });
             });
             transaction.oncomplete = () => loadTracksFromDB();
         });
 
-        function initializeAudioEngine() {
-            if (audioCtx) return;
-            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            audioSource = audioCtx.createMediaElementSource(audio);
-            gainNode = audioCtx.createGain();
-            bassFilter = audioCtx.createBiquadFilter(); bassFilter.type = "lowshelf"; bassFilter.frequency.value = 200;
-            pannerNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
-            analyser = audioCtx.createAnalyser(); analyser.fftSize = 128;
-            
-            audioSource.connect(gainNode);
-            gainNode.connect(bassFilter);
-            if (pannerNode) { bassFilter.connect(pannerNode); pannerNode.connect(analyser); } 
-            else { bassFilter.connect(analyser); }
-            analyser.connect(audioCtx.destination);
-            
-            startLightsVisualizer();
-            start8DSpatialRotation();
-        }
-
-        function toggle8DSpatialAudio() {
-            is8DMode = !is8DMode;
-            document.getElementById('spatialBtn').classList.toggle('active', is8DMode);
-            alert(is8DMode ? "8D Spatial 360 Headphone Mode Active!" : "8D Spatial Mode Disabled");
-        }
-
-        function start8DSpatialRotation() {
-            setInterval(() => {
-                if (is8DMode && pannerNode && !audio.paused) {
-                    pannerAngle += 0.05;
-                    pannerNode.pan.value = Math.sin(pannerAngle);
-                } else if (pannerNode && !is8DMode) { pannerNode.pan.value = 0; }
-            }, 50);
-        }
-
-        function startLightsVisualizer() {
-            canvas = document.getElementById('canvasLights');
-            if(!canvas) return;
-            canvasCtx = canvas.getContext('2d');
-            const dataArray = new Uint8Array(analyser.frequencyBinCount);
-
-            function draw() {
-                requestAnimationFrame(draw);
-                analyser.getByteFrequencyData(dataArray);
-                canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
-                let barWidth = (canvas.width / dataArray.length) * 1.5;
-                let x = 0;
-                for (let i = 0; i < dataArray.length; i++) {
-                    let barHeight = (dataArray[i] / 255) * canvas.height * 2.5;
-                    canvasCtx.fillStyle = 'rgba(0, 240, 255, 0.8)';
-                    canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
-                    x += barWidth + 1;
-                }
-            }
-            draw();
-        }
-
         function playTrack(index) {
-            initializeAudioEngine();
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
-
             audio.src = URL.createObjectURL(track.audioBlob);
             document.getElementById('p-title').innerText = track.title;
             document.getElementById('p-img').src = track.img;
@@ -517,20 +293,11 @@
             playerBar.classList.add('active');
         }
 
-        function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
-        function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
-        audio.addEventListener('ended', playNextTrack);
-
-        function toggleLofiMode() { isLofiMode = !isLofiMode; audio.playbackRate = isLofiMode ? 0.82 : 1.0; }
-        function toggleBassBoost() { if (bassFilter) bassFilter.gain.value = bassFilter.gain.value === 10 ? 0 : 10; }
-        function adjustVolumeGain(val) { if (gainNode) gainNode.gain.value = parseFloat(val); }
-
         function handleLogoTripleClick() {
             logoClickCount++;
             if (logoClickCount >= 3) {
                 logoClickCount = 0;
-                const pass = prompt("Enter Secret Founder Admin Code:");
-                if (pass === "1007" || pass === "karan") {
+                if (prompt("Enter Secret Admin Code:") === "1007") {
                     enableFounderPrivileges();
                     openModal('founderAdminModal');
                 }
@@ -540,79 +307,30 @@
 
         function enableFounderPrivileges() {
             document.getElementById('founderBadge').classList.add('visible');
-            enableVIPMode();
-        }
-
-        function enableVIPMode() {
             localStorage.setItem('harmony_is_vip', 'true');
-            document.getElementById('vipAdTicker').classList.add('hidden');
-            document.getElementById('upgradeVipBtn').innerText = "👑 PRO VIP ACTIVE";
+            document.getElementById('upgradeVipBtn').innerText = "👑 PRO ACTIVE";
         }
 
         function isUserVip() { return localStorage.getItem('harmony_is_vip') === 'true'; }
         function triggerVipGate(featureName, callback) { if (isUserVip()) callback(); else openModal('vipGateModal'); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function sendVipPurchaseEmail() { window.location.href = "mailto:kn863422@gmail.com?subject=VIP Purchase Request"; }
-
         function verifyKey() {
             const key = document.getElementById('activationKeyInput').value.trim().toUpperCase();
-            if (key === "KARANVIP" || key === "HARMONY99" || key === "VIP2026") {
-                enableVIPMode();
+            if (["KARANVIP", "HARMONY99", "VIP2026"].includes(key)) {
+                enableFounderPrivileges();
                 closeModal('vipGateModal');
-                alert("VIP Activated Successfully!");
+                alert("VIP Active!");
             } else { alert("Invalid Key!"); }
         }
-
-        function generateNewRoomCode() {
-            const randomCode = "GH-" + Math.floor(100000 + Math.random() * 900000);
-            document.getElementById('generatedRoomCode').innerText = randomCode;
-        }
-
-        function joinListenRoom() {
-            const code = document.getElementById('roomCodeInput').value.trim();
-            if(code.length >= 4) { alert(`Connected to Room ${code}!`); closeModal('roomModal'); }
-        }
-
-        function playRadioStream(streamUrl) {
-            initializeAudioEngine();
-            audio.src = streamUrl;
-            document.getElementById('p-title').innerText = "Live Cloud Radio";
-            audio.play();
-            closeModal('radioModal');
-            playerBar.classList.add('active');
-        }
-
-        function changeTheme(theme) {
-            document.body.className = '';
-            if (theme !== 'cyan') document.body.classList.add(`theme-${theme}`);
-        }
-
-        function changePlaybackSpeed() {
-            if (audio) audio.playbackRate = parseFloat(document.getElementById('speedSelect').value);
-        }
-
-        function configureSleepTimer() {
-            let mins = parseInt(document.getElementById('timerSelect').value);
-            if (mins > 0) setTimeout(() => { audio.pause(); alert("Sleep Timer Shutting Down Playback."); }, mins * 60 * 1000);
-        }
-
-        function generateShareCard() {
-            alert(`Insta Story Card Generated for "${document.getElementById('p-title').innerText}"! Take screenshot and share!`);
-        }
-
-        function searchSongs() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.song-card').forEach(card => {
-                card.style.display = card.querySelector('h3').innerText.toLowerCase().includes(query) ? "block" : "none";
-            });
-        }
+        function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
+        function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
     </script>
 
-    <!-- FIREBASE AUTH & FIRESTORE REALTIME DATABASE -->
+    <!-- FIREBASE AUTH & FIRESTORE REALTIME DB -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
@@ -628,8 +346,6 @@
         const auth = getAuth(app);
         const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
-
-        setPersistence(auth, browserLocalPersistence).catch(()=>{});
 
         window.loginWithGoogle = async function() {
             try {
@@ -647,8 +363,7 @@
 
         async function syncUserToCloud(user) {
             try {
-                const userRef = doc(db, "app_users", user.uid);
-                await setDoc(userRef, {
+                await setDoc(doc(db, "app_users", user.uid), {
                     name: user.displayName,
                     email: user.email,
                     lastLogin: new Date().toISOString()
@@ -658,34 +373,30 @@
                     enableFounderPrivileges();
                     listenToAllUsersCloud();
                 }
-            } catch(e) { console.log("Cloud sync note: ", e); }
-        }
-
-        function listenToAllUsersCloud() {
-            try {
-                onSnapshot(collection(db, "app_users"), (snapshot) => {
-                    const tbody = document.getElementById('userListTable');
-                    if(!tbody) return;
-                    tbody.innerHTML = '';
-                    snapshot.forEach((docSnap) => {
-                        const usr = docSnap.data();
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = `
-                            <td><strong>${usr.name || 'User'}</strong></td>
-                            <td style="color:#00f0ff;">${usr.email || 'No Email'}</td>
-                            <td><span style="color:${usr.isVip ? '#00ff88':'#ff0055'}; font-weight:bold;">${usr.isVip ? 'VIP PRO' : 'FREE'}</span></td>
-                            <td><button class="btn-access ${usr.isVip ? 'btn-revoke':'btn-grant'}" onclick="toggleCloudVip('${docSnap.id}', ${!usr.isVip})">${usr.isVip ? 'Revoke' : 'Grant VIP'}</button></td>
-                        `;
-                        tbody.appendChild(tr);
-                    });
-                }, (error) => { console.log("Firestore Listener Error:", error); });
             } catch(e) {}
         }
 
+        function listenToAllUsersCloud() {
+            onSnapshot(collection(db, "app_users"), (snapshot) => {
+                const tbody = document.getElementById('userListTable');
+                if(!tbody) return;
+                tbody.innerHTML = '';
+                snapshot.forEach((docSnap) => {
+                    const usr = docSnap.data();
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td><strong>${usr.name || 'User'}</strong></td>
+                        <td style="color:#00f0ff;">${usr.email || 'No Email'}</td>
+                        <td><span style="color:${usr.isVip ? '#00ff88':'#ff0055'};">${usr.isVip ? 'VIP' : 'FREE'}</span></td>
+                        <td><button style="padding:4px 8px; border-radius:8px; border:none; cursor:pointer;" onclick="toggleCloudVip('${docSnap.id}', ${!usr.isVip})">${usr.isVip ? 'Revoke' : 'Grant'}</button></td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
         window.toggleCloudVip = async function(uid, status) {
-            try {
-                await setDoc(doc(db, "app_users", uid), { isVip: status }, { merge: true });
-            } catch(e) { alert("Permission Error: Enable Firestore Rules in Firebase Console!"); }
+            await setDoc(doc(db, "app_users", uid), { isVip: status }, { merge: true });
         };
     </script>
 </body>
