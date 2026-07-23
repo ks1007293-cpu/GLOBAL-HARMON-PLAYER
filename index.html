@@ -22,17 +22,11 @@
             --text-grey: #b3b3b3;
         }
 
-        body.theme-red { --primary-glow: #ff0044; --secondary-glow: #ff6600; }
-        body.theme-gold { --primary-glow: #ffd700; --secondary-glow: #ff8c00; }
-        body.theme-emerald { --primary-glow: #00ff88; --secondary-glow: #00bfff; }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #050505; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; transition: background 0.4s ease; }
+        body { background-color: #050505; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* --- HEADER --- */
         .top-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 12, 12, 0.95); padding: 15px 25px; border-bottom: 2px solid #1a1a1a; backdrop-filter: blur(10px); z-index: 100; }
         .brand-logo { display: flex; align-items: center; gap: 12px; cursor: pointer; user-select: none; }
-        .brand-logo svg { filter: drop-shadow(0 0 10px var(--primary-glow)); }
         .brand-logo h1 { font-size: 20px; font-weight: 800; background: linear-gradient(45deg, #fff, var(--primary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 
         .header-actions { display: flex; align-items: center; gap: 12px; }
@@ -40,70 +34,33 @@
         .founder-badge { display: none; align-items: center; gap: 8px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; padding: 8px 16px; border-radius: 20px; font-weight: 900; font-size: 11px; cursor: pointer; box-shadow: 0 0 15px rgba(255, 215, 0, 0.6); text-transform: uppercase; }
         .founder-badge.visible { display: flex; }
 
-        .get-vip-btn { background: linear-gradient(135deg, #ff007f, #7928ca); color: #fff; border: none; padding: 7px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; cursor: pointer; transition: 0.3s; box-shadow: 0 0 10px rgba(255, 0, 127, 0.4); }
-        .get-vip-btn:hover { transform: scale(1.05); }
+        .get-vip-btn { background: linear-gradient(135deg, #ff007f, #7928ca); color: #fff; border: none; padding: 7px 16px; border-radius: 20px; font-size: 11px; font-weight: 800; cursor: pointer; }
 
-        .profile-badge { display: flex; align-items: center; gap: 10px; background: #161616; padding: 8px 18px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; transition: 0.3s; font-weight: bold; font-size: 13px; }
-        .profile-badge:hover { background: var(--primary-glow); color: #000; }
+        .profile-badge { display: flex; align-items: center; gap: 10px; background: #161616; padding: 8px 18px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 13px; }
 
         .app-container { display: flex; flex: 1; }
-
-        /* --- SIDEBAR --- */
         .sidebar { width: 250px; background-color: var(--bg-black); padding: 25px 15px; display: flex; flex-direction: column; gap: 12px; border-right: 1px solid #1a1a1a; }
-        .nav-item { display: flex; align-items: center; gap: 12px; color: var(--text-grey); font-weight: bold; padding: 12px 18px; border-radius: 10px; cursor: pointer; transition: 0.3s; font-size: 14px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; color: var(--text-grey); font-weight: bold; padding: 12px 18px; border-radius: 10px; cursor: pointer; font-size: 14px; }
         .nav-item:hover, .nav-item.active { color: white; background: #141414; box-shadow: inset 4px 0 0 var(--primary-glow); }
 
-        /* --- MAIN DASHBOARD --- */
         .main { flex: 1; background: radial-gradient(circle at top right, #111, var(--bg-black)); padding: 25px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 240px; position: relative; }
-        
-        .search-row { display: flex; justify-content: space-between; align-items: center; gap: 15px; flex-wrap: wrap; }
-        .search-bar { background: #fff; border-radius: 30px; padding: 10px 20px; display: flex; align-items: center; gap: 12px; flex: 1; max-width: 380px; }
-        .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; color: #000; font-weight: 500; }
+        .search-bar { background: #fff; border-radius: 30px; padding: 10px 20px; display: flex; align-items: center; gap: 12px; max-width: 380px; }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 14px; color: #000; }
 
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
-        .upload-label { background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow)); color: #000; padding: 12px 24px; font-size: 13px; font-weight: bold; border-radius: 30px; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.3s; border: none; text-decoration: none; }
-        .upload-label:hover { transform: scale(1.03); }
+        .upload-label { background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow)); color: #000; padding: 12px 24px; font-size: 13px; font-weight: bold; border-radius: 30px; cursor: pointer; border: none; text-decoration: none; }
 
-        .section-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #1a1a1a; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
-        
+        .section-title { font-size: 18px; font-weight: bold; border-bottom: 2px solid #1a1a1a; padding-bottom: 10px; display: flex; justify-content: space-between; }
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 18px; width: 100%; }
-        .song-card { background: var(--card-bg); padding: 12px; border-radius: 14px; cursor: pointer; text-align: center; border: 1px solid #1e1e1e; transition: 0.3s; position: relative; }
-        .song-card:hover { border-color: var(--primary-glow); transform: translateY(-4px); }
-        .song-card img { width: 100%; border-radius: 10px; margin-bottom: 10px; aspect-ratio: 1/1; object-fit: cover; }
-        .song-card h3 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; }
 
-        .playing-indicator { display: none; position: absolute; top: 12px; right: 12px; background: var(--primary-glow); color: #000; padding: 4px 8px; border-radius: 20px; font-size: 9px; font-weight: 800; }
-        .song-card.active-track .playing-indicator { display: block; }
-
-        /* --- BOTTOM TICKER --- */
-        .vip-ad-ticker { position: fixed; bottom: 120px; left: 0; width: 100%; background: linear-gradient(90deg, #ff007f, #7928ca, #00f0ff); color: #fff; padding: 8px 20px; font-size: 12px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; z-index: 998; box-shadow: 0 -4px 15px rgba(255, 0, 127, 0.4); }
+        .vip-ad-ticker { position: fixed; bottom: 120px; left: 0; width: 100%; background: linear-gradient(90deg, #ff007f, #7928ca, #00f0ff); color: #fff; padding: 8px 20px; font-size: 12px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; z-index: 998; }
         .vip-ad-ticker.hidden { display: none; }
 
-        /* --- VISUALIZER --- */
-        .visualizer-container { width: 100%; height: 10px; position: fixed; bottom: 120px; left: 0; z-index: 997; background: rgba(0,0,0,0.8); }
-        #canvasLights { width: 100%; height: 100%; display: block; }
-
-        /* --- PLAYER BAR --- */
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 120px; background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 15px 35px; border-top: 2px solid #1a1a1a; z-index: 1000; transform: translateY(100%); transition: transform 0.4s ease; }
-        .player-bar.active { transform: translateY(0); border-top-color: var(--primary-glow); }
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 120px; background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 15px 35px; border-top: 2px solid #1a1a1a; z-index: 1000; }
         
-        .now-playing { display: flex; align-items: center; gap: 15px; width: 30%; min-width: 180px; }
-        .now-playing img { width: 55px; height: 55px; border-radius: 8px; object-fit: cover; }
-        .song-info h4 { font-size: 14px; margin-bottom: 4px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-weight: bold; }
-        .song-info p { font-size: 12px; color: var(--text-grey); }
-
-        .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 10px; }
-        .btn-row { display: flex; gap: 20px; align-items: center; }
-        .control-icon { color: var(--text-grey); font-size: 20px; cursor: pointer; transition: 0.2s; }
-        .control-icon:hover, .control-icon.active { color: var(--primary-glow); transform: scale(1.15); }
-        .audio-element-custom { width: 100%; height: 32px; filter: invert(1); opacity: 0.9; }
-
-        /* --- MODALS & TABLES --- */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 560px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
+        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 20px; width: 90%; max-width: 620px; padding: 25px; display: flex; flex-direction: column; gap: 18px; max-height: 85vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 12px; }
-        .modal-header h3 { font-size: 18px; color: var(--primary-glow); font-weight: 800; }
-        .close-btn { color: var(--text-grey); cursor: pointer; font-size: 20px; font-weight: bold; }
 
         .user-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
         .user-table th, .user-table td { padding: 10px; border-bottom: 1px solid #222; text-align: left; }
@@ -115,9 +72,8 @@
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
-            .player-bar { flex-direction: column; height: 170px; justify-content: center; padding: 12px; gap: 10px; }
-            .vip-ad-ticker { bottom: 170px; font-size: 10px; padding: 6px 12px; }
-            .visualizer-container { bottom: 170px; }
+            .player-bar { flex-direction: column; height: 170px; padding: 12px; }
+            .vip-ad-ticker { bottom: 170px; }
         }
     </style>
 </head>
@@ -125,14 +81,11 @@
 
     <div class="top-bar">
         <div class="brand-logo" onclick="handleLogoTripleClick()">
-            <svg width="36" height="36" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="16" cy="16" r="14" stroke="#ff007f" stroke-width="1.5" stroke-dasharray="4 4"/>
-            </svg>
+            <svg width="36" height="36" viewBox="0 0 32 32" fill="none"><path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3"/></svg>
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <div class="founder-badge" id="founderBadge" onclick="openFounderPanel()">👑 FOUNDER ADMIN</div>
+            <div class="founder-badge" id="founderBadge" onclick="openModal('founderAdminModal')">👑 FOUNDER ADMIN</div>
             <button class="get-vip-btn" id="upgradeVipBtn" onclick="openModal('vipGateModal')">💎 GET VIP PASS</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
                 <span id="profileNameDisplay">Sign In</span>
@@ -143,78 +96,43 @@
     <div class="app-container">
         <div class="sidebar">
             <div class="nav-item active">Studio Home</div>
-            <div class="nav-item" onclick="openModal('settingsModal')">⚙️ Settings & FX Engine</div>
-            <div class="nav-item" onclick="openModal('djModal')">🎛️ Dual DJ Deck</div>
-            <div class="nav-item" onclick="openModal('trimmerModal')">✂️ Ringtone Trimmer</div>
-            <div class="nav-item" onclick="triggerVipGate('Listen Together Room', () => openModal('roomModal'))">👥 Listen Together 🔒</div>
-            <div class="nav-item" onclick="openModal('radioModal')">📻 Cloud Radio</div>
-            <div class="nav-item" onclick="openModal('termsModal')">🛡️ Terms & Policy</div>
+            <div class="nav-item" onclick="triggerVipGate('Listen Together Room', () => {})">👥 Listen Together 🔒</div>
         </div>
 
         <div class="main">
-            <div class="search-row">
-                <div class="search-bar">
-                    <input type="text" id="searchInput" placeholder="Search local songs..." onkeyup="searchSongs()">
-                </div>
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Search local songs...">
             </div>
-
             <div class="action-row-btn">
-                <label for="multiFileInput" class="upload-label">Import Directory Tracks</label>
-                <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="triggerVipGate('8D Spatial 360 Audio', toggle8DSpatialAudio)">🎧 8D Spatial Mode 🔒</button>
-                <button class="upload-label" style="background: #1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="openModal('settingsModal')">⚙️ Sound Engine</button>
+                <button class="upload-label" style="background:#1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="triggerVipGate('8D Spatial Mode', () => {})">🎧 8D Spatial Mode 🔒</button>
             </div>
-            <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
-
             <h2 class="section-title">
                 <span>Offline Core Vault</span>
-                <span id="trackCount" style="font-size: 13px; color: var(--primary-glow);">0 Tracks</span>
+                <span id="trackCount" style="color:var(--primary-glow);">0 Tracks</span>
             </h2>
             <div class="song-grid" id="songGrid"></div>
         </div>
     </div>
 
-    <!-- BOTTOM TICKER -->
     <div class="vip-ad-ticker" id="vipAdTicker">
-        <div class="ad-content">
-            <span style="font-size:14px;">⚡</span>
-            <span class="ad-text">Upgrade to Global Harmony VIP for ₹99/mo - Get 8D Spatial Audio & Ad-Free Music!</span>
-        </div>
-        <button style="background:#fff; color:#000; border:none; padding:4px 12px; border-radius:15px; font-weight:bold; font-size:10px; cursor:pointer;" onclick="openModal('vipGateModal')">UPGRADE NOW</button>
-    </div>
-
-    <div class="visualizer-container">
-        <canvas id="canvasLights"></canvas>
+        <span>⚡ Upgrade to VIP for ₹99/mo - Get 8D Spatial Audio & Ad-Free Music!</span>
+        <button style="background:#fff; color:#000; border:none; padding:4px 12px; border-radius:15px; font-weight:bold; cursor:pointer;" onclick="openModal('vipGateModal')">UPGRADE NOW</button>
     </div>
 
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <img id="p-img" id="trackArtImage" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150" crossorigin="anonymous">
-            <div class="song-info">
-                <h4 id="p-title">Ready System</h4>
-                <p id="p-artist">Global Harmony Pro</p>
-            </div>
-        </div>
-        <div class="controls">
-            <div class="btn-row">
-                <span class="control-icon" onclick="playPreviousTrack()">⏮</span>
-                <span class="control-icon" id="spatialBtn" title="8D Spatial Surround" onclick="triggerVipGate('8D Spatial Mode', toggle8DSpatialAudio)">🎧</span>
-                <span class="control-icon" id="bassBoostBtn" title="Bass Boost" onclick="toggleBassBoost()">⚡</span>
-                <span class="control-icon" id="lofiBtn" title="Lofi Mode" onclick="toggleLofiMode()">🌙</span>
-                <span class="control-icon" onclick="openModal('settingsModal')">⚙️</span>
-                <span class="control-icon" onclick="playNextTrack()">⏭</span>
-            </div>
-            <audio id="audioElement" class="audio-element-custom" controls></audio>
+            <h4 id="p-title">Ready System</h4>
         </div>
     </footer>
 
     <!-- REALTIME CLOUD USER DATABASE (FOUNDER PANEL) -->
     <div class="modal-overlay" id="founderAdminModal">
-        <div class="modal-card" style="border-color: var(--gold-glow); max-width: 620px;">
+        <div class="modal-card" style="border-color: var(--gold-glow);">
             <div class="modal-header">
-                <h3 style="color: var(--gold-glow);">👑 FOUNDER EMAIL DATABASE & ACCESS VAULT</h3>
-                <span class="close-btn" onclick="closeModal('founderAdminModal')">✕</span>
+                <h3 style="color: var(--gold-glow);">👑 FOUNDER REALTIME USER DATABASE</h3>
+                <span style="cursor:pointer;" onclick="closeModal('founderAdminModal')">✕</span>
             </div>
-            <p style="font-size:12px; color:#ccc;">Cloud Realtime Logged-In Users (Realtime Cloud Database):</p>
+            <p style="font-size:12px; color:#ccc;">Jiss-Jiss bande ne login kiya hai unki emails yahan live update hongi:</p>
             
             <table class="user-table">
                 <thead>
@@ -235,17 +153,11 @@
         <div class="modal-card" style="border-color: #ff007f;">
             <div class="modal-header">
                 <h3 style="color: #ff007f;">💎 Global Harmony VIP Pass (₹99/mo)</h3>
-                <span class="close-btn" onclick="closeModal('vipGateModal')">✕</span>
+                <span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span>
             </div>
-
-            <button class="upload-label" style="justify-content:center; background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000;" onclick="sendVipPurchaseEmail()">
+            <button class="upload-label" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000; justify-content:center;" onclick="sendVipPurchaseEmail()">
                 📧 Contact Founder Karan Nag via Email
             </button>
-
-            <div style="display: flex; gap: 8px; margin-top: 5px;">
-                <input type="text" id="activationKeyInput" placeholder="Enter VIP Key" style="background:#1a1a1a; border:1px solid #333; padding:10px 12px; border-radius:8px; color:#fff; font-size:12px; flex:1;">
-                <button class="upload-label" style="padding: 10px 18px; font-size:11px;" onclick="verifyEmailLockedKey()">Activate Key</button>
-            </div>
         </div>
     </div>
 
@@ -253,7 +165,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, setPersistence, browserLocalPersistence } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
@@ -285,35 +197,32 @@
             }
         });
 
-        // REALTIME DATABASE SYNC
+        // REALTIME DATABASE SYNC FOR ALL USERS
         async function syncUserToCloudDatabase(user) {
             const userRef = doc(db, "app_users", user.uid);
-            const userSnap = await getDoc(userRef);
 
-            if (!userSnap.exists()) {
-                await setDoc(userRef, {
-                    name: user.displayName,
-                    email: user.email,
-                    isVip: user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293"),
-                    lastLogin: new Date().toISOString()
-                });
-            }
+            // Har login hone wale user ko Firestore Cloud me save karo
+            await setDoc(userRef, {
+                name: user.displayName,
+                email: user.email,
+                lastLogin: new Date().toISOString()
+            }, { merge: true });
 
-            // Realtime VIP Check
+            // Listen to this user's VIP status
             onSnapshot(userRef, (docSnap) => {
-                if(docSnap.exists()) {
-                    const data = docSnap.data();
-                    if(data.isVip) enableFounderPrivileges();
+                if(docSnap.exists() && docSnap.data().isVip) {
+                    enableVIPMode();
                 }
             });
 
+            // Agar Founder Login kar raha hai, toh poori duniya ke logged-in users listen karo
             if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293")) {
                 enableFounderPrivileges();
                 listenToAllUsersCloud();
             }
         }
 
-        // FOUNDER REALTIME USER LISTENER
+        // REALTIME FOUNDER LISTENER
         function listenToAllUsersCloud() {
             onSnapshot(collection(db, "app_users"), (snapshot) => {
                 const tbody = document.getElementById('userListTable');
@@ -322,8 +231,8 @@
                     const usr = docSnap.data();
                     const tr = document.createElement('tr');
                     tr.innerHTML = `
-                        <td><strong>${usr.name}</strong></td>
-                        <td style="color:#00f0ff;">${usr.email}</td>
+                        <td><strong>${usr.name || 'User'}</strong></td>
+                        <td style="color:#00f0ff;">${usr.email || 'No Email'}</td>
                         <td><span style="color:${usr.isVip ? '#00ff88':'#ff0055'}; font-weight:bold;">${usr.isVip ? 'VIP PRO' : 'FREE'}</span></td>
                         <td><button class="btn-access ${usr.isVip ? 'btn-revoke':'btn-grant'}" onclick="toggleCloudVip('${docSnap.id}', ${!usr.isVip})">${usr.isVip ? 'Revoke' : 'Grant VIP'}</button></td>
                     `;
@@ -337,7 +246,6 @@
         };
     </script>
 
-    <!-- CORE LOGIC SCRIPT -->
     <script>
         let logoClickCount = 0;
 
@@ -348,7 +256,7 @@
                 const pass = prompt("Enter Secret Founder Admin Code:");
                 if (pass === "1007" || pass === "karan") {
                     enableFounderPrivileges();
-                    openFounderPanel();
+                    openModal('founderAdminModal');
                 }
             }
             setTimeout(() => { logoClickCount = 0; }, 2000);
@@ -356,16 +264,20 @@
 
         function enableFounderPrivileges() {
             document.getElementById('founderBadge').classList.add('visible');
+            enableVIPMode();
+        }
+
+        function enableVIPMode() {
             localStorage.setItem('harmony_is_vip', 'true');
             document.getElementById('vipAdTicker').classList.add('hidden');
             document.getElementById('upgradeVipBtn').innerText = "👑 PRO VIP ACTIVE";
         }
 
-        function openFounderPanel() { openModal('founderAdminModal'); }
         function isUserVip() { return localStorage.getItem('harmony_is_vip') === 'true'; }
         function triggerVipGate(featureName, callback) { if (isUserVip()) callback(); else openModal('vipGateModal'); }
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+        function sendVipPurchaseEmail() { window.location.href = "mailto:kn863422@gmail.com?subject=VIP Purchase Request"; }
     </script>
 </body>
 </html>
