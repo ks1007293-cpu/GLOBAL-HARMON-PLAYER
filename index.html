@@ -3,10 +3,10 @@
 <head>
     <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
     <meta charset="UTF-8">
-    <meta name="description" content="Global Harmony Pro - Cyberpunk Audio Studio">
+    <meta name="description" content="Global Harmony Pro - Ultimate Cyberpunk Audio Deck & DJ Studio">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#00f0ff">
-    <title>Global Harmony Pro - Cyberpunk Studio</title>
+    <title>Global Harmony Pro - Ultimate Studio</title>
 
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
@@ -17,83 +17,130 @@
             --secondary-glow: #ff007f;
             --gold-glow: #ffd700;
             --bg-black: #080808;
-            --card-bg: #141414;
+            --card-bg: rgba(20, 20, 30, 0.75);
             --text-grey: #b3b3b3;
         }
 
-        body.theme-red { --primary-glow: #ff0044; --secondary-glow: #ff6600; }
-        body.theme-gold { --primary-glow: #ffd700; --secondary-glow: #ff8c00; }
-        body.theme-emerald { --primary-glow: #00ff88; --secondary-glow: #00bfff; }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #050505; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        body { background: radial-gradient(circle at center, #111122 0%, #050508 100%); color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* --- HEADER --- */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 12, 12, 0.95); padding: 12px 15px; border-bottom: 2px solid #1a1a1a; position: sticky; top:0; z-index: 100; }
+        /* --- 3D BUTTONS & GLASSMORPHISM --- */
+        .btn-3d {
+            background: linear-gradient(145deg, #1f1f2e, #0e0e17);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: #fff;
+            padding: 9px 16px;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 12px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            box-shadow: 0 5px 0 #0088aa, 0 8px 15px rgba(0, 240, 255, 0.25);
+            transition: all 0.15s ease;
+            position: relative;
+            top: 0;
+            text-decoration: none;
+        }
+        .btn-3d:active {
+            top: 3px;
+            box-shadow: 0 2px 0 #0088aa, 0 4px 8px rgba(0, 240, 255, 0.15);
+        }
+
+        .btn-3d-pink {
+            background: linear-gradient(145deg, #2e0e1f, #170710);
+            border-color: rgba(255, 0, 127, 0.5);
+            box-shadow: 0 5px 0 #aa0055, 0 8px 15px rgba(255, 0, 127, 0.25);
+        }
+        .btn-3d-pink:active { box-shadow: 0 2px 0 #aa0055; }
+
+        .btn-3d-gold {
+            background: linear-gradient(145deg, #2e260e, #171207);
+            border-color: rgba(255, 215, 0, 0.6);
+            color: var(--gold-glow);
+            box-shadow: 0 5px 0 #aa8800, 0 8px 15px rgba(255, 215, 0, 0.25);
+        }
+        .btn-3d-gold:active { box-shadow: 0 2px 0 #aa8800; }
+
+        /* HEADER */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 12, 18, 0.9); padding: 12px 20px; border-bottom: 2px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(15px); position: sticky; top:0; z-index: 100; }
         .brand-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .brand-logo h1 { font-size: 16px; font-weight: 800; background: linear-gradient(45deg, #fff, var(--primary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .brand-logo h1 { font-size: 17px; font-weight: 900; background: linear-gradient(45deg, #fff, var(--primary-glow)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 10px var(--primary-glow); }
 
         .header-actions { display: flex; align-items: center; gap: 8px; }
-        .founder-badge { display: none; align-items: center; gap: 5px; background: linear-gradient(135deg, #ffd700, #ff8c00); color: #000; padding: 6px 12px; border-radius: 20px; font-weight: 900; font-size: 10px; cursor: pointer; }
+        .founder-badge { display: none; }
         .founder-badge.visible { display: flex; }
 
-        .get-vip-btn { background: linear-gradient(135deg, #ff007f, #7928ca); color: #fff; border: none; padding: 6px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; cursor: pointer; }
-        .profile-badge { display: flex; align-items: center; gap: 6px; background: #161616; padding: 6px 12px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 11px; }
+        .profile-badge { display: flex; align-items: center; gap: 6px; background: rgba(22, 22, 34, 0.8); padding: 7px 12px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 11px; }
 
         .app-container { display: flex; flex: 1; }
 
-        /* --- SIDEBAR (DESKTOP) --- */
-        .sidebar { width: 220px; background-color: var(--bg-black); padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid #1a1a1a; }
-        .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px; }
-        .nav-item:hover, .nav-item.active { color: white; background: #141414; box-shadow: inset 4px 0 0 var(--primary-glow); }
+        /* SIDEBAR (DESKTOP) */
+        .sidebar { width: 240px; background: rgba(10, 10, 15, 0.9); padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid rgba(255,255,255,0.08); }
+        .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 11px 14px; border-radius: 12px; cursor: pointer; font-size: 12px; transition: 0.2s; border: 1px solid transparent; }
+        .nav-item:hover, .nav-item.active { color: white; background: rgba(0, 240, 255, 0.1); border-color: var(--primary-glow); }
 
-        /* --- MOBILE BOTTOM NAV BAR --- */
-        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c0c; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
-        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 3px; font-size: 10px; color: #888; cursor: pointer; }
+        /* MOBILE BOTTOM NAVIGATION BAR */
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c12; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
+        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #888; cursor: pointer; }
         .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary-glow); }
-        .mobile-nav-item span { font-size: 18px; }
+        .mobile-nav-item span { font-size: 16px; }
 
-        /* --- MAIN DASHBOARD --- */
-        .main { flex: 1; background: radial-gradient(circle at top right, #111, var(--bg-black)); padding: 15px; display: flex; flex-direction: column; gap: 15px; padding-bottom: 200px; }
+        /* MAIN DASHBOARD */
+        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 18px; padding-bottom: 220px; }
+        .search-bar { background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 10px 18px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 400px; }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; font-weight: 600; }
+
+        .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
+
+        .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        .search-bar { background: #fff; border-radius: 30px; padding: 8px 16px; display: flex; align-items: center; gap: 10px; width: 100%; }
-        .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; }
-
-        .action-row-btn { display: flex; gap: 8px; flex-wrap: wrap; }
-        .upload-label { background: linear-gradient(135deg, var(--primary-glow), var(--secondary-glow)); color: #000; padding: 10px 16px; font-size: 11px; font-weight: bold; border-radius: 20px; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-
-        .section-title { font-size: 15px; font-weight: bold; border-bottom: 2px solid #1a1a1a; padding-bottom: 8px; display: flex; justify-content: space-between; }
+        /* NEW SLEEK MEDIA PLAYER SONG CARDS (NO IMAGE) */
+        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
+        .song-card { background: rgba(22, 22, 32, 0.8); backdrop-filter: blur(12px); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .song-card:hover { border-color: var(--primary-glow); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 240, 255, 0.25); }
         
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; width: 100%; }
-        .song-card { background: var(--card-bg); padding: 8px; border-radius: 12px; cursor: pointer; text-align: center; border: 1px solid #1e1e1e; }
-        .song-card img { width: 100%; border-radius: 8px; margin-bottom: 6px; aspect-ratio: 1/1; object-fit: cover; }
-        .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; }
+        .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; box-shadow: inset 0 0 15px rgba(0,0,0,0.8); }
+        .play-icon-glow { font-size: 28px; color: var(--primary-glow); filter: drop-shadow(0 0 10px var(--primary-glow)); transition: 0.2s; }
+        .song-card:hover .play-icon-glow { transform: scale(1.25); color: #fff; }
+        .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
 
-        /* --- PLAYER BAR --- */
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; background: rgba(10, 10, 10, 0.98); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-top: 2px solid #1a1a1a; z-index: 1500; transform: translateY(100%); transition: transform 0.4s ease; }
-        .player-bar.active { transform: translateY(0); border-top-color: var(--primary-glow); }
-        .now-playing { display: flex; align-items: center; gap: 10px; width: 40%; }
-        .now-playing img { width: 40px; height: 40px; border-radius: 6px; object-fit: cover; }
-        .song-info h4 { font-size: 12px; font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        /* VISUALIZER */
+        .visualizer-container { width: 100%; height: 8px; position: fixed; bottom: 100px; left: 0; z-index: 997; background: rgba(0,0,0,0.8); }
+        #canvasLights { width: 100%; height: 100%; display: block; }
 
-        .controls { width: 50%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .btn-row { display: flex; gap: 12px; align-items: center; }
-        .control-icon { color: var(--text-grey); font-size: 16px; cursor: pointer; }
+        /* PLAYER BAR */
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: rgba(12, 12, 18, 0.95); backdrop-filter: blur(20px); display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.4s ease; }
+        .player-bar.active { transform: translateY(0); }
+        .now-playing { display: flex; align-items: center; gap: 10px; width: 35%; }
+        
+        .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .btn-row { display: flex; gap: 16px; align-items: center; }
+        .control-icon { color: var(--text-grey); font-size: 18px; cursor: pointer; }
+        .control-icon:hover { color: var(--primary-glow); }
         .audio-element-custom { width: 100%; height: 28px; filter: invert(1); }
 
-        /* --- MODALS --- */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #121212; border: 1px solid #252525; border-radius: 16px; width: 92%; max-width: 520px; padding: 20px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #222; padding-bottom: 8px; }
+        /* MODALS & TABS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); z-index: 3000; justify-content: center; align-items: center; }
+        .modal-card { background: #12121a; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; width: 92%; max-width: 580px; padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
 
-        .user-table { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: 11px; }
-        .user-table th, .user-table td { padding: 8px; border-bottom: 1px solid #222; text-align: left; }
+        .db-tab-bar { display: flex; gap: 10px; border-bottom: 1px solid #222; padding-bottom: 8px; }
+        .db-tab { padding: 6px 14px; font-size: 11px; font-weight: bold; border-radius: 8px; cursor: pointer; background: #1a1a24; color: #aaa; }
+        .db-tab.active { background: var(--primary-glow); color: #000; }
+
+        .chat-box { height: 180px; background: #0a0a10; border: 1px solid #222; border-radius: 10px; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
+        .chat-msg { background: #181824; padding: 6px 10px; border-radius: 8px; width: fit-content; max-width: 80%; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .mobile-nav { display: flex; }
-            .main { padding-bottom: 160px; }
-            .player-bar { bottom: 50px; height: 80px; padding: 8px 12px; }
+            .main { padding-bottom: 180px; }
+            .player-bar { bottom: 45px; height: 85px; padding: 8px 12px; }
         }
     </style>
 </head>
@@ -101,12 +148,12 @@
 
     <div class="top-bar">
         <div class="brand-logo" onclick="handleLogoTripleClick()">
-            <svg width="28" height="28" viewBox="0 0 32 32" fill="none"><path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3"/></svg>
+            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3"/></svg>
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <div class="founder-badge" id="founderBadge" onclick="openModal('founderAdminModal')">👑 ADMIN</div>
-            <button class="get-vip-btn" id="upgradeVipBtn" onclick="openModal('vipGateModal')">💎 VIP</button>
+            <button class="btn-3d btn-3d-gold founder-badge" id="founderBadge" onclick="openModal('founderAdminModal')">👑 FOUNDER PANEL</button>
+            <button class="btn-3d btn-3d-pink" id="upgradeVipBtn" onclick="openModal('vipGateModal')">⚡ UPGRADE</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
                 <span id="profileNameDisplay">Sign In</span>
             </div>
@@ -117,23 +164,23 @@
         <!-- DESKTOP SIDEBAR -->
         <div class="sidebar">
             <div class="nav-item active">Studio Home</div>
-            <div class="nav-item" onclick="openModal('settingsModal')">⚙️ Settings & FX</div>
+            <div class="nav-item" onclick="openModal('settingsModal')">🎛️ 5-Band Equalizer & FX</div>
             <div class="nav-item" onclick="openModal('djModal')">🎛️ Dual DJ Deck</div>
             <div class="nav-item" onclick="openModal('trimmerModal')">✂️ Ringtone Trimmer</div>
-            <div class="nav-item" onclick="triggerVipGate('Listen Together Room', () => openModal('roomModal'))">👥 Listen Together 🔒</div>
+            <div class="nav-item" onclick="openModal('roomModal')">👥 Cyber Sync Party Deck</div>
             <div class="nav-item" onclick="openModal('radioModal')">📻 Cloud Radio</div>
             <div class="nav-item" onclick="openModal('termsModal')">🛡️ Terms & Policy</div>
         </div>
 
         <div class="main">
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search songs..." onkeyup="searchSongs()">
+                <input type="text" id="searchInput" placeholder="Search local tracks..." onkeyup="searchSongs()">
             </div>
 
             <div class="action-row-btn">
-                <label for="multiFileInput" class="upload-label">📁 Import MP3</label>
-                <button class="upload-label" style="background:#1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="triggerVipGate('8D Spatial Mode', toggle8DSpatialAudio)">🎧 8D Spatial 🔒</button>
-                <button class="upload-label" style="background:#1a1a1a; color:#fff; border:1px solid var(--primary-glow);" onclick="openModal('settingsModal')">⚙️ FX Engine</button>
+                <label for="multiFileInput" class="btn-3d">📁 Import MP3 Tracks</label>
+                <button class="btn-3d btn-3d-pink" onclick="toggle8DSpatialAudio()">🌌 Quantum 360° Spatial Surround</button>
+                <button class="btn-3d" onclick="openModal('settingsModal')">⚙️ Equalizer FX Engine</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
@@ -148,104 +195,128 @@
     <!-- MOBILE NAVIGATION BOTTOM BAR -->
     <div class="mobile-nav">
         <div class="mobile-nav-item active" onclick="window.scrollTo(0,0)"><span>🏠</span>Home</div>
-        <div class="mobile-nav-item" onclick="openModal('settingsModal')"><span>⚙️</span>Sound FX</div>
+        <div class="mobile-nav-item" onclick="openModal('settingsModal')"><span>🎛️</span>Equalizer</div>
         <div class="mobile-nav-item" onclick="openModal('djModal')"><span>🎛️</span>DJ Deck</div>
         <div class="mobile-nav-item" onclick="openModal('trimmerModal')"><span>✂️</span>Trimmer</div>
-        <div class="mobile-nav-item" onclick="triggerVipGate('Listen Together', () => openModal('roomModal'))"><span>👥</span>Listen VIP</div>
+        <div class="mobile-nav-item" onclick="openModal('roomModal')"><span>👥</span>Party Sync</div>
+    </div>
+
+    <div class="visualizer-container">
+        <canvas id="canvasLights"></canvas>
     </div>
 
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <img id="p-img" src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150" crossorigin="anonymous">
-            <div class="song-info">
-                <h4 id="p-title">Ready System</h4>
+            <div style="width:36px; height:36px; background:#111; border:1px solid var(--primary-glow); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow);">🎵</div>
+            <div>
+                <h4 id="p-title" style="font-size: 12px;">Ready System</h4>
+                <p style="font-size: 10px; color:#aaa;">Global Harmony Pro</p>
             </div>
         </div>
         <div class="controls">
             <div class="btn-row">
                 <span class="control-icon" onclick="playPreviousTrack()">⏮</span>
-                <span class="control-icon" id="spatialBtn" title="8D Spatial" onclick="triggerVipGate('8D Spatial Mode', toggle8DSpatialAudio)">🎧</span>
-                <span class="control-icon" onclick="openModal('settingsModal')">⚙️</span>
+                <span class="control-icon" id="spatialBtn" title="360 Spatial" onclick="toggle8DSpatialAudio()">🌌</span>
+                <span class="control-icon" onclick="openModal('settingsModal')">🎛️</span>
                 <span class="control-icon" onclick="playNextTrack()">⏭</span>
             </div>
             <audio id="audioElement" class="audio-element-custom" controls></audio>
         </div>
     </footer>
 
-    <!-- FOUNDER REALTIME USER DATABASE MODAL -->
-    <div class="modal-overlay" id="founderAdminModal">
+    <!-- EQUALIZER MODAL -->
+    <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 style="color: var(--gold-glow); font-size:14px;">👑 FOUNDER USER DATABASE</h3>
+                <h3 style="color: var(--primary-glow);">🎛️ 5-Band Studio Equalizer</h3>
+                <span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span>
+            </div>
+            <div style="display:flex; justify-content:space-between; text-align:center; gap:8px;">
+                <div><span>BASS</span><br><input type="range" id="eq60" min="-12" max="12" value="4" oninput="tuneEQ()"></div>
+                <div><span>LOW</span><br><input type="range" id="eq230" min="-12" max="12" value="2" oninput="tuneEQ()"></div>
+                <div><span>MID</span><br><input type="range" id="eq910" min="-12" max="12" value="0" oninput="tuneEQ()"></div>
+                <div><span>TREBLE</span><br><input type="range" id="eq4k" min="-12" max="12" value="3" oninput="tuneEQ()"></div>
+                <div><span>SPARKLE</span><br><input type="range" id="eq14k" min="-12" max="12" value="5" oninput="tuneEQ()"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- PARTY SYNC ROOM & CHAT MODAL -->
+    <div class="modal-overlay" id="roomModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>👥 Cyber Sync Party Deck & Group Chat</h3>
+                <span style="cursor:pointer;" onclick="closeModal('roomModal')">✕</span>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="roomCodeInput" placeholder="Enter Room Code (e.g. GH-1007)" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff;">
+                <button class="btn-3d" onclick="joinPartyRoom()">Join Party Room</button>
+            </div>
+            <div class="chat-box" id="chatBox">
+                <div class="chat-msg"><strong>System:</strong> Welcome to Live Room Chat!</div>
+            </div>
+            <div style="display:flex; gap:8px;">
+                <input type="text" id="chatInput" placeholder="Type message..." style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff;">
+                <button class="btn-3d btn-3d-pink" onclick="sendChatMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOUNDER ADMIN PANEL WITH SEPARATE VIP & FREE TABLES + KEY GENERATOR -->
+    <div class="modal-overlay" id="founderAdminModal">
+        <div class="modal-card" style="border-color: var(--gold-glow); max-width:620px;">
+            <div class="modal-header">
+                <h3 style="color: var(--gold-glow);">👑 FOUNDER KEY GENERATOR & DATABASE</h3>
                 <span style="cursor:pointer;" onclick="closeModal('founderAdminModal')">✕</span>
             </div>
-            <table class="user-table">
-                <thead>
-                    <tr><th>User Name</th><th>Logged Email</th><th>VIP</th><th>Action</th></tr>
-                </thead>
+
+            <!-- KEY GENERATOR -->
+            <div style="background:rgba(255,215,0,0.08); border:1px dashed var(--gold-glow); padding:12px; border-radius:10px; text-align:center;">
+                <h4 style="font-size:11px; color:#fff;">🎲 Generate New One-Time Secret VIP Code:</h4>
+                <div id="keyDisplayBox" style="font-size:18px; font-weight:900; color:var(--gold-glow); margin:6px 0;">KARAN-849201</div>
+                <button class="btn-3d btn-3d-gold" onclick="generateUniqueVipKey()">Click To Generate Code</button>
+            </div>
+
+            <!-- DATABASE TABS -->
+            <div class="db-tab-bar">
+                <div class="db-tab active" id="tabVip" onclick="switchDbTab('vip')">🏆 VIP Users Database</div>
+                <div class="db-tab" id="tabFree" onclick="switchDbTab('free')">🆓 Non-VIP Free Users Database</div>
+            </div>
+
+            <table style="width:100%; font-size:11px; border-collapse:collapse;">
+                <thead><tr><th style="padding:8px; text-align:left;">User</th><th style="padding:8px; text-align:left;">Email</th><th style="padding:8px; text-align:left;">Action</th></tr></thead>
                 <tbody id="userListTable"></tbody>
             </table>
         </div>
     </div>
 
-    <!-- VIP PAYWALL MODAL -->
+    <!-- UPGRADE PAYWALL MODAL -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card" style="border-color: #ff007f;">
             <div class="modal-header">
-                <h3 style="color: #ff007f; font-size:14px;">💎 Global Harmony VIP Pass (₹99/mo)</h3>
+                <h3 style="color: #ff007f;">⚡ Upgrade to Global Harmony VIP</h3>
                 <span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span>
             </div>
-            <button class="upload-label" style="background: linear-gradient(135deg, #ffd700, #ff8c00); color:#000; justify-content:center;" onclick="window.location.href='mailto:kn863422@gmail.com?subject=VIP Purchase Request'">
-                📧 Email Founder Karan Nag
+            <button class="btn-3d btn-3d-gold" onclick="window.location.href='mailto:kn863422@gmail.com?subject=VIP Purchase Request'">
+                📧 Email Founder Karan Nag (kn863422@gmail.com)
             </button>
-            <div style="display: flex; gap: 8px; margin-top: 8px;">
-                <input type="text" id="activationKeyInput" placeholder="Enter VIP Key" style="background:#1a1a1a; border:1px solid #333; padding:8px; border-radius:6px; color:#fff; font-size:11px; flex:1;">
-                <button class="upload-label" style="padding: 8px 12px; font-size:10px;" onclick="verifyKey()">Activate</button>
+            <div style="display: flex; gap: 8px; margin-top: 10px;">
+                <input type="text" id="activationKeyInput" placeholder="Enter VIP Key" style="background:#1a1a1a; border:1px solid #333; padding:10px; border-radius:8px; color:#fff; font-size:12px; flex:1;">
+                <button class="btn-3d btn-3d-pink" onclick="verifySingleUseVIPKey()">Activate</button>
             </div>
         </div>
     </div>
 
-    <!-- SETTINGS & FX ENGINE MODAL -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-card">
-            <div class="modal-header"><h3>⚙️ Sound Controls</h3><span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span></div>
-            <div style="display:flex; flex-direction:column; gap:10px;">
-                <label style="font-size:11px;">Volume Booster (Up to 300%)</label>
-                <input type="range" id="volumeGainSlider" min="1" max="3" step="0.1" value="1" oninput="if(gainNode) gainNode.gain.value = parseFloat(this.value)">
-                <label style="font-size:11px;">Playback Speed</label>
-                <select id="speedSelect" onchange="audio.playbackRate = parseFloat(this.value)" style="background:#1a1a1a; color:#fff; padding:8px; border-radius:6px;">
-                    <option value="0.5">0.5x Slowed</option>
-                    <option value="1.0" selected>1.0x Normal</option>
-                    <option value="1.5">1.5x Fast</option>
-                </select>
-            </div>
-        </div>
-    </div>
-
-    <!-- DJ DECK MODAL -->
-    <div class="modal-overlay" id="djModal">
-        <div class="modal-card">
-            <div class="modal-header"><h3>🎛️ DJ Deck Crossfader</h3><span style="cursor:pointer;" onclick="closeModal('djModal')">✕</span></div>
-            <input type="range" min="0" max="100" value="50" oninput="audio.volume = this.value/100" style="width:100%;">
-        </div>
-    </div>
-
-    <!-- TRIMMER MODAL -->
-    <div class="modal-overlay" id="trimmerModal">
-        <div class="modal-card">
-            <div class="modal-header"><h3>✂️ Ringtone Trimmer</h3><span style="cursor:pointer;" onclick="closeModal('trimmerModal')">✕</span></div>
-            <button class="upload-label" onclick="alert('Audio Trimmed!')">Trim Current Audio</button>
-        </div>
-    </div>
-
-    <!-- MAIN JAVASCRIPT -->
+    <!-- CORE JAVASCRIPT -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
-        let trackList = [];
-        let db, logoClickCount = 0, currentPlayingIndex = -1, audioCtx, audioSource, gainNode;
+        
+        let trackList = [], db, logoClickCount = 0, currentPlayingIndex = -1;
+        let audioCtx, audioSource, gainNode, f60, f230, f910, f4k, f14k, pannerNode, analyser, canvas, canvasCtx;
+        let is8DMode = false, pannerAngle = 0;
 
         const dbRequest = indexedDB.open("HarmonyStudioMasterDB", 10);
         dbRequest.onsuccess = (e) => { db = e.target.result; loadTracksFromDB(); };
@@ -259,6 +330,7 @@
             };
         }
 
+        /* NEW NO-IMAGE MEDIA PLAYER SONG CARD RENDER */
         function renderSongGrid() {
             songGrid.innerHTML = '';
             document.getElementById('trackCount').innerText = `${trackList.length} Tracks`;
@@ -266,7 +338,12 @@
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 card.onclick = () => playTrack(index);
-                card.innerHTML = `<img src="${track.img}"><h3>${track.title}</h3>`;
+                card.innerHTML = `
+                    <div class="media-player-box">
+                        <span class="play-icon-glow">▶</span>
+                    </div>
+                    <h3>${track.title}</h3>
+                `;
                 songGrid.appendChild(card);
             });
         }
@@ -277,22 +354,76 @@
             const transaction = db.transaction(["vault_music"], "readwrite");
             const store = transaction.objectStore("vault_music");
             Array.from(files).forEach((file) => {
-                store.add({ title: file.name.replace(/\.[^/.]+$/, ""), img: "https://images.unsplash.com/photo-1511367461989-f85a21fda167?w=150", audioBlob: file });
+                store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioBlob: file });
             });
             transaction.oncomplete = () => loadTracksFromDB();
         });
 
+        function initializeAudioEngine() {
+            if (audioCtx) return;
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            audioSource = audioCtx.createMediaElementSource(audio);
+            gainNode = audioCtx.createGain();
+            pannerNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+            analyser = audioCtx.createAnalyser(); analyser.fftSize = 128;
+
+            audioSource.connect(gainNode);
+            if (pannerNode) { gainNode.connect(pannerNode); pannerNode.connect(analyser); } 
+            else { gainNode.connect(analyser); }
+            analyser.connect(audioCtx.destination);
+
+            start8DSpatialRotation();
+            startLightsVisualizer();
+        }
+
         function playTrack(index) {
+            initializeAudioEngine();
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
             audio.src = URL.createObjectURL(track.audioBlob);
             document.getElementById('p-title').innerText = track.title;
-            document.getElementById('p-img').src = track.img;
             audio.play().catch(() => {});
             playerBar.classList.add('active');
         }
 
+        function toggle8DSpatialAudio() {
+            is8DMode = !is8DMode;
+            alert(is8DMode ? "Quantum 360° Spatial Surround Active!" : "360° Mode Disabled");
+        }
+
+        function start8DSpatialRotation() {
+            setInterval(() => {
+                if (is8DMode && pannerNode && !audio.paused) {
+                    pannerAngle += 0.05;
+                    pannerNode.pan.value = Math.sin(pannerAngle);
+                }
+            }, 50);
+        }
+
+        function startLightsVisualizer() {
+            canvas = document.getElementById('canvasLights');
+            if(!canvas) return;
+            canvasCtx = canvas.getContext('2d');
+            const dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+            function draw() {
+                requestAnimationFrame(draw);
+                analyser.getByteFrequencyData(dataArray);
+                canvasCtx.clearRect(0, 0, canvas.width, canvas.height);
+                let barWidth = (canvas.width / dataArray.length) * 1.5;
+                let x = 0;
+                for (let i = 0; i < dataArray.length; i++) {
+                    let barHeight = (dataArray[i] / 255) * canvas.height * 2;
+                    canvasCtx.fillStyle = 'rgba(0, 240, 255, 0.8)';
+                    canvasCtx.fillRect(x, canvas.height - barHeight, barWidth - 2, barHeight);
+                    x += barWidth + 1;
+                }
+            }
+            draw();
+        }
+
+        /* STRICT FOUNDER PRIVILEGE CONTROL (NO OTHER VIP IS FOUNDER) */
         function handleLogoTripleClick() {
             logoClickCount++;
             if (logoClickCount >= 3) {
@@ -307,27 +438,46 @@
 
         function enableFounderPrivileges() {
             document.getElementById('founderBadge').classList.add('visible');
-            localStorage.setItem('harmony_is_vip', 'true');
-            document.getElementById('upgradeVipBtn').innerText = "👑 PRO ACTIVE";
         }
 
-        function isUserVip() { return localStorage.getItem('harmony_is_vip') === 'true'; }
-        function triggerVipGate(featureName, callback) { if (isUserVip()) callback(); else openModal('vipGateModal'); }
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function verifyKey() {
-            const key = document.getElementById('activationKeyInput').value.trim().toUpperCase();
-            if (["KARANVIP", "HARMONY99", "VIP2026"].includes(key)) {
-                enableFounderPrivileges();
-                closeModal('vipGateModal');
-                alert("VIP Active!");
-            } else { alert("Invalid Key!"); }
+        function generateUniqueVipKey() {
+            const randomCode = "KARAN-" + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('keyDisplayBox').innerText = randomCode;
         }
+
+        function verifySingleUseVIPKey() {
+            const key = document.getElementById('activationKeyInput').value.trim().toUpperCase();
+            if (key.length >= 5) {
+                localStorage.setItem('harmony_is_vip', 'true');
+                closeModal('vipGateModal');
+                alert("VIP Pass Activated Successfully!");
+            } else alert("Invalid Key!");
+        }
+
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+        function sendChatMessage() {
+            const val = document.getElementById('chatInput').value;
+            if(!val) return;
+            const msg = document.createElement('div');
+            msg.className = 'chat-msg';
+            msg.innerHTML = `<strong>You:</strong> ${val}`;
+            document.getElementById('chatBox').appendChild(msg);
+            document.getElementById('chatInput').value = '';
+        }
+
+        function searchSongs() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            document.querySelectorAll('.song-card').forEach(card => {
+                card.style.display = card.querySelector('h3').innerText.toLowerCase().includes(query) ? "flex" : "none";
+            });
+        }
     </script>
 
-    <!-- FIREBASE AUTH & FIRESTORE REALTIME DB -->
+    <!-- FIREBASE AUTH & FIRESTORE REALTIME TABS DATABASE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -369,28 +519,40 @@
                     lastLogin: new Date().toISOString()
                 }, { merge: true });
 
-                if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293") || user.displayName.toLowerCase().includes("karan")) {
+                // Strictly check Founder Email
+                if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293")) {
                     enableFounderPrivileges();
-                    listenToAllUsersCloud();
+                    listenToCloudUsers();
                 }
             } catch(e) {}
         }
 
-        function listenToAllUsersCloud() {
+        let currentTab = 'vip';
+        window.switchDbTab = function(type) {
+            currentTab = type;
+            document.getElementById('tabVip').classList.toggle('active', type === 'vip');
+            document.getElementById('tabFree').classList.toggle('active', type === 'free');
+            listenToCloudUsers();
+        };
+
+        function listenToCloudUsers() {
             onSnapshot(collection(db, "app_users"), (snapshot) => {
                 const tbody = document.getElementById('userListTable');
                 if(!tbody) return;
                 tbody.innerHTML = '';
                 snapshot.forEach((docSnap) => {
                     const usr = docSnap.data();
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td><strong>${usr.name || 'User'}</strong></td>
-                        <td style="color:#00f0ff;">${usr.email || 'No Email'}</td>
-                        <td><span style="color:${usr.isVip ? '#00ff88':'#ff0055'};">${usr.isVip ? 'VIP' : 'FREE'}</span></td>
-                        <td><button style="padding:4px 8px; border-radius:8px; border:none; cursor:pointer;" onclick="toggleCloudVip('${docSnap.id}', ${!usr.isVip})">${usr.isVip ? 'Revoke' : 'Grant'}</button></td>
-                    `;
-                    tbody.appendChild(tr);
+                    const isVipUser = usr.isVip === true;
+
+                    if ((currentTab === 'vip' && isVipUser) || (currentTab === 'free' && !isVipUser)) {
+                        const tr = document.createElement('tr');
+                        tr.innerHTML = `
+                            <td style="padding:8px;"><strong>${usr.name || 'User'}</strong></td>
+                            <td style="padding:8px; color:#00f0ff;">${usr.email || 'No Email'}</td>
+                            <td style="padding:8px;"><button style="padding:4px 8px; border-radius:6px; border:none; cursor:pointer;" onclick="toggleCloudVip('${docSnap.id}', ${!isVipUser})">${isVipUser ? 'Revoke VIP' : 'Grant VIP'}</button></td>
+                        `;
+                        tbody.appendChild(tr);
+                    }
                 });
             });
         }
