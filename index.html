@@ -86,9 +86,9 @@
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
         .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        /* OPTIMIZED SONG GRID */
+        /* SONG GRID */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
-        .song-card { background: rgba(22, 22, 32, 0.8); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; will-change: transform; }
+        .song-card { background: rgba(22, 22, 32, 0.8); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
         .song-card:hover { border-color: var(--primary-glow); transform: translateY(-2px); }
         .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
         .play-icon-glow { font-size: 28px; color: var(--primary-glow); }
@@ -170,7 +170,7 @@
             </div>
 
             <div class="action-row-btn">
-                <label for="multiFileInput" class="btn-3d">📁 Import MP3 Tracks</label>
+                <label for="multiFileInput" class="btn-3d" id="importBtnLabel">📁 Import MP3 Tracks</label>
                 <button class="btn-3d btn-3d-pink pro-only" onclick="toggle8DSpatialAudio()">🌌 Quantum 360° Spatial Surround</button>
                 <button class="btn-3d pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer FX Engine</button>
                 <button class="btn-3d btn-3d-gold" onclick="openModal('referralModal')">🎁 Earn 1 Month Free VIP</button>
@@ -374,7 +374,7 @@
         </div>
     </div>
 
-    <!-- MAIN LIGHTWEIGHT JAVASCRIPT ENGINE -->
+    <!-- MAIN LIGHTWEIGHT NON-FREEZING JAVASCRIPT ENGINE -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
@@ -434,27 +434,42 @@
             songGrid.appendChild(fragment);
         }
 
-        multiFileInput.addEventListener('change', (e) => {
-            const files = e.target.files;
+        /* NON-FREEZING CHUNK/BATCH FILE IMPORT ENGINE */
+        multiFileInput.addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
             if (!files || files.length === 0) return;
-            
-            const tx = db.transaction(["saved_songs"], "readwrite");
-            const store = tx.objectStore("saved_songs");
-            
-            Array.from(files).forEach((file) => {
-                const reader = new FileReader();
-                reader.onload = (event) => {
-                    store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: event.target.result });
-                };
-                reader.readAsArrayBuffer(file);
-            });
 
-            tx.oncomplete = () => { setTimeout(() => { loadTracksFromDB(); }, 300); };
+            const btnLabel = document.getElementById('importBtnLabel');
+            const total = files.length;
+
+            for (let i = 0; i < total; i++) {
+                const file = files[i];
+                btnLabel.innerText = `⏳ Saving (${i + 1}/${total})...`;
+                
+                await new Promise((resolve) => {
+                    const reader = new FileReader();
+                    reader.onload = (event) => {
+                        if (db) {
+                            const tx = db.transaction(["saved_songs"], "readwrite");
+                            const store = tx.objectStore("saved_songs");
+                            store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: event.target.result });
+                            tx.oncomplete = () => resolve();
+                            tx.onerror = () => resolve();
+                        } else resolve();
+                    };
+                    reader.readAsArrayBuffer(file);
+                });
+                
+                // Allow UI thread to breathe every 2 files so laptop never freezes
+                if (i % 2 === 0) await new Promise(r => setTimeout(r, 20));
+            }
+
+            btnLabel.innerText = "📁 Import MP3 Tracks";
+            loadTracksFromDB();
         });
 
         audio.addEventListener('ended', () => { playNextTrack(); });
 
-        /* FAST NON-BLOCKING LYRICS FETCH */
         async function fetchLiveLyrics(trackTitle) {
             const container = document.getElementById('lyricsContainer');
             container.innerHTML = `<p class="lyric-line active">🎵 Loading lyrics for "${trackTitle}"...</p>`;
@@ -498,11 +513,10 @@
             container.appendChild(frag);
         }
 
-        /* THROTTLED TIME UPDATE TO PREVENT LAG */
         let lastUpdateTime = 0;
         audio.addEventListener('timeupdate', () => {
             const now = Date.now();
-            if (now - lastUpdateTime < 300) return; // Only run every 300ms
+            if (now - lastUpdateTime < 300) return;
             lastUpdateTime = now;
 
             const currentTime = audio.currentTime;
