@@ -11,7 +11,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
-    <!-- PUSHER WEBSOCKET REALTIME ENGINE -->
+    <!-- REALTIME WEBSOCKETS -->
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -67,7 +67,7 @@
 
         .app-container { display: flex; flex: 1; }
 
-        /* CLEAN SIDEBAR */
+        /* SIDEBAR */
         .sidebar { width: 230px; background: rgba(10, 10, 15, 0.9); padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid rgba(255,255,255,0.08); }
         .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 11px 14px; border-radius: 12px; cursor: pointer; font-size: 12px; transition: 0.2s; border: 1px solid transparent; }
         .nav-item:hover, .nav-item.active { color: white; background: rgba(0, 240, 255, 0.1); border-color: var(--primary-glow); }
@@ -76,7 +76,7 @@
         .pro-only { display: none !important; }
         body.vip-active .pro-only { display: flex !important; }
 
-        /* MOBILE BOTTOM NAV BAR */
+        /* MOBILE NAV */
         .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c12; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
         .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #888; cursor: pointer; }
         .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary-glow); }
@@ -89,15 +89,15 @@
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
         .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        /* SONG GRID */
+        /* SONG GRID & HD ALBUM COVER */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
-        .song-card { background: rgba(22, 22, 32, 0.8); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
+        .song-card { background: rgba(22, 22, 32, 0.8); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; overflow: hidden; }
         .song-card:hover { border-color: var(--primary-glow); transform: translateY(-2px); }
-        .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        .play-icon-glow { font-size: 28px; color: var(--primary-glow); }
+        .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; background-size: cover; background-position: center; }
+        .play-overlay-icon { position: relative; z-index: 2; font-size: 28px; color: var(--primary-glow); text-shadow: 0 0 10px #000; }
         .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
 
-        /* FAST LIGHTWEIGHT LYRICS CONTAINER */
+        /* LYRICS BOX */
         .lyrics-box-container { background: rgba(10, 10, 16, 0.85); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 12px; margin-top: 10px; height: 100px; overflow-y: auto; text-align: center; }
         .lyric-line { font-size: 12px; color: #777; margin: 4px 0; }
         .lyric-line.active { font-size: 14px; font-weight: 900; color: var(--primary-glow); }
@@ -106,6 +106,7 @@
         .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: rgba(12, 12, 18, 0.95); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease; }
         .player-bar.active { transform: translateY(0); }
         .now-playing { display: flex; align-items: center; gap: 10px; width: 35%; }
+        .now-playing-cover { width:42px; height:42px; background:#111; border:1px solid var(--primary-glow); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow); overflow:hidden; background-size:cover; background-position:center; }
         
         .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
         .btn-row { display: flex; gap: 16px; align-items: center; }
@@ -202,10 +203,10 @@
 
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <div style="width:36px; height:36px; background:#111; border:1px solid var(--primary-glow); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow);">🎵</div>
+            <div class="now-playing-cover" id="playerBarCover">🎵</div>
             <div>
                 <h4 id="p-title" style="font-size: 12px;">Ready System</h4>
-                <p style="font-size: 10px; color:#aaa;">Global Harmony Pro</p>
+                <p id="p-artist" style="font-size: 10px; color:#aaa;">Global Harmony Pro</p>
             </div>
         </div>
         <div class="controls">
@@ -219,7 +220,7 @@
         </div>
     </footer>
 
-    <!-- MODALS -->
+    <!-- EQUALIZER MODAL -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -247,7 +248,7 @@
         </div>
     </div>
 
-    <!-- PARTY SYNC ROOM MODAL WITH PUSHER REALTIME CONNECTION -->
+    <!-- PARTY SYNC MODAL -->
     <div class="modal-overlay" id="roomModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -271,6 +272,7 @@
         </div>
     </div>
 
+    <!-- HELP & AI SUPPORT CENTER MODAL -->
     <div class="modal-overlay" id="helpModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -295,6 +297,7 @@
         </div>
     </div>
 
+    <!-- REFERRAL MODAL -->
     <div class="modal-overlay" id="referralModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -316,6 +319,7 @@
         </div>
     </div>
 
+    <!-- UPGRADE PAYWALL MODAL -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card" style="border-color: #ff007f;">
             <div class="modal-header">
@@ -349,6 +353,7 @@
         </div>
     </div>
 
+    <!-- FIRST TIME TERMS MODAL -->
     <div class="modal-overlay" id="termsModal">
         <div class="modal-card">
             <div class="modal-header"><h3>🛡️ First-Time Terms & Agreement</h3></div>
@@ -357,6 +362,7 @@
         </div>
     </div>
 
+    <!-- FOUNDER ADMIN PANEL -->
     <div class="modal-overlay" id="founderAdminModal">
         <div class="modal-card" style="border-color: var(--gold-glow); max-width:620px;">
             <div class="modal-header">
@@ -378,7 +384,7 @@
         </div>
     </div>
 
-    <!-- MAIN JAVASCRIPT ENGINE (WITH PUSHER PARTY SYNC) -->
+    <!-- MAIN ALL-IN-ONE ENGINE -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
@@ -389,7 +395,7 @@
         let is8DMode = false, spatialInterval = null, panPosition = 0, panDirection = 0.05;
         let currentSyncedLyrics = [];
 
-        /* PUSHER REALTIME WEBSOCKET INSTANCE */
+        /* PUSHER WEBSOCKETS */
         let pusher, partyChannel, currentRoomCode = null, isRemoteSyncing = false;
 
         function initPusherEngine() {
@@ -408,7 +414,6 @@
 
             partyChannel = pusher.subscribe(`party-room-${currentRoomCode}`);
             
-            // Listen for Remote Audio Play/Pause Sync Commands from Friend
             partyChannel.bind('sync-playback', (data) => {
                 isRemoteSyncing = true;
                 if (data.action === 'play') {
@@ -420,41 +425,39 @@
                 setTimeout(() => { isRemoteSyncing = false; }, 500);
             });
 
-            // Listen for Realtime Group Messages
             partyChannel.bind('sync-message', (data) => {
                 const chatBox = document.getElementById('chatBox');
                 chatBox.innerHTML += `<div class="chat-msg"><strong>${data.sender}:</strong> ${data.text}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             });
 
-            alert(`Connected to Party Sync Room: ${currentRoomCode}! Doston ke saath audio Sync ho gaya hai.`);
+            alert(`Connected to Party Sync Room: ${currentRoomCode}!`);
         }
 
-        // Broadcast Audio Actions to Friends
-        audio.addEventListener('play', () => {
-            if (!isRemoteSyncing && partyChannel) {
-                // Broadcast Play to Room
+        /* SMART AI ASSISTANT BOT ENGINE */
+        function askAiBot() {
+            const input = document.getElementById('aiInput').value.toLowerCase().trim();
+            if(!input) return;
+            const box = document.getElementById('aiChatBox');
+            box.innerHTML += `<div class="chat-msg"><strong>You:</strong> ${input}</div>`;
+            
+            let reply = "I am Global Harmony AI. Ask me about VIP, Audio Import, or Party Sync!";
+            if (input.includes("free") || input.includes("vip") || input.includes("trial")) {
+                reply = "You can earn 1 Month Free VIP by inviting friends! Enter their registered Gmail in Referral tab.";
+            } else if (input.includes("import") || input.includes("song") || input.includes("save")) {
+                reply = "Click 'Import MP3 Tracks'. Songs are saved permanently in IndexedDB browser vault.";
+            } else if (input.includes("8d") || input.includes("equalizer") || input.includes("bass")) {
+                reply = "Upgrade to VIP to unlock 360° Quantum Spatial Surround and 5-Band Hardware Equalizer.";
             }
-        });
 
-        audio.addEventListener('pause', () => {
-            if (!isRemoteSyncing && partyChannel) {
-                // Broadcast Pause to Room
-            }
-        });
-
-        function sendChatMessage() {
-            const input = document.getElementById('chatInput');
-            const text = input.value.trim();
-            if (!text) return;
-
-            const chatBox = document.getElementById('chatBox');
-            chatBox.innerHTML += `<div class="chat-msg"><strong>You:</strong> ${text}</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-            input.value = '';
+            setTimeout(() => {
+                box.innerHTML += `<div class="chat-msg" style="background:#1f1f32;"><strong>AI Bot:</strong> ${reply}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 300);
+            document.getElementById('aiInput').value = '';
         }
 
-        /* WEB AUDIO API ENGINE */
+        /* WEB AUDIO API DSP */
         let audioCtx, sourceNode, pannerNode;
         let eqFilters = [];
         const freqs = [60, 230, 910, 4000, 14000];
@@ -590,10 +593,11 @@
             trackList.forEach((track, index) => {
                 const card = document.createElement('div');
                 card.className = 'song-card';
+                card.id = `song-card-${index}`;
                 card.onclick = () => playTrack(index);
                 card.innerHTML = `
-                    <div class="media-player-box">
-                        <span class="play-icon-glow">▶</span>
+                    <div class="media-player-box" id="media-box-${index}">
+                        <span class="play-overlay-icon">▶</span>
                     </div>
                     <h3>${track.title}</h3>
                 `;
@@ -725,14 +729,6 @@
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
 
-        function askAiBot() {
-            const input = document.getElementById('aiInput').value.toLowerCase().trim();
-            if(!input) return;
-            const box = document.getElementById('aiChatBox');
-            box.innerHTML += `<div class="chat-msg"><strong>You:</strong> ${input}</div>`;
-            document.getElementById('aiInput').value = '';
-        }
-
         function showFaqAnswer(ans) { alert(ans); }
         function copyReferralLink() { alert("Link Copied!"); }
 
@@ -762,6 +758,16 @@
         function verifySingleUseVIPKey() { localStorage.setItem('harmony_is_vip', 'true'); checkAppPersistentStates(); closeModal('vipGateModal'); }
         function acceptTermsAndClose() { localStorage.setItem('harmony_terms_accepted', 'true'); closeModal('termsModal'); }
 
+        function sendChatMessage() {
+            const val = document.getElementById('chatInput').value;
+            if(!val) return;
+            const msg = document.createElement('div');
+            msg.className = 'chat-msg';
+            msg.innerHTML = `<strong>You:</strong> ${val}`;
+            document.getElementById('chatBox').appendChild(msg);
+            document.getElementById('chatInput').value = '';
+        }
+
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         function searchSongs() {
@@ -772,7 +778,7 @@
         }
     </script>
 
-    <!-- FIREBASE AUTH -->
+    <!-- FIREBASE AUTH & DISPATCH -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
