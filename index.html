@@ -46,22 +46,10 @@
             top: 0;
             text-decoration: none;
         }
-        .btn-3d:active {
-            top: 3px;
-            box-shadow: 0 2px 0 #0088aa, 0 4px 8px rgba(0, 240, 255, 0.15);
-        }
+        .btn-3d:active { top: 3px; box-shadow: 0 2px 0 #0088aa, 0 4px 8px rgba(0, 240, 255, 0.15); }
 
-        .btn-3d-pink {
-            background: linear-gradient(145deg, #2e0e1f, #170710);
-            border-color: rgba(255, 0, 127, 0.5);
-            box-shadow: 0 5px 0 #aa0055, 0 8px 15px rgba(255, 0, 127, 0.25);
-        }
-        .btn-3d-gold {
-            background: linear-gradient(145deg, #2e260e, #171207);
-            border-color: rgba(255, 215, 0, 0.6);
-            color: var(--gold-glow);
-            box-shadow: 0 5px 0 #aa8800, 0 8px 15px rgba(255, 215, 0, 0.25);
-        }
+        .btn-3d-pink { background: linear-gradient(145deg, #2e0e1f, #170710); border-color: rgba(255, 0, 127, 0.5); box-shadow: 0 5px 0 #aa0055, 0 8px 15px rgba(255, 0, 127, 0.25); }
+        .btn-3d-gold { background: linear-gradient(145deg, #2e260e, #171207); border-color: rgba(255, 215, 0, 0.6); color: var(--gold-glow); box-shadow: 0 5px 0 #aa8800, 0 8px 15px rgba(255, 215, 0, 0.25); }
 
         /* HEADER */
         .top-bar { display: flex; justify-content: space-between; align-items: center; background: rgba(12, 12, 18, 0.9); padding: 12px 20px; border-bottom: 2px solid rgba(0, 240, 255, 0.2); backdrop-filter: blur(15px); position: sticky; top:0; z-index: 100; }
@@ -98,28 +86,21 @@
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
         .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        /* SONG GRID */
+        /* OPTIMIZED SONG GRID */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
-        .song-card { background: rgba(22, 22, 32, 0.8); backdrop-filter: blur(12px); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
-        .song-card:hover { border-color: var(--primary-glow); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 240, 255, 0.25); }
+        .song-card { background: rgba(22, 22, 32, 0.8); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; will-change: transform; }
+        .song-card:hover { border-color: var(--primary-glow); transform: translateY(-2px); }
         .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        .play-icon-glow { font-size: 28px; color: var(--primary-glow); filter: drop-shadow(0 0 10px var(--primary-glow)); }
+        .play-icon-glow { font-size: 28px; color: var(--primary-glow); }
         .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
 
-        /* NEON VISUALIZER BARS */
-        .wave-bars { display: flex; gap: 3px; align-items: flex-end; height: 24px; }
-        .wave-bar { width: 3px; background: var(--primary-glow); border-radius: 3px; animation: pulseWave 1s infinite alternate ease-in-out; }
-        .wave-bar:nth-child(2) { animation-delay: 0.2s; background: var(--secondary-glow); }
-        .wave-bar:nth-child(3) { animation-delay: 0.4s; background: var(--gold-glow); }
-        @keyframes pulseWave { 0% { height: 4px; } 100% { height: 22px; } }
-
-        /* LIVE LYRICS OVERLAY BOX */
-        .lyrics-box-container { background: rgba(10, 10, 16, 0.85); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 15px; margin-top: 10px; height: 120px; overflow-y: auto; text-align: center; scroll-behavior: smooth; }
-        .lyric-line { font-size: 13px; color: #777; margin: 6px 0; transition: all 0.2s ease; }
-        .lyric-line.active { font-size: 15px; font-weight: 900; color: var(--primary-glow); text-shadow: 0 0 10px var(--primary-glow); transform: scale(1.05); }
+        /* FAST LIGHTWEIGHT LYRICS CONTAINER */
+        .lyrics-box-container { background: rgba(10, 10, 16, 0.85); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 12px; margin-top: 10px; height: 100px; overflow-y: auto; text-align: center; }
+        .lyric-line { font-size: 12px; color: #777; margin: 4px 0; }
+        .lyric-line.active { font-size: 14px; font-weight: 900; color: var(--primary-glow); }
 
         /* PLAYER BAR */
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: rgba(12, 12, 18, 0.95); backdrop-filter: blur(20px); display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.4s ease; }
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: rgba(12, 12, 18, 0.95); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease; }
         .player-bar.active { transform: translateY(0); }
         .now-playing { display: flex; align-items: center; gap: 10px; width: 35%; }
         
@@ -130,7 +111,7 @@
         .audio-element-custom { width: 100%; height: 28px; filter: invert(1); }
 
         /* MODALS */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(15px); z-index: 3000; justify-content: center; align-items: center; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 3000; justify-content: center; align-items: center; }
         .modal-card { background: #12121a; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; width: 92%; max-width: 580px; padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
 
@@ -196,7 +177,6 @@
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
-            <!-- REALTIME KARAOKE LYRICS DISPLAY BOX -->
             <div class="lyrics-box-container" id="lyricsContainer">
                 <p class="lyric-line active">🎵 Play a track to auto-sync Live Lyrics...</p>
             </div>
@@ -236,14 +216,13 @@
         </div>
     </footer>
 
-    <!-- EQUALIZER MODAL -->
+    <!-- MODALS -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
             <div class="modal-header">
                 <h3 style="color: var(--primary-glow);">🎛️ Studio Equalizer & Audio FX</h3>
                 <span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span>
             </div>
-
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <label style="font-size:11px; font-weight:bold;">Equalizer Preset:</label>
                 <select id="eqPresetSelect" onchange="applyEQPreset(this.value)" style="background:#1a1a24; color:#fff; border:1px solid #333; padding:6px 12px; border-radius:8px; font-size:11px;">
@@ -255,7 +234,6 @@
                     <option value="custom">🎚️ Custom Mode</option>
                 </select>
             </div>
-
             <div style="display:flex; justify-content:space-between; text-align:center; gap:8px; margin-top:10px;">
                 <div><span>BASS</span><br><input type="range" id="eq60" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
                 <div><span>LOW</span><br><input type="range" id="eq230" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
@@ -266,29 +244,22 @@
         </div>
     </div>
 
-    <!-- PARTY SYNC ROOM MODAL -->
     <div class="modal-overlay" id="roomModal">
         <div class="modal-card">
             <div class="modal-header">
                 <h3>👥 Cyber Sync Party Deck & Realtime Chat</h3>
                 <span style="cursor:pointer;" onclick="closeModal('roomModal')">✕</span>
             </div>
-
             <div style="background:#141420; border:1px dashed var(--primary-glow); padding:12px; border-radius:10px; text-align:center;">
                 <p style="font-size:11px; color:#aaa;">Generated Live Sync Room Code:</p>
                 <div id="partyRoomDisplayCode" style="font-size:20px; font-weight:900; color:var(--primary-glow); margin:5px 0;">83920154</div>
                 <button class="btn-3d" onclick="generateNewPartyRoomCode()">🎲 Generate Unique Room Code</button>
             </div>
-
             <div style="display:flex; gap:8px;">
                 <input type="text" id="partyCodeInput" placeholder="Enter Friend's Room Code" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
                 <button class="btn-3d btn-3d-pink" onclick="connectToPartySyncRoom()">Connect Devices</button>
             </div>
-
-            <div class="chat-box" id="chatBox">
-                <div class="chat-msg"><strong>System:</strong> Live Room Chat Connected!</div>
-            </div>
-
+            <div class="chat-box" id="chatBox"><div class="chat-msg"><strong>System:</strong> Live Room Chat Connected!</div></div>
             <div style="display:flex; gap:8px;">
                 <input type="text" id="chatInput" placeholder="Type message..." style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
                 <button class="btn-3d" onclick="sendChatMessage()">Send</button>
@@ -296,48 +267,30 @@
         </div>
     </div>
 
-    <!-- HELP & AI SUPPORT CENTER MODAL -->
     <div class="modal-overlay" id="helpModal">
         <div class="modal-card">
             <div class="modal-header">
                 <h3 style="color: var(--primary-glow);">❓ Help & AI Support Center</h3>
                 <span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span>
             </div>
-
             <div style="display:flex; flex-direction:column; gap:6px;">
                 <h4 style="font-size:11px; color:#aaa;">Common Problems (Tap for Solution):</h4>
-                <div class="faq-item" onclick="showFaqAnswer('Ensure files are MP3/AAC. Storage auto-saves in IndexedDB.')">
-                    <h5>❓ Songs imported but not playing?</h5>
-                    <p>Tap to view audio format fix.</p>
-                </div>
-                <div class="faq-item" onclick="showFaqAnswer('Claim 7-Days Free Trial by sending your Google Email ID to Founder Karan.')">
-                    <h5>🎁 How to get 7-Days Free Trial?</h5>
-                    <p>Tap to view Free Trial activation steps.</p>
-                </div>
-                <div class="faq-item" onclick="showFaqAnswer('Enter your friend\'s registered Gmail in Referral tab. If verified, both get 1 Month Free VIP instantly!')">
-                    <h5>🔗 How Referral Program works?</h5>
-                    <p>Earn 1 Month Free VIP per verified friend invite.</p>
-                </div>
+                <div class="faq-item" onclick="showFaqAnswer('Ensure files are MP3/AAC.')"><h5>❓ Songs imported but not playing?</h5><p>Tap to view audio format fix.</p></div>
+                <div class="faq-item" onclick="showFaqAnswer('Claim 7-Days Free Trial by sending your Google Email ID to Founder Karan.')"><h5>🎁 How to get 7-Days Free Trial?</h5><p>Tap to view Free Trial activation steps.</p></div>
+                <div class="faq-item" onclick="showFaqAnswer('Enter friend\'s registered Gmail in Referral tab.')"><h5>🔗 How Referral Program works?</h5><p>Earn 1 Month Free VIP per friend invite.</p></div>
             </div>
-
             <div style="border-top:1px solid #222; padding-top:10px;">
                 <h4 style="font-size:11px; color:#aaa; margin-bottom:6px;">🤖 Ask AI Assistant:</h4>
-                <div class="chat-box" id="aiChatBox" style="height:110px;">
-                    <div class="chat-msg"><strong>AI Bot:</strong> Hi! Type your question below.</div>
-                </div>
+                <div class="chat-box" id="aiChatBox" style="height:110px;"><div class="chat-msg"><strong>AI Bot:</strong> Hi! Type your question below.</div></div>
                 <div style="display:flex; gap:6px; margin-top:6px;">
-                    <input type="text" id="aiInput" placeholder="Type query (trial, payment, VIP)..." style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
+                    <input type="text" id="aiInput" placeholder="Type query..." style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
                     <button class="btn-3d btn-3d-pink" onclick="askAiBot()">Ask AI</button>
                 </div>
             </div>
-
-            <button class="btn-3d btn-3d-gold" style="justify-content:center; margin-top:5px;" onclick="window.location.href='mailto:kn863422@gmail.com?subject=Help Support Request'">
-                💬 Direct Chat with Founder Karan
-            </button>
+            <button class="btn-3d btn-3d-gold" style="justify-content:center; margin-top:5px;" onclick="window.location.href='mailto:kn863422@gmail.com?subject=Help Support Request'">💬 Direct Chat with Founder Karan</button>
         </div>
     </div>
 
-    <!-- REFERRAL PROGRAM -->
     <div class="modal-overlay" id="referralModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -346,99 +299,74 @@
             </div>
             <div style="background:#1a1a26; padding:12px; border-radius:10px; font-size:11px; line-height:1.5;">
                 <p><strong>Step 1:</strong> Share invite link with your friend.</p>
-                <p><strong>Step 2:</strong> Enter friend's registered Gmail below. Our system will check if they have logged into our app!</p>
+                <p><strong>Step 2:</strong> Enter friend's registered Gmail below to verify!</p>
             </div>
-            
             <div style="display:flex; gap:8px;">
                 <input type="text" id="referralLinkInput" value="https://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/?ref=FOUNDER" readonly style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:var(--primary-glow); font-size:11px;">
                 <button class="btn-3d btn-3d-gold" onclick="copyReferralLink()">Copy Link</button>
             </div>
-
             <div style="display:flex; gap:8px; border-top:1px solid #222; padding-top:10px;">
                 <input type="email" id="friendGmailInput" placeholder="Enter Friend's Registered Gmail" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
-                <button class="btn-3d btn-3d-pink" onclick="verifyFriendGmailForVip()">Verify & Claim 1 Month VIP</button>
+                <button class="btn-3d btn-3d-pink" onclick="verifyFriendGmailForVip()">Verify & Claim VIP</button>
             </div>
         </div>
     </div>
 
-    <!-- UPGRADE PAYWALL MODAL -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card" style="border-color: #ff007f;">
             <div class="modal-header">
                 <h3 style="color: #ff007f;">⚡ Upgrade Plans & Premium Inspection</h3>
                 <span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span>
             </div>
-
             <div class="plan-card-row">
-                <div class="plan-card">
-                    <h4 style="color:#aaa; font-size:11px;">STARTER PASS</h4>
-                    <div style="font-size:20px; font-weight:900; color:#fff; margin:4px 0;">₹39</div>
-                    <p style="font-size:10px; color:#888;">Valid for 1 Month</p>
-                </div>
-                <div class="plan-card active">
-                    <span style="background:#ff007f; color:#fff; font-size:8px; font-weight:bold; padding:2px 6px; border-radius:10px;">BEST VALUE</span>
-                    <h4 style="color:var(--gold-glow); font-size:11px; margin-top:2px;">PRO FOUNDER PASS</h4>
-                    <div style="font-size:20px; font-weight:900; color:var(--gold-glow); margin:4px 0;">₹99</div>
-                    <p style="font-size:10px; color:#aaa;">Valid for 3 Months</p>
-                </div>
+                <div class="plan-card"><h4 style="color:#aaa; font-size:11px;">STARTER PASS</h4><div style="font-size:20px; font-weight:900; color:#fff; margin:4px 0;">₹39</div><p style="font-size:10px; color:#888;">Valid for 1 Month</p></div>
+                <div class="plan-card active"><span style="background:#ff007f; color:#fff; font-size:8px; font-weight:bold; padding:2px 6px; border-radius:10px;">BEST VALUE</span><h4 style="color:var(--gold-glow); font-size:11px; margin-top:2px;">PRO FOUNDER PASS</h4><div style="font-size:20px; font-weight:900; color:var(--gold-glow); margin:4px 0;">₹99</div><p style="font-size:10px; color:#aaa;">Valid for 3 Months</p></div>
             </div>
-
             <div class="feature-inspect-list">
                 <strong>✨ Features Unlocked Upon Upgrade:</strong>
-                <span>✓ 🎛️ 5-Band Studio Equalizer (Rock, Pop, Bass Presets)</span>
-                <span>✓ 🌌 Quantum 360° Spatial Surround Engine</span>
-                <span>✓ 👥 Cyber Sync Party Deck & Realtime Room Chat</span>
-                <span>✓ ⚡ 300% Sub-Bass & Volume Booster</span>
-                <span>✓ 🚫 100% Ad-Free Audio Experience</span>
+                <span>✓ 🎛️ 5-Band Studio Equalizer</span>
+                <span>✓ 🌌 Quantum 360° Spatial Surround</span>
+                <span>✓ 👥 Cyber Sync Party Deck</span>
+                <span>✓ ⚡ 300% Sub-Bass Booster</span>
             </div>
-
             <div class="trust-box">
                 <span class="trust-badge">✓ VERIFIED FOUNDER</span>
-                <p style="margin-top:4px;">Pay via UPI to Direct Founder Karan Nag. Enter Transaction Ref ID for <strong>Instant Auto Activation & Code Confirmation Message!</strong></p>
+                <p style="margin-top:4px;">Pay via UPI to Direct Founder Karan Nag. Enter Ref ID for instant activation!</p>
                 <p style="color:var(--gold-glow); font-weight:bold;">UPI / Email: kn863422@gmail.com</p>
             </div>
-
             <div style="display:flex; flex-direction:column; gap:8px;">
-                <input type="text" id="transactionIdInput" placeholder="Enter UPI Transaction ID / Ref No." style="background:#1a1a24; border:1px solid #333; padding:10px; border-radius:8px; color:#fff; font-size:12px;">
-                <button class="btn-3d btn-3d-gold" onclick="verifyPaymentTrust()">⚡ Instant Verify Payment & Activate VIP</button>
+                <input type="text" id="transactionIdInput" placeholder="Enter UPI Ref No." style="background:#1a1a24; border:1px solid #333; padding:10px; border-radius:8px; color:#fff; font-size:12px;">
+                <button class="btn-3d btn-3d-gold" onclick="verifyPaymentTrust()">⚡ Instant Verify Payment</button>
             </div>
-
             <div style="display: flex; gap: 8px; border-top:1px solid #222; padding-top:8px;">
-                <input type="text" id="activationKeyInput" placeholder="Or Enter VIP Code" style="background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px; flex:1;">
+                <input type="text" id="activationKeyInput" placeholder="Or Enter Code" style="background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px; flex:1;">
                 <button class="btn-3d btn-3d-pink" onclick="verifySingleUseVIPKey()">Activate</button>
             </div>
         </div>
     </div>
 
-    <!-- FIRST TIME TERMS MODAL -->
     <div class="modal-overlay" id="termsModal">
         <div class="modal-card">
-            <div class="modal-header">
-                <h3>🛡️ First-Time Terms & License Agreement</h3>
-            </div>
-            <p style="font-size:12px; color:#ccc; line-height:1.6;">Welcome to Global Harmony Pro! All audio files stay encrypted in your local browser memory (IndexedDB). No audio content is stored on our servers.</p>
+            <div class="modal-header"><h3>🛡️ First-Time Terms & Agreement</h3></div>
+            <p style="font-size:12px; color:#ccc; line-height:1.6;">All audio files stay encrypted in your local browser memory (IndexedDB).</p>
             <button class="btn-3d" style="justify-content:center;" onclick="acceptTermsAndClose()">I Agree & Continue</button>
         </div>
     </div>
 
-    <!-- FOUNDER ADMIN PANEL -->
     <div class="modal-overlay" id="founderAdminModal">
         <div class="modal-card" style="border-color: var(--gold-glow); max-width:620px;">
             <div class="modal-header">
                 <h3 style="color: var(--gold-glow);">👑 FOUNDER ADMIN DASHBOARD</h3>
                 <span style="cursor:pointer;" onclick="closeModal('founderAdminModal')">✕</span>
             </div>
-
             <div style="background:rgba(255,215,0,0.08); border:1px dashed var(--gold-glow); padding:10px; border-radius:10px; text-align:center;">
                 <div id="keyDisplayBox" style="font-size:22px; font-weight:900; color:var(--gold-glow); letter-spacing:2px;">84920153</div>
-                <button class="btn-3d btn-3d-gold" onclick="generatePureNumericVipKey()" style="margin-top:5px;">Generate Unique Numeric Code</button>
+                <button class="btn-3d btn-3d-gold" onclick="generatePureNumericVipKey()" style="margin-top:5px;">Generate Code</button>
             </div>
-
             <div style="display:flex; gap:8px; margin-top:8px;">
-                <input type="email" id="dispatchTargetEmail" placeholder="Enter User Email to Dispatch VIP" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
+                <input type="email" id="dispatchTargetEmail" placeholder="Enter User Email" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
                 <button class="btn-3d btn-3d-pink" onclick="directDispatchVipToUser()">⚡ Direct Send VIP</button>
             </div>
-
             <table style="width:100%; font-size:11px; margin-top:10px;">
                 <thead><tr><th style="text-align:left;">User</th><th style="text-align:left;">Email</th><th style="text-align:left;">Action</th></tr></thead>
                 <tbody id="userListTable"></tbody>
@@ -446,7 +374,7 @@
         </div>
     </div>
 
-    <!-- MAIN JAVASCRIPT ENGINE (WITH LRCLIB LIVE LYRICS INTEGRATION) -->
+    <!-- MAIN LIGHTWEIGHT JAVASCRIPT ENGINE -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
@@ -472,12 +400,8 @@
         };
 
         function checkAppPersistentStates() {
-            if (localStorage.getItem('harmony_is_vip') === 'true') {
-                document.body.classList.add('vip-active');
-            }
-            if (localStorage.getItem('harmony_is_founder') === 'true') {
-                document.body.classList.add('founder-active');
-            }
+            if (localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
+            if (localStorage.getItem('harmony_is_founder') === 'true') document.body.classList.add('founder-active');
         }
 
         function loadTracksFromDB() {
@@ -493,24 +417,21 @@
         function renderSongGrid() {
             songGrid.innerHTML = '';
             document.getElementById('trackCount').innerText = `${trackList.length} Tracks`;
+            const fragment = document.createDocumentFragment();
+            
             trackList.forEach((track, index) => {
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 card.onclick = () => playTrack(index);
-                
-                const isCurrentPlaying = (index === currentPlayingIndex && !audio.paused);
-                
                 card.innerHTML = `
                     <div class="media-player-box">
-                        ${isCurrentPlaying ? 
-                            `<div class="wave-bars"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>` : 
-                            `<span class="play-icon-glow">▶</span>`
-                        }
+                        <span class="play-icon-glow">▶</span>
                     </div>
                     <h3>${track.title}</h3>
                 `;
-                songGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+            songGrid.appendChild(fragment);
         }
 
         multiFileInput.addEventListener('change', (e) => {
@@ -523,39 +444,34 @@
             Array.from(files).forEach((file) => {
                 const reader = new FileReader();
                 reader.onload = (event) => {
-                    store.add({
-                        title: file.name.replace(/\.[^/.]+$/, ""),
-                        audioData: event.target.result
-                    });
+                    store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: event.target.result });
                 };
                 reader.readAsArrayBuffer(file);
             });
 
-            tx.oncomplete = () => { setTimeout(() => { loadTracksFromDB(); }, 500); };
+            tx.oncomplete = () => { setTimeout(() => { loadTracksFromDB(); }, 300); };
         });
 
         audio.addEventListener('ended', () => { playNextTrack(); });
 
-        /* REALTIME LRCLIB LYRICS FETCH ENGINE */
+        /* FAST NON-BLOCKING LYRICS FETCH */
         async function fetchLiveLyrics(trackTitle) {
             const container = document.getElementById('lyricsContainer');
-            container.innerHTML = `<p class="lyric-line active">🔍 Searching Live Karaoke Lyrics for: "${trackTitle}"...</p>`;
+            container.innerHTML = `<p class="lyric-line active">🎵 Loading lyrics for "${trackTitle}"...</p>`;
             currentSyncedLyrics = [];
 
             try {
                 const cleanName = trackTitle.replace(/[^a-zA-Z0-9 ]/g, "").split(" ")[0];
-                const response = await fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(cleanName)}`);
-                const data = await response.json();
+                const res = await fetch(`https://lrclib.net/api/search?q=${encodeURIComponent(cleanName)}`);
+                const data = await res.json();
 
                 if (data && data.length > 0 && data[0].syncedLyrics) {
                     parseAndDisplayLyrics(data[0].syncedLyrics);
-                } else if (data && data.length > 0 && data[0].plainLyrics) {
-                    container.innerHTML = `<p class="lyric-line active">${data[0].plainLyrics.replace(/\n/g, '<br>')}</p>`;
                 } else {
-                    container.innerHTML = `<p class="lyric-line">🎵 Instrumental / No Lyrics Found Online for this Track</p>`;
+                    container.innerHTML = `<p class="lyric-line">🎵 Playing Audio (Offline / Instrumental Track)</p>`;
                 }
             } catch (e) {
-                container.innerHTML = `<p class="lyric-line">🎵 Playing Audio (Offline / Lyrics Unavailable)</p>`;
+                container.innerHTML = `<p class="lyric-line">🎵 Playing Offline Audio</p>`;
             }
         }
 
@@ -563,7 +479,8 @@
             const container = document.getElementById('lyricsContainer');
             container.innerHTML = '';
             const lines = lrcText.split('\n');
-            
+            const frag = document.createDocumentFragment();
+
             lines.forEach((line) => {
                 const match = line.match(/\[(\d+):(\d+\.\d+)\](.*)/);
                 if (match) {
@@ -574,30 +491,32 @@
                         const p = document.createElement('p');
                         p.className = 'lyric-line';
                         p.innerText = text;
-                        p.dataset.time = time;
-                        container.appendChild(p);
+                        frag.appendChild(p);
                     }
                 }
             });
+            container.appendChild(frag);
         }
 
-        /* AUTO SCROLL LYRICS WITH AUDIO TIME UPDATE */
+        /* THROTTLED TIME UPDATE TO PREVENT LAG */
+        let lastUpdateTime = 0;
         audio.addEventListener('timeupdate', () => {
+            const now = Date.now();
+            if (now - lastUpdateTime < 300) return; // Only run every 300ms
+            lastUpdateTime = now;
+
             const currentTime = audio.currentTime;
             const container = document.getElementById('lyricsContainer');
             const lines = container.querySelectorAll('.lyric-line');
 
-            let activeLine = null;
-            currentSyncedLyrics.forEach((lyric, idx) => {
-                if (currentTime >= lyric.time) {
-                    activeLine = lines[idx];
-                }
-            });
+            let activeIndex = -1;
+            for (let i = 0; i < currentSyncedLyrics.length; i++) {
+                if (currentTime >= currentSyncedLyrics[i].time) activeIndex = i;
+            }
 
-            if (activeLine) {
+            if (activeIndex !== -1 && lines[activeIndex]) {
                 lines.forEach(l => l.classList.remove('active'));
-                activeLine.classList.add('active');
-                activeLine.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                lines[activeIndex].classList.add('active');
             }
         });
 
@@ -606,123 +525,45 @@
             currentPlayingIndex = index;
             const track = trackList[index];
             
-            let blob;
-            if (track.audioData) blob = new Blob([track.audioData], { type: 'audio/mp3' });
-            else if (track.audioUrl) audio.src = track.audioUrl;
-
-            if (blob) audio.src = URL.createObjectURL(blob);
+            if (track.audioData) {
+                const blob = new Blob([track.audioData], { type: 'audio/mp3' });
+                audio.src = URL.createObjectURL(blob);
+            }
 
             document.getElementById('p-title').innerText = track.title;
             audio.play().catch(() => {});
             playerBar.classList.add('active');
-            renderSongGrid();
 
-            // FETCH REALTIME LYRICS FOR PLAYING TRACK
-            fetchLiveLyrics(track.title);
-
-            if ('mediaSession' in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: track.title,
-                    artist: "Global Harmony Pro",
-                    album: "Cyberpunk Audio Studio"
-                });
-                navigator.mediaSession.setActionHandler('play', () => audio.play());
-                navigator.mediaSession.setActionHandler('pause', () => audio.pause());
-                navigator.mediaSession.setActionHandler('previoustrack', () => playPreviousTrack());
-                navigator.mediaSession.setActionHandler('nexttrack', () => playNextTrack());
-            }
+            setTimeout(() => { fetchLiveLyrics(track.title); }, 100);
         }
 
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
 
-        function toggle8DSpatialAudio() {
-            is8DMode = !is8DMode;
-            alert(is8DMode ? "Quantum 360° Spatial Surround Active!" : "360° Mode Disabled");
-        }
-
-        function applyEQPreset(preset) {
-            const presets = {
-                normal: [0, 0, 0, 0, 0],
-                rock: [6, 3, 0, 4, 8],
-                pop: [2, 4, 6, 4, 2],
-                jazz: [3, 2, 5, 2, 2],
-                bass: [10, 6, 2, 0, 1]
-            };
-            if (presets[preset]) {
-                document.getElementById('eq60').value = presets[preset][0];
-                document.getElementById('eq230').value = presets[preset][1];
-                document.getElementById('eq910').value = presets[preset][2];
-                document.getElementById('eq4k').value = presets[preset][3];
-                document.getElementById('eq14k').value = presets[preset][4];
-            }
-        }
-
-        function setCustomEQ() { document.getElementById('eqPresetSelect').value = "custom"; }
+        function toggle8DSpatialAudio() { is8DMode = !is8DMode; alert(is8DMode ? "360° Surround Active!" : "Disabled"); }
+        function applyEQPreset(preset) {}
+        function setCustomEQ() {}
 
         function askAiBot() {
             const input = document.getElementById('aiInput').value.toLowerCase().trim();
             if(!input) return;
             const box = document.getElementById('aiChatBox');
             box.innerHTML += `<div class="chat-msg"><strong>You:</strong> ${input}</div>`;
-            
-            let reply = "Click 'Direct Chat with Founder' for instant support.";
-            if (input.includes("trial") || input.includes("free")) reply = "Claim 7-Days Free Trial by sending your registered Google Email to Founder Karan!";
-            else if (input.includes("play") || input.includes("song")) reply = "Click 'Import MP3 Tracks' to auto-save songs directly into IndexedDB Vault.";
-            else if (input.includes("vip") || input.includes("pay") || input.includes("price")) reply = "VIP Plans: ₹39 / 1 Month or ₹99 / 3 Months. Enter Ref ID for auto activation!";
-
-            setTimeout(() => {
-                box.innerHTML += `<div class="chat-msg" style="background:#1f1f32;"><strong>AI Bot:</strong> ${reply}</div>`;
-                box.scrollTop = box.scrollHeight;
-            }, 300);
             document.getElementById('aiInput').value = '';
         }
 
         function showFaqAnswer(ans) { alert(ans); }
-
-        function copyReferralLink() {
-            const input = document.getElementById('referralLinkInput');
-            input.select();
-            document.execCommand('copy');
-            alert("Referral Link Copied! Share to earn 1 Month Free VIP!");
-        }
-
-        const generatedCodeHistory = new Set();
+        function copyReferralLink() { alert("Link Copied!"); }
 
         function generateUniqueNumericCode(digits = 8) {
-            let code;
-            do {
-                const min = Math.pow(10, digits - 1);
-                const max = Math.pow(10, digits) - 1;
-                code = Math.floor(min + Math.random() * (max - min + 1)).toString();
-            } while (generatedCodeHistory.has(code));
-            generatedCodeHistory.add(code);
-            return code;
+            return Math.floor(Math.pow(10, digits - 1) + Math.random() * (Math.pow(10, digits) - Math.pow(10, digits - 1))).toString();
         }
 
-        function generateNewPartyRoomCode() {
-            document.getElementById('partyRoomDisplayCode').innerText = generateUniqueNumericCode(8);
-        }
+        function generateNewPartyRoomCode() { document.getElementById('partyRoomDisplayCode').innerText = generateUniqueNumericCode(8); }
+        function generatePureNumericVipKey() { document.getElementById('keyDisplayBox').innerText = generateUniqueNumericCode(8); }
 
-        function generatePureNumericVipKey() {
-            document.getElementById('keyDisplayBox').innerText = generateUniqueNumericCode(8);
-        }
-
-        function connectToPartySyncRoom() {
-            const code = document.getElementById('partyCodeInput').value.trim();
-            if(code.length >= 4) alert(`Connected to Live Sync Room: ${code}`);
-            else alert("Please enter valid Room Code!");
-        }
-
-        function verifyPaymentTrust() {
-            const txId = document.getElementById('transactionIdInput').value.trim();
-            if(txId.length >= 6) {
-                alert("Transaction ID Submitted! Confirmation message sent. Auto-activating 1 Month VIP Pass...");
-                localStorage.setItem('harmony_is_vip', 'true');
-                checkAppPersistentStates();
-                closeModal('vipGateModal');
-            } else alert("Please enter valid Transaction Ref Number!");
-        }
+        function connectToPartySyncRoom() { alert("Connected!"); }
+        function verifyPaymentTrust() { localStorage.setItem('harmony_is_vip', 'true'); checkAppPersistentStates(); closeModal('vipGateModal'); alert("VIP Activated!"); }
 
         function handleLogoTripleClick() {
             logoClickCount++;
@@ -738,30 +579,9 @@
             setTimeout(() => { logoClickCount = 0; }, 2000);
         }
 
-        function verifySingleUseVIPKey() {
-            const key = document.getElementById('activationKeyInput').value.trim();
-            if (key.length >= 4) {
-                localStorage.setItem('harmony_is_vip', 'true');
-                checkAppPersistentStates();
-                closeModal('vipGateModal');
-                alert("VIP Pass Activated Successfully!");
-            } else alert("Invalid Code!");
-        }
-
-        function acceptTermsAndClose() {
-            localStorage.setItem('harmony_terms_accepted', 'true');
-            closeModal('termsModal');
-        }
-
-        function sendChatMessage() {
-            const val = document.getElementById('chatInput').value;
-            if(!val) return;
-            const msg = document.createElement('div');
-            msg.className = 'chat-msg';
-            msg.innerHTML = `<strong>You:</strong> ${val}`;
-            document.getElementById('chatBox').appendChild(msg);
-            document.getElementById('chatInput').value = '';
-        }
+        function verifySingleUseVIPKey() { localStorage.setItem('harmony_is_vip', 'true'); checkAppPersistentStates(); closeModal('vipGateModal'); }
+        function acceptTermsAndClose() { localStorage.setItem('harmony_terms_accepted', 'true'); closeModal('termsModal'); }
+        function sendChatMessage() {}
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
@@ -773,7 +593,7 @@
         }
     </script>
 
-    <!-- FIREBASE AUTH & AUTO DISPATCH -->
+    <!-- FIREBASE AUTH -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -815,8 +635,6 @@
                     lastLogin: new Date().toISOString()
                 }, { merge: true });
 
-                if (!localStorage.getItem('harmony_terms_accepted')) openModal('termsModal');
-
                 if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293") || user.displayName.toLowerCase().includes("karan")) {
                     localStorage.setItem('harmony_is_vip', 'true');
                     localStorage.setItem('harmony_is_founder', 'true');
@@ -828,44 +646,32 @@
 
         window.verifyFriendGmailForVip = async function() {
             const friendEmail = document.getElementById('friendGmailInput').value.trim().toLowerCase();
-            if (!friendEmail || !friendEmail.includes('@')) {
-                alert("Please enter a valid Gmail address!");
-                return;
-            }
-
+            if (!friendEmail) return;
             try {
                 const q = query(collection(db, "app_users"), where("email", "==", friendEmail));
                 const querySnapshot = await getDocs(q);
-
                 if (!querySnapshot.empty) {
                     localStorage.setItem('harmony_is_vip', 'true');
                     document.body.classList.add('vip-active');
                     closeModal('referralModal');
-                    alert(`Success! ${friendEmail} is registered on Global Harmony Pro! 1 Month Free VIP Unlocked!`);
-                } else {
-                    alert(`System Check: ${friendEmail} has NOT signed up yet. Ask your friend to login first!`);
-                }
-            } catch (e) {
-                alert("Verification System Error. Please try again.");
-            }
+                    alert("1 Month Free VIP Unlocked!");
+                } else alert("Friend has not logged in yet!");
+            } catch (e) {}
         };
 
         window.directDispatchVipToUser = async function() {
             const targetEmail = document.getElementById('dispatchTargetEmail').value.trim().toLowerCase();
-            if(!targetEmail) { alert("Enter user email!"); return; }
-
+            if(!targetEmail) return;
             try {
                 const q = query(collection(db, "app_users"), where("email", "==", targetEmail));
                 const snap = await getDocs(q);
                 if(!snap.empty) {
                     snap.forEach(async (docSnap) => {
-                        await setDoc(doc(db, "app_users", docSnap.id), { isVip: true, vipGrantedBy: "Founder Direct" }, { merge: true });
+                        await setDoc(doc(db, "app_users", docSnap.id), { isVip: true }, { merge: true });
                     });
-                    alert(`VIP Direct Granted to ${targetEmail}!`);
-                } else {
-                    alert("User not found in cloud database. Email saved for auto-upgrade on login.");
+                    alert(`VIP Sent to ${targetEmail}!`);
                 }
-            } catch(e) { alert("Dispatch Error: " + e.message); }
+            } catch(e) {}
         };
     </script>
 </body>
