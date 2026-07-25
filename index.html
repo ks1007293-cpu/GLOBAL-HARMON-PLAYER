@@ -171,7 +171,7 @@
 
             <div class="action-row-btn">
                 <label for="multiFileInput" class="btn-3d" id="importBtnLabel">📁 Import MP3 Tracks</label>
-                <button class="btn-3d btn-3d-pink pro-only" onclick="toggle8DSpatialAudio()">🌌 Quantum 360° Spatial Surround</button>
+                <button class="btn-3d btn-3d-pink pro-only" id="spatialBtnMain" onclick="toggle8DSpatialAudio()">🌌 Quantum 360° Spatial Surround</button>
                 <button class="btn-3d pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer FX Engine</button>
                 <button class="btn-3d btn-3d-gold" onclick="openModal('referralModal')">🎁 Earn 1 Month Free VIP</button>
             </div>
@@ -212,7 +212,7 @@
                 <span class="control-icon pro-only" onclick="openModal('settingsModal')">🎛️</span>
                 <span class="control-icon" onclick="playNextTrack()">⏭</span>
             </div>
-            <audio id="audioElement" class="audio-element-custom" controls></audio>
+            <audio id="audioElement" class="audio-element-custom" controls crossorigin="anonymous"></audio>
         </div>
     </footer>
 
@@ -235,11 +235,11 @@
                 </select>
             </div>
             <div style="display:flex; justify-content:space-between; text-align:center; gap:8px; margin-top:10px;">
-                <div><span>BASS</span><br><input type="range" id="eq60" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>LOW</span><br><input type="range" id="eq230" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>MID</span><br><input type="range" id="eq910" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>TREBLE</span><br><input type="range" id="eq4k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>SPARKLE</span><br><input type="range" id="eq14k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
+                <div><span>BASS (60Hz)</span><br><input type="range" id="eq60" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
+                <div><span>LOW (230Hz)</span><br><input type="range" id="eq230" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
+                <div><span>MID (910Hz)</span><br><input type="range" id="eq910" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
+                <div><span>TREBLE (4kHz)</span><br><input type="range" id="eq4k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
+                <div><span>SPARKLE (14kHz)</span><br><input type="range" id="eq14k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
             </div>
         </div>
     </div>
@@ -374,7 +374,7 @@
         </div>
     </div>
 
-    <!-- MAIN LIGHTWEIGHT NON-FREEZING JAVASCRIPT ENGINE -->
+    <!-- REAL-TIME WEB AUDIO API DSP ENGINE (5-BAND EQ & 8D SPATIAL ROTATOR) -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
@@ -382,8 +382,112 @@
         const multiFileInput = document.getElementById('multiFileInput');
         
         let trackList = [], db, logoClickCount = 0, currentPlayingIndex = -1;
-        let is8DMode = false, currentSyncedLyrics = [];
+        let is8DMode = false, spatialInterval = null, panPosition = 0, panDirection = 0.05;
+        let currentSyncedLyrics = [];
 
+        /* WEB AUDIO API HARDWARE ENGINE BUILD */
+        let audioCtx, sourceNode, pannerNode;
+        let eqFilters = [];
+        const freqs = [60, 230, 910, 4000, 14000];
+
+        function initWebAudioAPI() {
+            if (audioCtx) return;
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            audioCtx = new AudioContext();
+
+            sourceNode = audioCtx.createMediaElementSource(audio);
+
+            // Create 5 Biquad Filters for Real Equalizer
+            eqFilters = freqs.map((freq, index) => {
+                const filter = audioCtx.createBiquadFilter();
+                if (index === 0) filter.type = 'lowshelf';
+                else if (index === freqs.length - 1) filter.type = 'highshelf';
+                else filter.type = 'peaking';
+                filter.frequency.value = freq;
+                filter.gain.value = 0;
+                return filter;
+            });
+
+            // 8D Stereo Panner Node
+            pannerNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+
+            // Connect Chain: Source -> EQ1 -> EQ2 -> EQ3 -> EQ4 -> EQ5 -> Panner -> Destination
+            let currentNode = sourceNode;
+            eqFilters.forEach(f => {
+                currentNode.connect(f);
+                currentNode = f;
+            });
+
+            if (pannerNode) {
+                currentNode.connect(pannerNode);
+                pannerNode.connect(audioCtx.destination);
+            } else {
+                currentNode.connect(audioCtx.destination);
+            }
+        }
+
+        /* REAL-TIME EQUALIZER SLIDER CONTROLLER */
+        function setCustomEQ() {
+            initWebAudioAPI();
+            document.getElementById('eqPresetSelect').value = "custom";
+            const gains = [
+                parseFloat(document.getElementById('eq60').value),
+                parseFloat(document.getElementById('eq230').value),
+                parseFloat(document.getElementById('eq910').value),
+                parseFloat(document.getElementById('eq4k').value),
+                parseFloat(document.getElementById('eq14k').value)
+            ];
+
+            gains.forEach((g, idx) => {
+                if (eqFilters[idx]) eqFilters[idx].gain.setTargetAtTime(g, audioCtx.currentTime, 0.01);
+            });
+        }
+
+        function applyEQPreset(preset) {
+            initWebAudioAPI();
+            const presets = {
+                normal: [0, 0, 0, 0, 0],
+                rock: [6, 3, -1, 4, 7],
+                pop: [-1, 2, 5, 3, -2],
+                jazz: [3, 2, 4, 2, 2],
+                bass: [12, 8, 2, -2, -4]
+            };
+
+            if (presets[preset]) {
+                const vals = presets[preset];
+                document.getElementById('eq60').value = vals[0];
+                document.getElementById('eq230').value = vals[1];
+                document.getElementById('eq910').value = vals[2];
+                document.getElementById('eq4k').value = vals[3];
+                document.getElementById('eq14k').value = vals[4];
+                setCustomEQ();
+            }
+        }
+
+        /* REAL-TIME 8D QUANTUM SPATIAL ROTATION ENGINE */
+        function toggle8DSpatialAudio() {
+            initWebAudioAPI();
+            if (!pannerNode) {
+                alert("8D Audio Panner not supported on this browser version.");
+                return;
+            }
+
+            is8DMode = !is8DMode;
+            if (is8DMode) {
+                alert("🌌 Quantum 360° Spatial Surround Activated! Put on Headphones.");
+                spatialInterval = setInterval(() => {
+                    panPosition += panDirection;
+                    if (panPosition >= 1 || panPosition <= -1) panDirection *= -1;
+                    pannerNode.pan.setTargetAtTime(panPosition, audioCtx.currentTime, 0.05);
+                }, 100);
+            } else {
+                clearInterval(spatialInterval);
+                pannerNode.pan.setTargetAtTime(0, audioCtx.currentTime, 0.05);
+                alert("360° Spatial Audio Disabled");
+            }
+        }
+
+        /* INDEXEDDB VAULT ENGINE */
         const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 12);
         
         dbRequest.onupgradeneeded = (e) => {
@@ -434,7 +538,6 @@
             songGrid.appendChild(fragment);
         }
 
-        /* NON-FREEZING CHUNK/BATCH FILE IMPORT ENGINE */
         multiFileInput.addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             if (!files || files.length === 0) return;
@@ -459,9 +562,7 @@
                     };
                     reader.readAsArrayBuffer(file);
                 });
-                
-                // Allow UI thread to breathe every 2 files so laptop never freezes
-                if (i % 2 === 0) await new Promise(r => setTimeout(r, 20));
+                if (i % 2 === 0) await new Promise(r => setTimeout(r, 15));
             }
 
             btnLabel.innerText = "📁 Import MP3 Tracks";
@@ -545,6 +646,13 @@
             }
 
             document.getElementById('p-title').innerText = track.title;
+            
+            // Resume Audio Context on Play Action
+            initWebAudioAPI();
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
             audio.play().catch(() => {});
             playerBar.classList.add('active');
 
@@ -553,10 +661,6 @@
 
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
-
-        function toggle8DSpatialAudio() { is8DMode = !is8DMode; alert(is8DMode ? "360° Surround Active!" : "Disabled"); }
-        function applyEQPreset(preset) {}
-        function setCustomEQ() {}
 
         function askAiBot() {
             const input = document.getElementById('aiInput').value.toLowerCase().trim();
