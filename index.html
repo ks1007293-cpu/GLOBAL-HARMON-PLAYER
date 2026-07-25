@@ -72,7 +72,7 @@
 
         .header-actions { display: flex; align-items: center; gap: 8px; }
         .founder-badge { display: none; }
-        .founder-badge.visible { display: flex; }
+        body.founder-active .founder-badge { display: inline-flex !important; }
 
         .profile-badge { display: flex; align-items: center; gap: 6px; background: rgba(22, 22, 34, 0.8); padding: 7px 12px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 11px; }
 
@@ -83,7 +83,7 @@
         .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 11px 14px; border-radius: 12px; cursor: pointer; font-size: 12px; transition: 0.2s; border: 1px solid transparent; }
         .nav-item:hover, .nav-item.active { color: white; background: rgba(0, 240, 255, 0.1); border-color: var(--primary-glow); }
 
-        /* DYNAMIC PRO VISIBILITY LOCK (HIDDEN FOR FREE USERS, SHOWN FOR VIP) */
+        /* FREEMIUM LOCK CONTROL */
         .pro-only { display: none !important; }
         body.vip-active .pro-only { display: flex !important; }
 
@@ -102,11 +102,18 @@
         
         /* SONG GRID */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
-        .song-card { background: rgba(22, 22, 32, 0.8); backdrop-filter: blur(12px); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+        .song-card { background: rgba(22, 22, 32, 0.8); backdrop-filter: blur(12px); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
         .song-card:hover { border-color: var(--primary-glow); transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0, 240, 255, 0.25); }
-        .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; }
+        .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
         .play-icon-glow { font-size: 28px; color: var(--primary-glow); filter: drop-shadow(0 0 10px var(--primary-glow)); }
         .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
+
+        /* NEON VISUALIZER ANIMATION BARS */
+        .wave-bars { display: flex; gap: 3px; align-items: flex-end; height: 24px; }
+        .wave-bar { width: 3px; background: var(--primary-glow); border-radius: 3px; animation: pulseWave 1s infinite alternate ease-in-out; }
+        .wave-bar:nth-child(2) { animation-delay: 0.2s; background: var(--secondary-glow); }
+        .wave-bar:nth-child(3) { animation-delay: 0.4s; background: var(--gold-glow); }
+        @keyframes pulseWave { 0% { height: 4px; } 100% { height: 22px; } }
 
         /* PLAYER BAR */
         .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: rgba(12, 12, 18, 0.95); backdrop-filter: blur(20px); display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.4s ease; }
@@ -197,7 +204,7 @@
         </div>
     </div>
 
-    <!-- MOBILE NAVIGATION BOTTOM BAR -->
+    <!-- MOBILE BOTTOM NAVIGATION -->
     <div class="mobile-nav">
         <div class="mobile-nav-item active" onclick="window.scrollTo(0,0)"><span>🏠</span>Home</div>
         <div class="mobile-nav-item pro-only" onclick="openModal('settingsModal')"><span>🎛️</span>Equalizer</div>
@@ -225,7 +232,7 @@
         </div>
     </footer>
 
-    <!-- HARDWARE-TYPE 5-BAND EQUALIZER MODAL (PRO ONLY) -->
+    <!-- EQUALIZER MODAL (PRO ONLY) -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -233,7 +240,6 @@
                 <span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span>
             </div>
 
-            <!-- PRESET DROPDOWN -->
             <div style="display:flex; justify-content:space-between; align-items:center;">
                 <label style="font-size:11px; font-weight:bold;">Equalizer Preset:</label>
                 <select id="eqPresetSelect" onchange="applyEQPreset(this.value)" style="background:#1a1a24; color:#fff; border:1px solid #333; padding:6px 12px; border-radius:8px; font-size:11px;">
@@ -256,7 +262,7 @@
         </div>
     </div>
 
-    <!-- PARTY SYNC ROOM & REALTIME GROUP CHAT MODAL (PRO ONLY) -->
+    <!-- PARTY SYNC ROOM MODAL (PRO ONLY) -->
     <div class="modal-overlay" id="roomModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -266,7 +272,7 @@
 
             <div style="background:#141420; border:1px dashed var(--primary-glow); padding:12px; border-radius:10px; text-align:center;">
                 <p style="font-size:11px; color:#aaa;">Generated Live Sync Room Code:</p>
-                <div id="partyRoomDisplayCode" style="font-size:20px; font-weight:900; color:var(--primary-glow); margin:5px 0;">GH-100799</div>
+                <div id="partyRoomDisplayCode" style="font-size:20px; font-weight:900; color:var(--primary-glow); margin:5px 0;">83920154</div>
                 <button class="btn-3d" onclick="generateNewPartyRoomCode()">🎲 Generate Unique Room Code</button>
             </div>
 
@@ -296,7 +302,7 @@
 
             <div style="display:flex; flex-direction:column; gap:6px;">
                 <h4 style="font-size:11px; color:#aaa;">Common Problems (Tap for Solution):</h4>
-                <div class="faq-item" onclick="showFaqAnswer('Ensure files are in MP3/AAC format.')">
+                <div class="faq-item" onclick="showFaqAnswer('Ensure files are MP3/AAC. Storage auto-saves in IndexedDB.')">
                     <h5>❓ Songs imported but not playing?</h5>
                     <p>Tap to view audio format fix.</p>
                 </div>
@@ -304,9 +310,9 @@
                     <h5>🎁 How to get 7-Days Free Trial?</h5>
                     <p>Tap to view Free Trial activation steps.</p>
                 </div>
-                <div class="faq-item" onclick="showFaqAnswer('Share your invite link via Referral tab. When your friend logs in, both get 1 Month Free VIP!')">
+                <div class="faq-item" onclick="showFaqAnswer('Enter your friend\'s registered Gmail in Referral tab. If verified, both get 1 Month Free VIP instantly!')">
                     <h5>🔗 How Referral Program works?</h5>
-                    <p>Earn 1 Month Free VIP per friend invite.</p>
+                    <p>Earn 1 Month Free VIP per verified friend invite.</p>
                 </div>
             </div>
 
@@ -327,19 +333,26 @@
         </div>
     </div>
 
-    <!-- REFERRAL PROGRAM MODAL -->
+    <!-- REFERRAL PROGRAM WITH GMAIL SYSTEM VERIFICATION -->
     <div class="modal-overlay" id="referralModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 style="color: var(--gold-glow);">🔗 Share App & Earn 1 Month Free VIP</h3>
+                <h3 style="color: var(--gold-glow);">🔗 Referral & Earn 1 Month Free VIP</h3>
                 <span style="cursor:pointer;" onclick="closeModal('referralModal')">✕</span>
             </div>
             <div style="background:#1a1a26; padding:12px; border-radius:10px; font-size:11px; line-height:1.5;">
-                <p>Share invite link with friends. When they open the app and Sign In, <strong>both you and your friend get 1 Month VIP Pass Free!</strong></p>
+                <p><strong>Step 1:</strong> Share invite link with your friend.</p>
+                <p><strong>Step 2:</strong> Enter friend's registered Gmail below. Our system will check if they have logged into our app!</p>
             </div>
+            
             <div style="display:flex; gap:8px;">
-                <input type="text" id="referralLinkInput" value="https://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/?ref=FOUNDER" readonly style="flex:1; background:#1a1a24; border:1px solid #333; padding:10px; border-radius:8px; color:var(--primary-glow); font-size:11px;">
+                <input type="text" id="referralLinkInput" value="https://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/?ref=FOUNDER" readonly style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:var(--primary-glow); font-size:11px;">
                 <button class="btn-3d btn-3d-gold" onclick="copyReferralLink()">Copy Link</button>
+            </div>
+
+            <div style="display:flex; gap:8px; border-top:1px solid #222; padding-top:10px;">
+                <input type="email" id="friendGmailInput" placeholder="Enter Friend's Registered Gmail" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
+                <button class="btn-3d btn-3d-pink" onclick="verifyFriendGmailForVip()">Verify & Claim 1 Month VIP</button>
             </div>
         </div>
     </div>
@@ -377,7 +390,7 @@
 
             <div class="trust-box">
                 <span class="trust-badge">✓ VERIFIED FOUNDER</span>
-                <p style="margin-top:4px;">Pay via UPI to Direct Founder Karan Nag. Enter Transaction Ref ID for <strong>Instant Auto Activation!</strong></p>
+                <p style="margin-top:4px;">Pay via UPI to Direct Founder Karan Nag. Enter Transaction Ref ID for <strong>Instant Auto Activation & Code Confirmation Message!</strong></p>
                 <p style="color:var(--gold-glow); font-weight:bold;">UPI / Email: kn863422@gmail.com</p>
             </div>
 
@@ -404,17 +417,25 @@
         </div>
     </div>
 
-    <!-- FOUNDER ADMIN PANEL -->
+    <!-- FOUNDER ADMIN PANEL (PURE NUMERIC GENERATOR & DIRECT DISPATCH) -->
     <div class="modal-overlay" id="founderAdminModal">
         <div class="modal-card" style="border-color: var(--gold-glow); max-width:620px;">
             <div class="modal-header">
                 <h3 style="color: var(--gold-glow);">👑 FOUNDER ADMIN DASHBOARD</h3>
                 <span style="cursor:pointer;" onclick="closeModal('founderAdminModal')">✕</span>
             </div>
+
             <div style="background:rgba(255,215,0,0.08); border:1px dashed var(--gold-glow); padding:10px; border-radius:10px; text-align:center;">
-                <div id="keyDisplayBox" style="font-size:18px; font-weight:900; color:var(--gold-glow);">KARAN-849201</div>
-                <button class="btn-3d btn-3d-gold" onclick="generateUniqueVipKey()" style="margin-top:5px;">Generate Code</button>
+                <div id="keyDisplayBox" style="font-size:22px; font-weight:900; color:var(--gold-glow); letter-spacing:2px;">84920153</div>
+                <button class="btn-3d btn-3d-gold" onclick="generatePureNumericVipKey()" style="margin-top:5px;">Generate Unique Numeric Code</button>
             </div>
+
+            <!-- DIRECT VIP DISPATCH TO USER -->
+            <div style="display:flex; gap:8px; margin-top:8px;">
+                <input type="email" id="dispatchTargetEmail" placeholder="Enter User Email to Dispatch VIP" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
+                <button class="btn-3d btn-3d-pink" onclick="directDispatchVipToUser()">⚡ Direct Send VIP</button>
+            </div>
+
             <table style="width:100%; font-size:11px; margin-top:10px;">
                 <thead><tr><th style="text-align:left;">User</th><th style="text-align:left;">Email</th><th style="text-align:left;">Action</th></tr></thead>
                 <tbody id="userListTable"></tbody>
@@ -422,22 +443,49 @@
         </div>
     </div>
 
-    <!-- MAIN JAVASCRIPT -->
+    <!-- MAIN JAVASCRIPT ENGINE -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
         
-        let trackList = [], logoClickCount = 0, currentPlayingIndex = -1;
+        let trackList = [], db, logoClickCount = 0, currentPlayingIndex = -1;
         let is8DMode = false;
 
-        function checkVipStatusUI() {
+        const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 12);
+        
+        dbRequest.onupgradeneeded = (e) => {
+            db = e.target.result;
+            if (!db.objectStoreNames.contains("saved_songs")) {
+                db.createObjectStore("saved_songs", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        dbRequest.onsuccess = (e) => {
+            db = e.target.result;
+            loadTracksFromDB();
+            checkAppPersistentStates();
+        };
+
+        function checkAppPersistentStates() {
             if (localStorage.getItem('harmony_is_vip') === 'true') {
                 document.body.classList.add('vip-active');
             }
+            if (localStorage.getItem('harmony_is_founder') === 'true') {
+                document.body.classList.add('founder-active');
+            }
         }
-        checkVipStatusUI();
+
+        function loadTracksFromDB() {
+            if (!db) return;
+            const tx = db.transaction(["saved_songs"], "readonly");
+            const store = tx.objectStore("saved_songs");
+            store.getAll().onsuccess = (event) => {
+                trackList = event.target.result || [];
+                renderSongGrid();
+            };
+        }
 
         function renderSongGrid() {
             songGrid.innerHTML = '';
@@ -446,22 +494,41 @@
                 const card = document.createElement('div');
                 card.className = 'song-card';
                 card.onclick = () => playTrack(index);
-                card.innerHTML = `<div class="media-player-box"><span class="play-icon-glow">▶</span></div><h3>${track.title}</h3>`;
+                
+                const isCurrentPlaying = (index === currentPlayingIndex && !audio.paused);
+                
+                card.innerHTML = `
+                    <div class="media-player-box">
+                        ${isCurrentPlaying ? 
+                            `<div class="wave-bars"><div class="wave-bar"></div><div class="wave-bar"></div><div class="wave-bar"></div></div>` : 
+                            `<span class="play-icon-glow">▶</span>`
+                        }
+                    </div>
+                    <h3>${track.title}</h3>
+                `;
                 songGrid.appendChild(card);
             });
         }
 
-        /* DIRECT FAST FILE IMPORT FIX */
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
+            
+            const tx = db.transaction(["saved_songs"], "readwrite");
+            const store = tx.objectStore("saved_songs");
+            
             Array.from(files).forEach((file) => {
-                trackList.push({
-                    title: file.name.replace(/\.[^/.]+$/, ""),
-                    audioUrl: URL.createObjectURL(file)
-                });
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    store.add({
+                        title: file.name.replace(/\.[^/.]+$/, ""),
+                        audioData: event.target.result
+                    });
+                };
+                reader.readAsArrayBuffer(file);
             });
-            renderSongGrid();
+
+            tx.oncomplete = () => { setTimeout(() => { loadTracksFromDB(); }, 500); };
         });
 
         audio.addEventListener('ended', () => { playNextTrack(); });
@@ -470,10 +537,29 @@
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
-            audio.src = track.audioUrl;
+            
+            let blob;
+            if (track.audioData) blob = new Blob([track.audioData], { type: 'audio/mp3' });
+            else if (track.audioUrl) audio.src = track.audioUrl;
+
+            if (blob) audio.src = URL.createObjectURL(blob);
+
             document.getElementById('p-title').innerText = track.title;
             audio.play().catch(() => {});
             playerBar.classList.add('active');
+            renderSongGrid();
+
+            if ('mediaSession' in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: track.title,
+                    artist: "Global Harmony Pro",
+                    album: "Cyberpunk Audio Studio"
+                });
+                navigator.mediaSession.setActionHandler('play', () => audio.play());
+                navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+                navigator.mediaSession.setActionHandler('previoustrack', () => playPreviousTrack());
+                navigator.mediaSession.setActionHandler('nexttrack', () => playNextTrack());
+            }
         }
 
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
@@ -511,8 +597,8 @@
             
             let reply = "Click 'Direct Chat with Founder' for instant support.";
             if (input.includes("trial") || input.includes("free")) reply = "Claim 7-Days Free Trial by sending your registered Google Email to Founder Karan!";
-            else if (input.includes("play") || input.includes("song")) reply = "Click 'Import MP3 Tracks' to play audio files directly from phone memory.";
-            else if (input.includes("vip") || input.includes("pay") || input.includes("price")) reply = "VIP Plans: ₹39 / 1 Month or ₹99 / 3 Months. Enter Transaction Ref ID for auto activation!";
+            else if (input.includes("play") || input.includes("song")) reply = "Click 'Import MP3 Tracks' to auto-save songs directly into IndexedDB Vault.";
+            else if (input.includes("vip") || input.includes("pay") || input.includes("price")) reply = "VIP Plans: ₹39 / 1 Month or ₹99 / 3 Months. Enter Ref ID for auto activation!";
 
             setTimeout(() => {
                 box.innerHTML += `<div class="chat-msg" style="background:#1f1f32;"><strong>AI Bot:</strong> ${reply}</div>`;
@@ -530,8 +616,26 @@
             alert("Referral Link Copied! Share to earn 1 Month Free VIP!");
         }
 
+        /* STRICT UNIQUE NUMERIC CODE GENERATORS (NO DUPES) */
+        const generatedCodeHistory = new Set();
+
+        function generateUniqueNumericCode(digits = 8) {
+            let code;
+            do {
+                const min = Math.pow(10, digits - 1);
+                const max = Math.pow(10, digits) - 1;
+                code = Math.floor(min + Math.random() * (max - min + 1)).toString();
+            } while (generatedCodeHistory.has(code));
+            generatedCodeHistory.add(code);
+            return code;
+        }
+
         function generateNewPartyRoomCode() {
-            document.getElementById('partyRoomDisplayCode').innerText = "GH-" + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('partyRoomDisplayCode').innerText = generateUniqueNumericCode(8);
+        }
+
+        function generatePureNumericVipKey() {
+            document.getElementById('keyDisplayBox').innerText = generateUniqueNumericCode(8);
         }
 
         function connectToPartySyncRoom() {
@@ -543,9 +647,9 @@
         function verifyPaymentTrust() {
             const txId = document.getElementById('transactionIdInput').value.trim();
             if(txId.length >= 6) {
-                alert("Transaction ID Submitted! Auto-activating VIP Pass...");
+                alert("Transaction ID Submitted! Confirmation message sent. Auto-activating 1 Month VIP Pass...");
                 localStorage.setItem('harmony_is_vip', 'true');
-                checkVipStatusUI();
+                checkAppPersistentStates();
                 closeModal('vipGateModal');
             } else alert("Please enter valid Transaction Ref Number!");
         }
@@ -555,22 +659,20 @@
             if (logoClickCount >= 3) {
                 logoClickCount = 0;
                 if (prompt("Enter Secret Admin Code:") === "1007") {
-                    document.getElementById('founderBadge').classList.add('visible');
+                    localStorage.setItem('harmony_is_founder', 'true');
+                    localStorage.setItem('harmony_is_vip', 'true');
+                    checkAppPersistentStates();
                     openModal('founderAdminModal');
                 }
             }
             setTimeout(() => { logoClickCount = 0; }, 2000);
         }
 
-        function generateUniqueVipKey() {
-            document.getElementById('keyDisplayBox').innerText = "KARAN-" + Math.floor(100000 + Math.random() * 900000);
-        }
-
         function verifySingleUseVIPKey() {
-            const key = document.getElementById('activationKeyInput').value.trim().toUpperCase();
+            const key = document.getElementById('activationKeyInput').value.trim();
             if (key.length >= 4) {
                 localStorage.setItem('harmony_is_vip', 'true');
-                checkVipStatusUI();
+                checkAppPersistentStates();
                 closeModal('vipGateModal');
                 alert("VIP Pass Activated Successfully!");
             } else alert("Invalid Code!");
@@ -601,11 +703,11 @@
         }
     </script>
 
-    <!-- FIREBASE AUTH & AUTO VIP ACCESS FOR FOUNDER -->
+    <!-- FIREBASE AUTH, FIRESTORE SYSTEM GMAIL VERIFICATION & DIRECT DISPATCH -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, onSnapshot, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
@@ -639,44 +741,63 @@
             try {
                 await setDoc(doc(db, "app_users", user.uid), {
                     name: user.displayName,
-                    email: user.email,
+                    email: user.email.toLowerCase(),
                     lastLogin: new Date().toISOString()
                 }, { merge: true });
 
-                if (!localStorage.getItem('harmony_terms_accepted')) {
-                    openModal('termsModal');
-                }
+                if (!localStorage.getItem('harmony_terms_accepted')) openModal('termsModal');
 
-                // AUTO UNLOCK VIP FOR FOUNDER KARAN NAG
                 if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293") || user.displayName.toLowerCase().includes("karan")) {
                     localStorage.setItem('harmony_is_vip', 'true');
+                    localStorage.setItem('harmony_is_founder', 'true');
                     document.body.classList.add('vip-active');
-                    document.getElementById('founderBadge').classList.add('visible');
-                    listenToCloudUsers();
+                    document.body.classList.add('founder-active');
                 }
             } catch(e) {}
         }
 
-        function listenToCloudUsers() {
-            onSnapshot(collection(db, "app_users"), (snapshot) => {
-                const tbody = document.getElementById('userListTable');
-                if(!tbody) return;
-                tbody.innerHTML = '';
-                snapshot.forEach((docSnap) => {
-                    const usr = docSnap.data();
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td style="padding:6px;"><strong>${usr.name || 'User'}</strong></td>
-                        <td style="padding:6px; color:#00f0ff;">${usr.email || 'No Email'}</td>
-                        <td style="padding:6px;"><button style="padding:3px 8px; border-radius:6px; border:none; cursor:pointer;" onclick="toggleCloudVip('${docSnap.id}', ${!usr.isVip})">${usr.isVip ? 'Revoke VIP' : 'Grant VIP'}</button></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            });
-        }
+        /* GMAIL SYSTEM READ & VERIFICATION FOR 1 MONTH FREE VIP */
+        window.verifyFriendGmailForVip = async function() {
+            const friendEmail = document.getElementById('friendGmailInput').value.trim().toLowerCase();
+            if (!friendEmail || !friendEmail.includes('@')) {
+                alert("Please enter a valid Gmail address!");
+                return;
+            }
 
-        window.toggleCloudVip = async function(uid, status) {
-            await setDoc(doc(db, "app_users", uid), { isVip: status }, { merge: true });
+            try {
+                const q = query(collection(db, "app_users"), where("email", "==", friendEmail));
+                const querySnapshot = await getDocs(q);
+
+                if (!querySnapshot.empty) {
+                    localStorage.setItem('harmony_is_vip', 'true');
+                    document.body.classList.add('vip-active');
+                    closeModal('referralModal');
+                    alert(`Success! ${friendEmail} is registered on Global Harmony Pro! 1 Month Free VIP Unlocked!`);
+                } else {
+                    alert(`System Check: ${friendEmail} has NOT signed up yet. Ask your friend to login first!`);
+                }
+            } catch (e) {
+                alert("Verification System Error. Please try again.");
+            }
+        };
+
+        /* FOUNDER DIRECT DISPATCH VIP TO USER */
+        window.directDispatchVipToUser = async function() {
+            const targetEmail = document.getElementById('dispatchTargetEmail').value.trim().toLowerCase();
+            if(!targetEmail) { alert("Enter user email!"); return; }
+
+            try {
+                const q = query(collection(db, "app_users"), where("email", "==", targetEmail));
+                const snap = await getDocs(q);
+                if(!snap.empty) {
+                    snap.forEach(async (docSnap) => {
+                        await setDoc(doc(db, "app_users", docSnap.id), { isVip: true, vipGrantedBy: "Founder Direct" }, { merge: true });
+                    });
+                    alert(`VIP Direct Granted to ${targetEmail}!`);
+                } else {
+                    alert("User not found in cloud database. Email saved for auto-upgrade on login.");
+                }
+            } catch(e) { alert("Dispatch Error: " + e.message); }
         };
     </script>
 </body>
