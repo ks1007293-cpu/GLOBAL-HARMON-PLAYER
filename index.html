@@ -83,7 +83,7 @@
         .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 11px 14px; border-radius: 12px; cursor: pointer; font-size: 12px; transition: 0.2s; border: 1px solid transparent; }
         .nav-item:hover, .nav-item.active { color: white; background: rgba(0, 240, 255, 0.1); border-color: var(--primary-glow); }
 
-        /* DYNAMIC PRO VISIBILITY LOCK (HIDDEN FOR FREE USERS) */
+        /* DYNAMIC PRO VISIBILITY LOCK (HIDDEN FOR FREE USERS, SHOWN FOR VIP) */
         .pro-only { display: none !important; }
         body.vip-active .pro-only { display: flex !important; }
 
@@ -296,7 +296,7 @@
 
             <div style="display:flex; flex-direction:column; gap:6px;">
                 <h4 style="font-size:11px; color:#aaa;">Common Problems (Tap for Solution):</h4>
-                <div class="faq-item" onclick="showFaqAnswer('Ensure files are in MP3 format and check browser audio permissions.')">
+                <div class="faq-item" onclick="showFaqAnswer('Ensure files are in MP3/AAC format.')">
                     <h5>❓ Songs imported but not playing?</h5>
                     <p>Tap to view audio format fix.</p>
                 </div>
@@ -429,26 +429,15 @@
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
         
-        let trackList = [], db, logoClickCount = 0, currentPlayingIndex = -1;
+        let trackList = [], logoClickCount = 0, currentPlayingIndex = -1;
         let is8DMode = false;
-
-        const dbRequest = indexedDB.open("HarmonyStudioMasterDB", 10);
-        dbRequest.onsuccess = (e) => { db = e.target.result; loadTracksFromDB(); checkVipStatusUI(); };
 
         function checkVipStatusUI() {
             if (localStorage.getItem('harmony_is_vip') === 'true') {
                 document.body.classList.add('vip-active');
             }
         }
-
-        function loadTracksFromDB() {
-            if (!db) return;
-            const transaction = db.transaction(["vault_music"], "readonly");
-            transaction.objectStore("vault_music").getAll().onsuccess = (event) => {
-                trackList = event.target.result || [];
-                renderSongGrid();
-            };
-        }
+        checkVipStatusUI();
 
         function renderSongGrid() {
             songGrid.innerHTML = '';
@@ -462,15 +451,17 @@
             });
         }
 
+        /* DIRECT FAST FILE IMPORT FIX */
         multiFileInput.addEventListener('change', (e) => {
             const files = e.target.files;
             if (!files || files.length === 0) return;
-            const transaction = db.transaction(["vault_music"], "readwrite");
-            const store = transaction.objectStore("vault_music");
             Array.from(files).forEach((file) => {
-                store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioBlob: file });
+                trackList.push({
+                    title: file.name.replace(/\.[^/.]+$/, ""),
+                    audioUrl: URL.createObjectURL(file)
+                });
             });
-            transaction.oncomplete = () => loadTracksFromDB();
+            renderSongGrid();
         });
 
         audio.addEventListener('ended', () => { playNextTrack(); });
@@ -479,7 +470,7 @@
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
-            audio.src = URL.createObjectURL(track.audioBlob);
+            audio.src = track.audioUrl;
             document.getElementById('p-title').innerText = track.title;
             audio.play().catch(() => {});
             playerBar.classList.add('active');
@@ -510,9 +501,7 @@
             }
         }
 
-        function setCustomEQ() {
-            document.getElementById('eqPresetSelect').value = "custom";
-        }
+        function setCustomEQ() { document.getElementById('eqPresetSelect').value = "custom"; }
 
         function askAiBot() {
             const input = document.getElementById('aiInput').value.toLowerCase().trim();
@@ -612,7 +601,7 @@
         }
     </script>
 
-    <!-- FIREBASE AUTH & FIRESTORE REALTIME SYNC -->
+    <!-- FIREBASE AUTH & AUTO VIP ACCESS FOR FOUNDER -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -658,7 +647,10 @@
                     openModal('termsModal');
                 }
 
-                if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293")) {
+                // AUTO UNLOCK VIP FOR FOUNDER KARAN NAG
+                if (user.email.toLowerCase().includes("kn863422") || user.email.toLowerCase().includes("ks1007293") || user.displayName.toLowerCase().includes("karan")) {
+                    localStorage.setItem('harmony_is_vip', 'true');
+                    document.body.classList.add('vip-active');
                     document.getElementById('founderBadge').classList.add('visible');
                     listenToCloudUsers();
                 }
