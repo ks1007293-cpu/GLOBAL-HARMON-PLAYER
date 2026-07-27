@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#00f0ff">
     <title>Global Harmony Pro - Cyberpunk Studio</title>
 
-    <link rel="manifest" href="manifest.json?v=3">
+    <link rel="manifest" href="manifest.json?v=4">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
     <!-- PUSHER REALTIME ENGINE -->
@@ -154,7 +154,8 @@
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <button class="btn-3d btn-3d-gold founder-badge" id="founderBadge" onclick="openModal('founderAdminModal')">👑 FOUNDER PANEL</button>
+            <!-- DIRECT LAUNCH ADMIN APP BUTTON FOR FOUNDER -->
+            <button class="btn-3d btn-3d-gold founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL APP</button>
             <button class="btn-3d" onclick="openModal('helpModal')">❓ HELP & AI</button>
             <button class="btn-3d btn-3d-pink" id="upgradeVipBtn" onclick="openModal('vipGateModal')">⚡ UPGRADE</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
@@ -388,28 +389,6 @@
             <div class="modal-header"><h3>🛡️ First-Time Terms & Agreement</h3></div>
             <p style="font-size:12px; color:#ccc; line-height:1.6;">All audio files stay encrypted in your local browser memory (IndexedDB).</p>
             <button class="btn-3d" style="justify-content:center;" onclick="acceptTermsAndClose()">I Agree & Continue</button>
-        </div>
-    </div>
-
-    <!-- FOUNDER ADMIN PANEL -->
-    <div class="modal-overlay" id="founderAdminModal">
-        <div class="modal-card" style="border-color: var(--gold-glow); max-width:620px;">
-            <div class="modal-header">
-                <h3 style="color: var(--gold-glow);">👑 FOUNDER ADMIN DASHBOARD</h3>
-                <span style="cursor:pointer;" onclick="closeModal('founderAdminModal')">✕</span>
-            </div>
-            <div style="background:rgba(255,215,0,0.08); border:1px dashed var(--gold-glow); padding:10px; border-radius:10px; text-align:center;">
-                <div id="keyDisplayBox" style="font-size:22px; font-weight:900; color:var(--gold-glow); letter-spacing:2px;">84920153</div>
-                <button class="btn-3d btn-3d-gold" onclick="generatePureNumericVipKey()" style="margin-top:5px;">Generate Code</button>
-            </div>
-            <div style="display:flex; gap:8px; margin-top:8px;">
-                <input type="email" id="dispatchTargetEmail" placeholder="Enter User Email" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
-                <button class="btn-3d btn-3d-pink" onclick="directDispatchVipToUser()">⚡ Direct Send VIP</button>
-            </div>
-            <table style="width:100%; font-size:11px; margin-top:10px;">
-                <thead><tr><th style="text-align:left;">User</th><th style="text-align:left;">Email</th><th style="text-align:left;">Action</th></tr></thead>
-                <tbody id="userListTable"></tbody>
-            </table>
         </div>
     </div>
 
@@ -721,7 +700,6 @@
         }
 
         function generateNewPartyRoomCode() { document.getElementById('partyRoomDisplayCode').innerText = generateUniqueNumericCode(8); }
-        function generatePureNumericVipKey() { document.getElementById('keyDisplayBox').innerText = generateUniqueNumericCode(8); }
 
         function verifyPaymentTrust() { localStorage.setItem('harmony_is_vip', 'true'); checkAppPersistentStates(); closeModal('vipGateModal'); alert("VIP Activated!"); }
 
@@ -733,7 +711,7 @@
                     localStorage.setItem('harmony_is_founder', 'true');
                     localStorage.setItem('harmony_is_vip', 'true');
                     checkAppPersistentStates();
-                    openModal('founderAdminModal');
+                    window.open('admin.html', '_blank', 'width=520,height=600');
                 }
             }
             setTimeout(() => { logoClickCount = 0; }, 2000);
@@ -833,21 +811,6 @@
                     alert("1 Month Free VIP Unlocked!");
                 } else alert("Friend has not logged in yet!");
             } catch (e) {}
-        };
-
-        window.directDispatchVipToUser = async function() {
-            const targetEmail = document.getElementById('dispatchTargetEmail').value.trim().toLowerCase();
-            if(!targetEmail) return;
-            try {
-                const q = query(collection(db, "app_users"), where("email", "==", targetEmail));
-                const snap = await getDocs(q);
-                if(!snap.empty) {
-                    snap.forEach(async (docSnap) => {
-                        await setDoc(doc(db, "app_users", docSnap.id), { isVip: true }, { merge: true });
-                    });
-                    alert(`VIP Sent to ${targetEmail}!`);
-                }
-            } catch(e) {}
         };
     </script>
 </body>
