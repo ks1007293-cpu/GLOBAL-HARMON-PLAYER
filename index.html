@@ -3,15 +3,18 @@
 <head>
     <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
     <meta charset="UTF-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="description" content="Global Harmony Pro - Cyberpunk Audio Studio">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#00f0ff">
     <title>Global Harmony Pro - Cyberpunk Studio</title>
 
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="manifest.json?v=3">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
-    <!-- REALTIME WEBSOCKETS -->
+    <!-- PUSHER REALTIME ENGINE -->
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -76,7 +79,7 @@
         .pro-only { display: none !important; }
         body.vip-active .pro-only { display: flex !important; }
 
-        /* MOBILE NAV */
+        /* MOBILE BOTTOM NAV BAR */
         .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c12; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
         .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #888; cursor: pointer; }
         .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary-glow); }
@@ -89,15 +92,17 @@
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
         .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        /* SONG GRID & HD ALBUM COVER */
+        /* SONG GRID */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
-        .song-card { background: rgba(22, 22, 32, 0.8); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; overflow: hidden; }
+        .song-card { background: rgba(22, 22, 32, 0.8); padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
         .song-card:hover { border-color: var(--primary-glow); transform: translateY(-2px); }
-        .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; background-size: cover; background-position: center; }
-        .play-overlay-icon { position: relative; z-index: 2; font-size: 28px; color: var(--primary-glow); text-shadow: 0 0 10px #000; }
+        .media-player-box { width: 100%; aspect-ratio: 1/1; background: radial-gradient(circle, #1a1a2e, #0a0a14); border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .play-overlay-icon { position: relative; z-index: 2; font-size: 28px; color: var(--primary-glow); }
+        .heart-btn { position: absolute; top: 6px; right: 6px; font-size: 14px; z-index: 5; color: #666; transition: 0.2s; }
+        .heart-btn.liked { color: var(--secondary-glow); text-shadow: 0 0 8px var(--secondary-glow); }
         .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
 
-        /* LYRICS BOX */
+        /* FAST LYRICS CONTAINER */
         .lyrics-box-container { background: rgba(10, 10, 16, 0.85); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 12px; margin-top: 10px; height: 100px; overflow-y: auto; text-align: center; }
         .lyric-line { font-size: 12px; color: #777; margin: 4px 0; }
         .lyric-line.active { font-size: 14px; font-weight: 900; color: var(--primary-glow); }
@@ -106,7 +111,6 @@
         .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: rgba(12, 12, 18, 0.95); backdrop-filter: blur(15px); display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.3s ease; }
         .player-bar.active { transform: translateY(0); }
         .now-playing { display: flex; align-items: center; gap: 10px; width: 35%; }
-        .now-playing-cover { width:42px; height:42px; background:#111; border:1px solid var(--primary-glow); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow); overflow:hidden; background-size:cover; background-position:center; }
         
         .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
         .btn-row { display: flex; gap: 16px; align-items: center; }
@@ -161,7 +165,8 @@
 
     <div class="app-container">
         <div class="sidebar">
-            <div class="nav-item active">Studio Home</div>
+            <div class="nav-item active" onclick="showSection('all')">Studio Home</div>
+            <div class="nav-item" onclick="showSection('favorites')">❤️ Favorite Tracks</div>
             <div class="nav-item pro-only" onclick="openModal('settingsModal')">🎛️ 5-Band Equalizer & FX</div>
             <div class="nav-item pro-only" onclick="openModal('roomModal')">👥 Cyber Sync Party Deck</div>
             <div class="nav-item" onclick="openModal('referralModal')">🔗 Share & Earn Free VIP</div>
@@ -175,8 +180,9 @@
 
             <div class="action-row-btn">
                 <label for="multiFileInput" class="btn-3d" id="importBtnLabel">📁 Import MP3 Tracks</label>
-                <button class="btn-3d btn-3d-pink pro-only" id="spatialBtnMain" onclick="toggle8DSpatialAudio()">🌌 Quantum 360° Spatial Surround</button>
+                <button class="btn-3d btn-3d-pink pro-only" onclick="toggle8DSpatialAudio()">🌌 Quantum 360° Spatial Surround</button>
                 <button class="btn-3d pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer FX Engine</button>
+                <button class="btn-3d" onclick="openSleepTimerModal()">⏱️ Sleep Timer</button>
                 <button class="btn-3d btn-3d-gold" onclick="openModal('referralModal')">🎁 Earn 1 Month Free VIP</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
@@ -186,7 +192,7 @@
             </div>
 
             <h2 class="section-title">
-                <span>Offline Core Vault</span>
+                <span id="vaultTitle">Offline Core Vault</span>
                 <span id="trackCount" style="color: var(--primary-glow);">0 Tracks</span>
             </h2>
             <div class="song-grid" id="songGrid"></div>
@@ -203,7 +209,7 @@
 
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <div class="now-playing-cover" id="playerBarCover">🎵</div>
+            <div style="width:36px; height:36px; background:#111; border:1px solid var(--primary-glow); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow);">🎵</div>
             <div>
                 <h4 id="p-title" style="font-size: 12px;">Ready System</h4>
                 <p id="p-artist" style="font-size: 10px; color:#aaa;">Global Harmony Pro</p>
@@ -219,6 +225,24 @@
             <audio id="audioElement" class="audio-element-custom" controls crossorigin="anonymous"></audio>
         </div>
     </footer>
+
+    <!-- SLEEP TIMER MODAL -->
+    <div class="modal-overlay" id="sleepTimerModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: var(--primary-glow);">⏱️ Smart Sleep Timer</h3>
+                <span style="cursor:pointer;" onclick="closeModal('sleepTimerModal')">✕</span>
+            </div>
+            <p style="font-size:11px; color:#aaa;">Audio will automatically stop after chosen time:</p>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                <button class="btn-3d" onclick="setSleepTimer(15)">15 Mins</button>
+                <button class="btn-3d" onclick="setSleepTimer(30)">30 Mins</button>
+                <button class="btn-3d" onclick="setSleepTimer(60)">60 Mins</button>
+                <button class="btn-3d btn-3d-pink" onclick="clearSleepTimer()">Turn Off Timer</button>
+            </div>
+            <div id="timerStatus" style="font-size:11px; color:var(--gold-glow); margin-top:8px;">Timer: Off</div>
+        </div>
+    </div>
 
     <!-- EQUALIZER MODAL -->
     <div class="modal-overlay" id="settingsModal">
@@ -244,6 +268,11 @@
                 <div><span>MID (910Hz)</span><br><input type="range" id="eq910" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
                 <div><span>TREBLE (4kHz)</span><br><input type="range" id="eq4k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
                 <div><span>SPARKLE (14kHz)</span><br><input type="range" id="eq14k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
+            </div>
+            
+            <div style="border-top:1px solid #222; padding-top:10px; margin-top:10px;">
+                <label style="font-size:11px; font-weight:bold; color:var(--gold-glow);">🔊 300% Ultra Bass Volume Amplifer:</label>
+                <input type="range" id="volumeBoost" min="1" max="3" step="0.1" value="1" oninput="setVolumeBoost(this.value)" style="width:100%; margin-top:5px;">
             </div>
         </div>
     </div>
@@ -384,81 +413,28 @@
         </div>
     </div>
 
-    <!-- MAIN ALL-IN-ONE ENGINE -->
+    <!-- MAIN ALL-IN-ONE ENGINE ENGINE -->
     <script>
+        // AUTO UNREGISTER OLD SERVICE WORKERS (FIXES PHONE CACHE ISSUES)
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                for(let registration of registrations) {
+                    registration.unregister();
+                }
+            });
+        }
+
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
         
-        let trackList = [], db, logoClickCount = 0, currentPlayingIndex = -1;
+        let trackList = [], likedTracks = new Set(), db, logoClickCount = 0, currentPlayingIndex = -1;
         let is8DMode = false, spatialInterval = null, panPosition = 0, panDirection = 0.05;
-        let currentSyncedLyrics = [];
+        let currentSyncedLyrics = [], sleepTimerTimeout = null;
 
-        /* PUSHER WEBSOCKETS */
-        let pusher, partyChannel, currentRoomCode = null, isRemoteSyncing = false;
-
-        function initPusherEngine() {
-            if (pusher) return;
-            Pusher.logToConsole = false;
-            pusher = new Pusher('2a33c2a637a892da0d71', { cluster: 'ap2' });
-        }
-
-        function connectToPartySyncRoom() {
-            initPusherEngine();
-            const inputCode = document.getElementById('partyCodeInput').value.trim();
-            if (inputCode.length < 4) { alert("Enter valid Room Code!"); return; }
-
-            currentRoomCode = inputCode;
-            if (partyChannel) pusher.unsubscribe(`party-room-${currentRoomCode}`);
-
-            partyChannel = pusher.subscribe(`party-room-${currentRoomCode}`);
-            
-            partyChannel.bind('sync-playback', (data) => {
-                isRemoteSyncing = true;
-                if (data.action === 'play') {
-                    audio.currentTime = data.currentTime;
-                    audio.play().catch(() => {});
-                } else if (data.action === 'pause') {
-                    audio.pause();
-                }
-                setTimeout(() => { isRemoteSyncing = false; }, 500);
-            });
-
-            partyChannel.bind('sync-message', (data) => {
-                const chatBox = document.getElementById('chatBox');
-                chatBox.innerHTML += `<div class="chat-msg"><strong>${data.sender}:</strong> ${data.text}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            });
-
-            alert(`Connected to Party Sync Room: ${currentRoomCode}!`);
-        }
-
-        /* SMART AI ASSISTANT BOT ENGINE */
-        function askAiBot() {
-            const input = document.getElementById('aiInput').value.toLowerCase().trim();
-            if(!input) return;
-            const box = document.getElementById('aiChatBox');
-            box.innerHTML += `<div class="chat-msg"><strong>You:</strong> ${input}</div>`;
-            
-            let reply = "I am Global Harmony AI. Ask me about VIP, Audio Import, or Party Sync!";
-            if (input.includes("free") || input.includes("vip") || input.includes("trial")) {
-                reply = "You can earn 1 Month Free VIP by inviting friends! Enter their registered Gmail in Referral tab.";
-            } else if (input.includes("import") || input.includes("song") || input.includes("save")) {
-                reply = "Click 'Import MP3 Tracks'. Songs are saved permanently in IndexedDB browser vault.";
-            } else if (input.includes("8d") || input.includes("equalizer") || input.includes("bass")) {
-                reply = "Upgrade to VIP to unlock 360° Quantum Spatial Surround and 5-Band Hardware Equalizer.";
-            }
-
-            setTimeout(() => {
-                box.innerHTML += `<div class="chat-msg" style="background:#1f1f32;"><strong>AI Bot:</strong> ${reply}</div>`;
-                box.scrollTop = box.scrollHeight;
-            }, 300);
-            document.getElementById('aiInput').value = '';
-        }
-
-        /* WEB AUDIO API DSP */
-        let audioCtx, sourceNode, pannerNode;
+        /* WEB AUDIO API DSP ENGINE */
+        let audioCtx, sourceNode, pannerNode, gainNode;
         let eqFilters = [];
         const freqs = [60, 230, 910, 4000, 14000];
 
@@ -480,6 +456,7 @@
             });
 
             pannerNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
+            gainNode = audioCtx.createGain();
 
             let currentNode = sourceNode;
             eqFilters.forEach(f => {
@@ -489,73 +466,39 @@
 
             if (pannerNode) {
                 currentNode.connect(pannerNode);
-                pannerNode.connect(audioCtx.destination);
+                pannerNode.connect(gainNode);
             } else {
-                currentNode.connect(audioCtx.destination);
+                currentNode.connect(gainNode);
             }
+            gainNode.connect(audioCtx.destination);
         }
 
-        function setCustomEQ() {
+        function setVolumeBoost(val) {
             initWebAudioAPI();
-            document.getElementById('eqPresetSelect').value = "custom";
-            const gains = [
-                parseFloat(document.getElementById('eq60').value),
-                parseFloat(document.getElementById('eq230').value),
-                parseFloat(document.getElementById('eq910').value),
-                parseFloat(document.getElementById('eq4k').value),
-                parseFloat(document.getElementById('eq14k').value)
-            ];
-
-            gains.forEach((g, idx) => {
-                if (eqFilters[idx]) eqFilters[idx].gain.setTargetAtTime(g, audioCtx.currentTime, 0.01);
-            });
+            if (gainNode) gainNode.gain.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.05);
         }
 
-        function applyEQPreset(preset) {
-            initWebAudioAPI();
-            const presets = {
-                normal: [0, 0, 0, 0, 0],
-                rock: [6, 3, -1, 4, 7],
-                pop: [-1, 2, 5, 3, -2],
-                jazz: [3, 2, 4, 2, 2],
-                bass: [12, 8, 2, -2, -4]
-            };
-
-            if (presets[preset]) {
-                const vals = presets[preset];
-                document.getElementById('eq60').value = vals[0];
-                document.getElementById('eq230').value = vals[1];
-                document.getElementById('eq910').value = vals[2];
-                document.getElementById('eq4k').value = vals[3];
-                document.getElementById('eq14k').value = vals[4];
-                setCustomEQ();
-            }
+        /* SLEEP TIMER LOGIC */
+        function openSleepTimerModal() { openModal('sleepTimerModal'); }
+        function setSleepTimer(minutes) {
+            clearSleepTimer();
+            const ms = minutes * 60 * 1000;
+            document.getElementById('timerStatus').innerText = `Timer Active: Stopping in ${minutes} Mins`;
+            sleepTimerTimeout = setTimeout(() => {
+                audio.pause();
+                alert("⏱️ Sleep Timer: Playback Stopped.");
+                document.getElementById('timerStatus').innerText = "Timer: Off";
+            }, ms);
+            closeModal('sleepTimerModal');
         }
 
-        function toggle8DSpatialAudio() {
-            initWebAudioAPI();
-            if (!pannerNode) {
-                alert("8D Audio Panner not supported on this browser version.");
-                return;
-            }
-
-            is8DMode = !is8DMode;
-            if (is8DMode) {
-                alert("🌌 Quantum 360° Spatial Surround Activated! Put on Headphones.");
-                spatialInterval = setInterval(() => {
-                    panPosition += panDirection;
-                    if (panPosition >= 1 || panPosition <= -1) panDirection *= -1;
-                    pannerNode.pan.setTargetAtTime(panPosition, audioCtx.currentTime, 0.05);
-                }, 100);
-            } else {
-                clearInterval(spatialInterval);
-                pannerNode.pan.setTargetAtTime(0, audioCtx.currentTime, 0.05);
-                alert("360° Spatial Audio Disabled");
-            }
+        function clearSleepTimer() {
+            if (sleepTimerTimeout) clearTimeout(sleepTimerTimeout);
+            document.getElementById('timerStatus').innerText = "Timer: Off";
         }
 
         /* INDEXEDDB VAULT ENGINE */
-        const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 12);
+        const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 13);
         
         dbRequest.onupgradeneeded = (e) => {
             db = e.target.result;
@@ -573,6 +516,9 @@
         function checkAppPersistentStates() {
             if (localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
             if (localStorage.getItem('harmony_is_founder') === 'true') document.body.classList.add('founder-active');
+            
+            const savedLikes = localStorage.getItem('harmony_liked_tracks');
+            if (savedLikes) likedTracks = new Set(JSON.parse(savedLikes));
         }
 
         function loadTracksFromDB() {
@@ -581,29 +527,67 @@
             const store = tx.objectStore("saved_songs");
             store.getAll().onsuccess = (event) => {
                 trackList = event.target.result || [];
-                renderSongGrid();
+                renderSongGridLazy(trackList);
             };
         }
 
-        function renderSongGrid() {
+        /* LAZY BATCH CHUNK RENDERING (0% LAPTOP FREEZE) */
+        function renderSongGridLazy(list) {
             songGrid.innerHTML = '';
-            document.getElementById('trackCount').innerText = `${trackList.length} Tracks`;
-            const fragment = document.createDocumentFragment();
+            document.getElementById('trackCount').innerText = `${list.length} Tracks`;
             
-            trackList.forEach((track, index) => {
-                const card = document.createElement('div');
-                card.className = 'song-card';
-                card.id = `song-card-${index}`;
-                card.onclick = () => playTrack(index);
-                card.innerHTML = `
-                    <div class="media-player-box" id="media-box-${index}">
-                        <span class="play-overlay-icon">▶</span>
-                    </div>
-                    <h3>${track.title}</h3>
-                `;
-                fragment.appendChild(card);
-            });
-            songGrid.appendChild(fragment);
+            let batchSize = 15;
+            let currentIdx = 0;
+
+            function renderBatch() {
+                const limit = Math.min(currentIdx + batchSize, list.length);
+                const fragment = document.createDocumentFragment();
+
+                for (let i = currentIdx; i < limit; i++) {
+                    const track = list[i];
+                    const card = document.createElement('div');
+                    card.className = 'song-card';
+                    const isLiked = likedTracks.has(track.title);
+                    
+                    card.innerHTML = `
+                        <span class="heart-btn ${isLiked ? 'liked' : ''}" onclick="toggleLikeTrack(event, '${track.title.replace(/'/g, "\\'")}')">♥</span>
+                        <div class="media-player-box" onclick="playTrack(${i})">
+                            <span class="play-overlay-icon">▶</span>
+                        </div>
+                        <h3>${track.title}</h3>
+                    `;
+                    fragment.appendChild(card);
+                }
+
+                songGrid.appendChild(fragment);
+                currentIdx = limit;
+
+                if (currentIdx < list.length) {
+                    requestAnimationFrame(renderBatch);
+                }
+            }
+
+            renderBatch();
+        }
+
+        function toggleLikeTrack(e, title) {
+            e.stopPropagation();
+            if (likedTracks.has(title)) likedTracks.delete(title);
+            else likedTracks.add(title);
+            
+            localStorage.setItem('harmony_liked_tracks', JSON.stringify(Array.from(likedTracks)));
+            e.target.classList.toggle('liked');
+        }
+
+        function showSection(type) {
+            if (type === 'favorites') {
+                document.getElementById('vaultTitle').innerText = "Favorite Tracks Vault";
+                const favs = trackList.filter(t => likedTracks.has(t.title));
+                renderSongGridLazy(favs);
+            } else {
+                document.getElementById('vaultTitle').innerText = "Offline Core Vault";
+                renderSongGridLazy(trackList);
+            }
         }
 
         multiFileInput.addEventListener('change', async (e) => {
@@ -772,17 +756,16 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
         function searchSongs() {
             const query = document.getElementById('searchInput').value.toLowerCase();
-            document.querySelectorAll('.song-card').forEach(card => {
-                card.style.display = card.querySelector('h3').innerText.toLowerCase().includes(query) ? "flex" : "none";
-            });
+            const filtered = trackList.filter(t => t.title.toLowerCase().includes(query));
+            renderSongGridLazy(filtered);
         }
     </script>
 
-    <!-- FIREBASE AUTH & DISPATCH -->
+    <!-- FIREBASE AUTH & AUTO CLOUD SYNC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDocs, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDocs, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
@@ -809,6 +792,14 @@
             if (user) {
                 document.getElementById('profileNameDisplay').innerText = user.displayName;
                 await syncUserToCloud(user);
+                
+                // Realtime Listener for VIP Changes from Admin App
+                onSnapshot(doc(db, "app_users", user.uid), (docSnap) => {
+                    if (docSnap.exists() && docSnap.data().isVip) {
+                        localStorage.setItem('harmony_is_vip', 'true');
+                        document.body.classList.add('vip-active');
+                    }
+                });
             }
         });
 
