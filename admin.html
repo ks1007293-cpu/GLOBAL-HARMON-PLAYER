@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Global Harmony Pro - Founder Admin Console</title>
+    <style>
+        :root { --gold: #ffd700; --cyan: #00f0ff; --pink: #ff007f; --bg: #0a0a12; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+        body { background: var(--bg); color: #fff; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .admin-card { background: #12121e; border: 1px solid var(--gold); border-radius: 16px; padding: 20px; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 0 20px rgba(255,215,0,0.15); }
+        h2 { color: var(--gold); text-align: center; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; }
+        .input-group { display: flex; flex-direction: column; gap: 6px; }
+        label { font-size: 11px; color: #aaa; font-weight: bold; }
+        input { background: #1a1a2a; border: 1px solid #333; padding: 10px; border-radius: 8px; color: #fff; outline: none; font-size: 12px; }
+        .btn { background: linear-gradient(145deg, #2e260e, #171207); border: 1px solid var(--gold); color: var(--gold); padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-size: 11px; }
+        .btn-pink { background: linear-gradient(145deg, #2e0e1f, #170710); border-color: var(--pink); color: #fff; }
+        .status-box { background: #161626; padding: 10px; border-radius: 8px; font-size: 11px; color: var(--cyan); text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="admin-card">
+        <h2>👑 Founder Admin Control App</h2>
+        
+        <div class="status-box" id="authStatus">Status: Logged in as Founder Karan</div>
+
+        <!-- DIRECT VIP DISPATCH -->
+        <div class="input-group">
+            <label>User Gmail ID (For Direct VIP Activation):</label>
+            <input type="email" id="targetEmail" placeholder="user@gmail.com">
+            <button class="btn btn-pink" onclick="grantVipAccess()">⚡ Grant 1 Month VIP Instant</button>
+            <button class="btn" onclick="revokeVipAccess()" style="border-color:#ff4444; color:#ff4444;">🚫 Revoke VIP Access</button>
+        </div>
+
+        <hr style="border-color:#222;">
+
+        <!-- DYNAMIC NUMERIC CODE GENERATOR -->
+        <div class="input-group">
+            <label>Generate Pure Numeric Single-Use Code:</label>
+            <div id="codeDisplay" style="font-size:20px; font-weight:900; color:var(--gold); text-align:center; padding:8px; background:#08080c; border-radius:8px;">--------</div>
+            <button class="btn" onclick="generateCode()">🎲 Generate & Save Code</button>
+        </div>
+    </div>
+
+    <!-- FIREBASE ADMIN REALTIME ENGINE -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, doc, setDoc, getDocs, collection, query, where, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
+            authDomain: "global-harmony-pro.firebaseapp.com",
+            projectId: "global-harmony-pro",
+            storageBucket: "global-harmony-pro.firebasestorage.app",
+            messagingSenderId: "709699775213",
+            appId: "1:709699775213:web:fc7b76bb24b7a699b17ae4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        window.grantVipAccess = async function() {
+            const email = document.getElementById('targetEmail').value.trim().toLowerCase();
+            if(!email) { alert("Please enter User Email!"); return; }
+
+            try {
+                const q = query(collection(db, "app_users"), where("email", "==", email));
+                const snap = await getDocs(q);
+
+                if(!snap.empty) {
+                    snap.forEach(async (docSnap) => {
+                        await updateDoc(doc(db, "app_users", docSnap.id), { isVip: true, vipType: "Founder Direct" });
+                    });
+                    alert(`Success! VIP Activated for ${email}`);
+                } else {
+                    alert("User email not registered in app database yet!");
+                }
+            } catch(e) { alert("Error: " + e.message); }
+        };
+
+        window.revokeVipAccess = async function() {
+            const email = document.getElementById('targetEmail').value.trim().toLowerCase();
+            if(!email) return;
+
+            try {
+                const q = query(collection(db, "app_users"), where("email", "==", email));
+                const snap = await getDocs(q);
+                if(!snap.empty) {
+                    snap.forEach(async (docSnap) => {
+                        await updateDoc(doc(db, "app_users", docSnap.id), { isVip: false });
+                    });
+                    alert(`VIP Revoked for ${email}`);
+                }
+            } catch(e) { alert("Error: " + e.message); }
+        };
+
+        window.generateCode = async function() {
+            const code = Math.floor(10000000 + Math.random() * 90000000).toString();
+            document.getElementById('codeDisplay').innerText = code;
+            
+            try {
+                await setDoc(doc(db, "vip_codes", code), {
+                    code: code,
+                    used: false,
+                    createdAt: new Date().toISOString()
+                });
+                alert(`Code ${code} saved to Cloud DB!`);
+            } catch(e) { alert("Error saving code"); }
+        };
+    </script>
+</body>
+</html>
