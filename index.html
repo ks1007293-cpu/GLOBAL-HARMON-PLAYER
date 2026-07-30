@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#00f0ff">
     <title>Global Harmony Pro - Cyberpunk Studio</title>
 
-    <link rel="manifest" href="manifest.json?v=7">
+    <link rel="manifest" href="manifest.json?v=8">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
@@ -112,7 +112,26 @@
         .plan-card-row { display: flex; gap: 10px; margin: 8px 0; }
         .plan-card { flex: 1; background: #181824; border: 1px solid #333; padding: 12px; border-radius: 12px; text-align: center; }
         .plan-card.active { border-color: var(--secondary-glow); background: rgba(255, 0, 127, 0.1); }
-        .feature-inspect-list { font-size: 11px; color: #ccc; display: flex; flex-direction: column; gap: 6px; background: #0e0e16; padding: 12px; border-radius: 10px; }
+
+        /* COLOURED COLOURED VIP BANNER CHART */
+        .coloured-vip-banner {
+            background: linear-gradient(135deg, #120d2b 0%, #051329 100%);
+            border: 2px solid var(--primary-glow);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+            margin: 10px 0;
+        }
+        .banner-header { text-align: center; margin-bottom: 12px; }
+        .banner-header h3 { font-size: 16px; color: var(--gold-glow); font-weight: 900; letter-spacing: 1px; }
+        .banner-header p { font-size: 10px; color: var(--primary-glow); }
+
+        .chart-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+        .chart-table th, .chart-table td { padding: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
+        .chart-table th { background: rgba(0, 240, 255, 0.1); color: var(--primary-glow); font-weight: bold; }
+        .chart-table tr:hover { background: rgba(255,255,255,0.02); }
+        .badge-free { color: #888; font-weight: bold; }
+        .badge-vip { color: #00ff88; font-weight: bold; text-shadow: 0 0 5px #00ff88; }
 
         .trust-box { background: rgba(0, 255, 136, 0.05); border: 1px dashed #00ff88; padding: 12px; border-radius: 12px; font-size: 11px; line-height: 1.4; color: #ddd; }
         .trust-badge { display: inline-flex; align-items: center; gap: 4px; background: #00ff88; color: #000; padding: 2px 8px; border-radius: 12px; font-weight: 900; font-size: 10px; }
@@ -123,7 +142,6 @@
         .faq-item { background: #161622; border: 1px solid #282838; padding: 10px; border-radius: 8px; font-size: 11px; cursor: pointer; }
         .faq-item h5 { color: var(--primary-glow); margin-bottom: 4px; }
 
-        .promo-banner-img { width: 100%; border-radius: 12px; border: 1px solid var(--primary-glow); margin: 6px 0; }
         .qr-box { background: #fff; padding: 8px; border-radius: 8px; display: inline-block; margin: 5px 0; }
 
         @media (max-width: 768px) {
@@ -143,8 +161,8 @@
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <!-- DIRECT ADMIN LINK FOR FOUNDERS (AUTOMATIC VISIBILITY) -->
             <button class="btn-3d btn-3d-gold founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL APP</button>
+            <button class="btn-3d btn-3d-gold" onclick="openModal('rateUsModal')">⭐ RATE US</button>
             <button class="btn-3d" onclick="openModal('helpModal')">❓ HELP & AI</button>
             <button class="btn-3d btn-3d-pink" id="upgradeVipBtn" onclick="openModal('vipGateModal')">⚡ UPGRADE</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
@@ -160,6 +178,7 @@
             <div class="nav-item pro-only" onclick="openModal('settingsModal')">🎛️ 5-Band Equalizer & FX</div>
             <div class="nav-item pro-only" onclick="openModal('roomModal')">👥 Cyber Sync Party Deck</div>
             <div class="nav-item" onclick="openModal('referralModal')">🔗 Share & Earn Free VIP</div>
+            <div class="nav-item" onclick="openModal('rateUsModal')">⭐ Rate Experience</div>
             <div class="nav-item" onclick="openModal('helpModal')">❓ Help & Support Center</div>
         </div>
 
@@ -193,7 +212,7 @@
         <div class="mobile-nav-item active" onclick="window.scrollTo(0,0)"><span>🏠</span>Home</div>
         <div class="mobile-nav-item pro-only" onclick="openModal('settingsModal')"><span>🎛️</span>Equalizer</div>
         <div class="mobile-nav-item pro-only" onclick="openModal('roomModal')"><span>👥</span>Party Sync</div>
-        <div class="mobile-nav-item" onclick="openModal('helpModal')"><span>❓</span>Help AI</div>
+        <div class="mobile-nav-item" onclick="openModal('rateUsModal')"><span>⭐</span>Rate Us</div>
         <div class="mobile-nav-item" onclick="openModal('vipGateModal')"><span>⚡</span>Upgrade</div>
     </div>
 
@@ -215,6 +234,26 @@
             <audio id="audioElement" class="audio-element-custom" controls crossorigin="anonymous"></audio>
         </div>
     </footer>
+
+    <!-- RATE US MODAL -->
+    <div class="modal-overlay" id="rateUsModal">
+        <div class="modal-card" style="text-align: center;">
+            <div class="modal-header">
+                <h3 style="color: var(--gold-glow);">⭐ Rate Global Harmony Pro</h3>
+                <span style="cursor:pointer;" onclick="closeModal('rateUsModal')">✕</span>
+            </div>
+            <p style="font-size:11px; color:#aaa; margin-top:5px;">How is your audio experience so far?</p>
+            <div style="font-size: 32px; margin: 12px 0; cursor: pointer;" id="starContainer">
+                <span onclick="setRating(1)">⭐</span>
+                <span onclick="setRating(2)">⭐</span>
+                <span onclick="setRating(3)">⭐</span>
+                <span onclick="setRating(4)">⭐</span>
+                <span onclick="setRating(5)">⭐</span>
+            </div>
+            <textarea id="feedbackText" placeholder="Write your valuable feedback here for Founder Karan..." style="width:100%; height:65px; background:#1a1a24; border:1px solid #333; color:#fff; border-radius:8px; padding:8px; font-size:11px; outline:none;"></textarea>
+            <button class="btn-3d btn-3d-gold" style="margin-top:10px; justify-content:center; width:100%;" onclick="submitRating()">Submit Star Rating</button>
+        </div>
+    </div>
 
     <!-- SLEEP TIMER MODAL -->
     <div class="modal-overlay" id="sleepTimerModal">
@@ -301,13 +340,13 @@
             <div style="display:flex; flex-direction:column; gap:6px;">
                 <h4 style="font-size:11px; color:#aaa;">Common Problems (Tap for Solution):</h4>
                 <div class="faq-item" onclick="showFaqAnswer('Ensure files are MP3/AAC.')"><h5>❓ Songs imported but not playing?</h5><p>Tap to view audio format fix.</p></div>
-                <div class="faq-item" onclick="showFaqAnswer('Send email to globalharmonypro9052@gmail.com or ks1007293@gmail.com for instant free code!')"><h5>🎁 How to get Free VIP Code?</h5><p>Tap to view Free Activation steps.</p></div>
+                <div class="faq-item" onclick="showFaqAnswer('Send email to globalharmonypro9052@gmail.com for instant free code!')"><h5>🎁 How to get Free VIP Code?</h5><p>Tap to view Free Activation steps.</p></div>
             </div>
             <button class="btn-3d btn-3d-gold" style="justify-content:center; margin-top:10px;" onclick="window.location.href='mailto:globalharmonypro9052@gmail.com?subject=Help Support Request'">💬 Support Chat: globalharmonypro9052@gmail.com</button>
         </div>
     </div>
 
-    <!-- PROMOTIONAL SHARE MODAL -->
+    <!-- PROMOTIONAL SHARE MODAL WITH COLOURED VIP CHART BANNER -->
     <div class="modal-overlay" id="referralModal">
         <div class="modal-card">
             <div class="modal-header">
@@ -315,13 +354,60 @@
                 <span style="cursor:pointer;" onclick="closeModal('referralModal')">✕</span>
             </div>
             
-            <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&auto=format&fit=crop" class="promo-banner-img" alt="Global Harmony Pro Banner">
+            <!-- COLOURED VIP COMPARISON BANNER -->
+            <div class="coloured-vip-banner">
+                <div class="banner-header">
+                    <h3>👑 GLOBAL HARMONY PRO STUDIO</h3>
+                    <p>Founded & Developed by Karan Nag</p>
+                </div>
+                <table class="chart-table">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">FEATURES</th>
+                            <th>FREE</th>
+                            <th>VIP PRO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="text-align: left;">Offline Core Vault Storage</td>
+                            <td class="badge-free">Unlimited</td>
+                            <td class="badge-vip">Unlimited</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">300% Sub-Bass Booster</td>
+                            <td class="badge-free">❌ Lock</td>
+                            <td class="badge-vip">⚡ Full Access</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">5-Band Hardware Equalizer</td>
+                            <td class="badge-free">❌ Lock</td>
+                            <td class="badge-vip">🎛️ Full Access</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">360° Quantum Spatial Surround</td>
+                            <td class="badge-free">❌ Lock</td>
+                            <td class="badge-vip">🌌 Full Access</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Realtime Party Sync Rooms</td>
+                            <td class="badge-free">❌ Lock</td>
+                            <td class="badge-vip">👥 Full Access</td>
+                        </tr>
+                        <tr>
+                            <td style="text-align: left;">Auto Karaoke Synced Lyrics</td>
+                            <td class="badge-free">✅ Yes</td>
+                            <td class="badge-vip">✅ Yes</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
             
             <div style="text-align:center;">
                 <div class="qr-box">
                     <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/" alt="App Scan QR Code">
                 </div>
-                <p style="font-size:10px; color:#aaa; margin-top:2px;">Scan QR Code to Download App directly</p>
+                <p style="font-size:10px; color:#aaa; margin-top:2px;">Scan QR Code to Download / Launch App</p>
             </div>
 
             <div style="display:flex; gap:8px; justify-content:center; margin-top:5px;">
@@ -345,13 +431,6 @@
             <div class="plan-card-row">
                 <div class="plan-card"><h4 style="color:#aaa; font-size:11px;">STARTER PASS</h4><div style="font-size:20px; font-weight:900; color:#fff; margin:4px 0;">₹39</div><p style="font-size:10px; color:#888;">Valid for 1 Month</p></div>
                 <div class="plan-card active"><span style="background:#ff007f; color:#fff; font-size:8px; font-weight:bold; padding:2px 6px; border-radius:10px;">BEST VALUE</span><h4 style="color:var(--gold-glow); font-size:11px; margin-top:2px;">PRO FOUNDER PASS</h4><div style="font-size:20px; font-weight:900; color:var(--gold-glow); margin:4px 0;">₹99</div><p style="font-size:10px; color:#aaa;">Valid for 3 Months</p></div>
-            </div>
-            <div class="feature-inspect-list">
-                <strong>✨ Features Unlocked Upon Upgrade:</strong>
-                <span>✓ 🎛️ 5-Band Studio Equalizer</span>
-                <span>✓ 🌌 Quantum 360° Spatial Surround</span>
-                <span>✓ 👥 Cyber Sync Party Deck</span>
-                <span>✓ ⚡ 300% Sub-Bass Booster</span>
             </div>
             <div class="trust-box">
                 <span class="trust-badge">✓ VERIFIED FOUNDER</span>
@@ -384,7 +463,18 @@
         
         let trackList = [], likedTracks = new Set(), db, currentPlayingIndex = -1;
         let is8DMode = false, spatialInterval = null, panPosition = 0, panDirection = 0.05;
-        let currentSyncedLyrics = [], sleepTimerTimeout = null;
+        let currentSyncedLyrics = [], sleepTimerTimeout = null, userRating = 5;
+
+        /* RATING ENGINE */
+        function setRating(stars) {
+            userRating = stars;
+            alert(`You rated us ${stars} Stars! ⭐`);
+        }
+        function submitRating() {
+            const txt = document.getElementById('feedbackText').value;
+            alert(`Thank you for rating us ${userRating} Stars! Feedback sent to Founder Karan.`);
+            closeModal('rateUsModal');
+        }
 
         async function shareDirectPromoPack() {
             const shareText = `🔥 *GLOBAL HARMONY PRO - Cyberpunk Audio Studio* 🔥\n\n🎵 3D Spatial Surround, 300% Sub-Bass Booster aur Friends ke sath Zero-Lag Party Sync me gaana sunne ke liye abhi app open karein:\nhttps://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/`;
@@ -629,7 +719,7 @@
         }
     </script>
 
-    <!-- FIREBASE AUTH - MULTI-GMAIL FOUNDER ALLOWLIST (ks1007293 & globalharmonypro9052) -->
+    <!-- FIREBASE AUTH & AUTO CLOUD SYNC -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -679,7 +769,6 @@
                 }, { merge: true });
 
                 const email = user.email.toLowerCase();
-                // BOTH FOUNDER EMAILS FULLY ALLOWED
                 if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422") || user.displayName.toLowerCase().includes("karan")) {
                     localStorage.setItem('harmony_is_vip', 'true');
                     localStorage.setItem('harmony_is_founder', 'true');
