@@ -6,150 +6,117 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="description" content="Global Harmony Pro - Cyberpunk Audio Studio">
+    <meta name="description" content="Global Harmony Pro - Minimal Audio Studio">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#00f0ff">
-    <title>Global Harmony Pro - Cyberpunk Studio</title>
+    <meta name="theme-color" content="#121212">
+    <title>Global Harmony Pro - Premium Audio Studio</title>
 
-    <link rel="manifest" href="manifest.json?v=8">
+    <link rel="manifest" href="manifest.json?v=10">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
         :root {
-            --primary-glow: #00f0ff;
-            --secondary-glow: #ff007f;
-            --gold-glow: #ffd700;
-            --bg-black: #080808;
-            --card-bg: rgba(20, 20, 30, 0.85);
+            --spotify-green: #1db954;
+            --spotify-green-hover: #1ed760;
+            --bg-black: #121212;
+            --card-bg: #181818;
+            --card-hover: #282828;
+            --text-white: #ffffff;
             --text-grey: #b3b3b3;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #080810; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-black); color: var(--text-white); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        .btn-3d {
-            background: #181824;
-            border: 1px solid rgba(0, 240, 255, 0.4);
-            color: #fff;
-            padding: 9px 16px;
-            font-size: 11px;
-            font-weight: 800;
-            border-radius: 12px;
+        .btn-spotify {
+            background: var(--spotify-green);
+            color: #000;
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: 700;
+            border-radius: 50px;
+            border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: transform 0.1s ease;
+            transition: transform 0.15s ease, background 0.15s ease;
             text-decoration: none;
+            letter-spacing: 0.5px;
         }
-        .btn-3d:active { transform: scale(0.97); }
+        .btn-spotify:hover { background: var(--spotify-green-hover); transform: scale(1.03); }
+        .btn-spotify:active { transform: scale(0.97); }
 
-        .btn-3d-pink { background: #260a18; border-color: rgba(255, 0, 127, 0.5); }
-        .btn-3d-gold { background: #26200a; border-color: rgba(255, 215, 0, 0.6); color: var(--gold-glow); }
-        .btn-whatsapp { background: #075e54; border-color: #25d366; color: #fff; }
+        .btn-outline { background: transparent; border: 1px solid var(--text-grey); color: var(--text-white); }
+        .btn-outline:hover { border-color: var(--text-white); }
 
-        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #0c0c12; padding: 12px 20px; border-bottom: 2px solid rgba(0, 240, 255, 0.2); position: sticky; top:0; z-index: 100; }
-        .brand-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
-        .brand-logo h1 { font-size: 17px; font-weight: 900; color: var(--primary-glow); }
+        /* HEADER */
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #000; padding: 14px 24px; position: sticky; top:0; z-index: 100; border-bottom: 1px solid var(--border-color); }
+        .brand-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        .brand-logo h1 { font-size: 18px; font-weight: 800; color: var(--text-white); letter-spacing: -0.5px; }
 
-        .header-actions { display: flex; align-items: center; gap: 8px; }
+        .header-actions { display: flex; align-items: center; gap: 10px; }
         .founder-badge { display: none; }
         body.founder-active .founder-badge { display: inline-flex !important; }
 
-        .profile-badge { display: flex; align-items: center; gap: 6px; background: rgba(22, 22, 34, 0.8); padding: 7px 12px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 11px; }
+        .profile-badge { display: flex; align-items: center; gap: 6px; background: #282828; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 12px; }
 
         .app-container { display: flex; flex: 1; }
 
-        .sidebar { width: 230px; background: #0a0a0f; padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid rgba(255,255,255,0.08); }
-        .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 11px 14px; border-radius: 12px; cursor: pointer; font-size: 12px; border: 1px solid transparent; }
-        .nav-item:hover, .nav-item.active { color: white; background: rgba(0, 240, 255, 0.1); border-color: var(--primary-glow); }
+        /* SIDEBAR */
+        .sidebar { width: 240px; background: #000; padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; }
+        .nav-item { display: flex; align-items: center; gap: 12px; color: var(--text-grey); font-weight: 700; padding: 12px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: 0.2s; }
+        .nav-item:hover, .nav-item.active { color: var(--text-white); background: var(--card-hover); }
 
         .pro-only { display: none !important; }
         body.vip-active .pro-only { display: flex !important; }
 
-        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c12; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
-        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #888; cursor: pointer; }
-        .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary-glow); }
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1px solid var(--border-color); justify-content: space-around; padding: 10px 0; z-index: 2000; }
+        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; color: var(--text-grey); cursor: pointer; }
+        .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--text-white); }
 
-        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 18px; padding-bottom: 220px; }
-        .search-bar { background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 10px 18px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 400px; }
-        .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; font-weight: 600; }
+        /* MAIN DASHBOARD */
+        .main { flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 220px; background: linear-gradient(to bottom, #1f1f1f, var(--bg-black)); }
+        .search-bar { background: #242424; border-radius: 50px; padding: 10px 20px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 360px; }
+        .search-bar input { border: none; outline: none; background: transparent; width: 100%; font-size: 13px; color: #fff; }
 
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
-        .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
+        .section-title { font-size: 20px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
         
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
-        .song-card { background: #141420; padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
-        .media-player-box { width: 100%; aspect-ratio: 1/1; background: #0c0c14; border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        .play-overlay-icon { position: relative; z-index: 2; font-size: 28px; color: var(--primary-glow); }
-        .heart-btn { position: absolute; top: 6px; right: 6px; font-size: 14px; z-index: 5; color: #666; }
-        .heart-btn.liked { color: var(--secondary-glow); }
-        .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
+        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; width: 100%; }
+        .song-card { background: var(--card-bg); padding: 14px; border-radius: 12px; cursor: pointer; border: none; display: flex; flex-direction: column; gap: 10px; position: relative; transition: background 0.2s ease; }
+        .song-card:hover { background: var(--card-hover); }
+        .media-player-box { width: 100%; aspect-ratio: 1/1; background: #282828; border-radius: 8px; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .play-overlay-icon { font-size: 32px; color: var(--spotify-green); }
+        .song-card h3 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-white); width: 100%; }
 
-        .lyrics-box-container { background: #0e0e16; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 12px; margin-top: 10px; height: 100px; overflow-y: auto; text-align: center; }
-        .lyric-line { font-size: 12px; color: #777; margin: 4px 0; }
-        .lyric-line.active { font-size: 14px; font-weight: 900; color: var(--primary-glow); }
+        .lyrics-box-container { background: var(--card-bg); border-radius: 12px; padding: 16px; height: 110px; overflow-y: auto; text-align: center; }
+        .lyric-line { font-size: 13px; color: var(--text-grey); margin: 6px 0; }
+        .lyric-line.active { font-size: 15px; font-weight: 800; color: var(--spotify-green); }
 
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: #0a0a12; display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.2s ease; }
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; background: #000; display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; border-top: 1px solid var(--border-color); z-index: 1000; transform: translateY(100%); transition: transform 0.2s ease; }
         .player-bar.active { transform: translateY(0); }
-        .now-playing { display: flex; align-items: center; gap: 10px; width: 35%; }
+        .now-playing { display: flex; align-items: center; gap: 12px; width: 30%; }
         
-        .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
-        .btn-row { display: flex; gap: 16px; align-items: center; }
-        .control-icon { color: var(--text-grey); font-size: 18px; cursor: pointer; }
-        .control-icon:hover { color: var(--primary-glow); }
+        .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .btn-row { display: flex; gap: 20px; align-items: center; }
+        .control-icon { color: var(--text-grey); font-size: 20px; cursor: pointer; }
+        .control-icon:hover { color: var(--text-white); }
         .audio-element-custom { width: 100%; height: 28px; filter: invert(1); }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #12121a; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; width: 92%; max-width: 580px; padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-
-        .plan-card-row { display: flex; gap: 10px; margin: 8px 0; }
-        .plan-card { flex: 1; background: #181824; border: 1px solid #333; padding: 12px; border-radius: 12px; text-align: center; }
-        .plan-card.active { border-color: var(--secondary-glow); background: rgba(255, 0, 127, 0.1); }
-
-        /* COLOURED COLOURED VIP BANNER CHART */
-        .coloured-vip-banner {
-            background: linear-gradient(135deg, #120d2b 0%, #051329 100%);
-            border: 2px solid var(--primary-glow);
-            border-radius: 16px;
-            padding: 16px;
-            box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
-            margin: 10px 0;
-        }
-        .banner-header { text-align: center; margin-bottom: 12px; }
-        .banner-header h3 { font-size: 16px; color: var(--gold-glow); font-weight: 900; letter-spacing: 1px; }
-        .banner-header p { font-size: 10px; color: var(--primary-glow); }
-
-        .chart-table { width: 100%; border-collapse: collapse; font-size: 11px; }
-        .chart-table th, .chart-table td { padding: 8px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.08); }
-        .chart-table th { background: rgba(0, 240, 255, 0.1); color: var(--primary-glow); font-weight: bold; }
-        .chart-table tr:hover { background: rgba(255,255,255,0.02); }
-        .badge-free { color: #888; font-weight: bold; }
-        .badge-vip { color: #00ff88; font-weight: bold; text-shadow: 0 0 5px #00ff88; }
-
-        .trust-box { background: rgba(0, 255, 136, 0.05); border: 1px dashed #00ff88; padding: 12px; border-radius: 12px; font-size: 11px; line-height: 1.4; color: #ddd; }
-        .trust-badge { display: inline-flex; align-items: center; gap: 4px; background: #00ff88; color: #000; padding: 2px 8px; border-radius: 12px; font-weight: 900; font-size: 10px; }
-
-        .chat-box { height: 160px; background: #0a0a10; border: 1px solid #222; border-radius: 10px; padding: 10px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; font-size: 11px; }
-        .chat-msg { background: #181824; padding: 6px 10px; border-radius: 8px; width: fit-content; max-width: 85%; }
-
-        .faq-item { background: #161622; border: 1px solid #282838; padding: 10px; border-radius: 8px; font-size: 11px; cursor: pointer; }
-        .faq-item h5 { color: var(--primary-glow); margin-bottom: 4px; }
-
-        .qr-box { background: #fff; padding: 8px; border-radius: 8px; display: inline-block; margin: 5px 0; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
+        .modal-card { background: #121212; border-radius: 16px; width: 92%; max-width: 520px; padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .mobile-nav { display: flex; }
             .main { padding-bottom: 180px; }
-            .player-bar { bottom: 45px; height: 85px; padding: 8px 12px; }
-            .plan-card-row { flex-direction: column; }
+            .player-bar { bottom: 50px; height: 80px; padding: 8px 16px; }
         }
     </style>
 </head>
@@ -157,14 +124,19 @@
 
     <div class="top-bar">
         <div class="brand-logo">
-            <svg width="30" height="30" viewBox="0 0 32 32" fill="none"><path d="M4 16H8L11 6L16 26L21 11L24 16H28" stroke="#00f0ff" stroke-width="3"/></svg>
+            <!-- CYBER-G STYLIZED LOGO FROM BANNER -->
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" stroke="#00f0ff" stroke-width="6" stroke-dasharray="200 60"/>
+                <path d="M50 20 C32 20 20 32 20 50 C20 68 32 80 50 80 C68 80 80 68 80 50 H50" stroke="#ff007f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="50" cy="50" r="12" fill="#ffd700"/>
+            </svg>
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <button class="btn-3d btn-3d-gold founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL APP</button>
-            <button class="btn-3d btn-3d-gold" onclick="openModal('rateUsModal')">⭐ RATE US</button>
-            <button class="btn-3d" onclick="openModal('helpModal')">❓ HELP & AI</button>
-            <button class="btn-3d btn-3d-pink" id="upgradeVipBtn" onclick="openModal('vipGateModal')">⚡ UPGRADE</button>
+            <button class="btn-spotify founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL</button>
+            <button class="btn-spotify btn-outline" onclick="openModal('rateUsModal')">⭐ Rate Us</button>
+            <button class="btn-spotify btn-outline" onclick="openModal('helpModal')">❓ Help</button>
+            <button class="btn-spotify" onclick="openModal('vipGateModal')">⚡ Get VIP</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
                 <span id="profileNameDisplay">Sign In</span>
             </div>
@@ -173,55 +145,46 @@
 
     <div class="app-container">
         <div class="sidebar">
-            <div class="nav-item active" onclick="showSection('all')">Studio Home</div>
-            <div class="nav-item" onclick="showSection('favorites')">❤️ Favorite Tracks</div>
-            <div class="nav-item pro-only" onclick="openModal('settingsModal')">🎛️ 5-Band Equalizer & FX</div>
-            <div class="nav-item pro-only" onclick="openModal('roomModal')">👥 Cyber Sync Party Deck</div>
-            <div class="nav-item" onclick="openModal('referralModal')">🔗 Share & Earn Free VIP</div>
+            <div class="nav-item active" onclick="showSection('all')">🏠 Home</div>
+            <div class="nav-item" onclick="showSection('favorites')">💚 Liked Songs</div>
+            <div class="nav-item pro-only" onclick="openModal('settingsModal')">🎛️ Equalizer & FX</div>
+            <div class="nav-item pro-only" onclick="openModal('roomModal')">👥 Party Sync Room</div>
+            <div class="nav-item" onclick="openModal('referralModal')">📢 Share App</div>
             <div class="nav-item" onclick="openModal('rateUsModal')">⭐ Rate Experience</div>
-            <div class="nav-item" onclick="openModal('helpModal')">❓ Help & Support Center</div>
+            <div class="nav-item" onclick="openModal('helpModal')">❓ Help Center</div>
         </div>
 
         <div class="main">
             <div class="search-bar">
-                <input type="text" id="searchInput" placeholder="Search local tracks..." onkeyup="searchSongs()">
+                <input type="text" id="searchInput" placeholder="Search your local music..." onkeyup="searchSongs()">
             </div>
 
             <div class="action-row-btn">
-                <label for="multiFileInput" class="btn-3d" id="importBtnLabel">📁 Import MP3 Tracks</label>
-                <button class="btn-3d btn-3d-pink pro-only" onclick="toggle8DSpatialAudio()">🌌 Quantum 360° Spatial Surround</button>
-                <button class="btn-3d pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer FX Engine</button>
-                <button class="btn-3d" onclick="openSleepTimerModal()">⏱️ Sleep Timer</button>
-                <button class="btn-3d btn-3d-gold" onclick="openModal('referralModal')">🎁 Earn 1 Month Free VIP</button>
+                <label for="multiFileInput" class="btn-spotify" id="importBtnLabel">📁 Import Songs</label>
+                <button class="btn-spotify btn-outline pro-only" onclick="toggle8DSpatialAudio()">🌌 360° Spatial Sound</button>
+                <button class="btn-spotify btn-outline pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer</button>
+                <button class="btn-spotify btn-outline" onclick="openSleepTimerModal()">⏱️ Sleep Timer</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
             <div class="lyrics-box-container" id="lyricsContainer">
-                <p class="lyric-line active">🎵 Play a track to auto-sync Live Lyrics...</p>
+                <p class="lyric-line active">🎵 Play a track to auto-sync Karaoke Lyrics...</p>
             </div>
 
             <h2 class="section-title">
-                <span id="vaultTitle">Offline Core Vault</span>
-                <span id="trackCount" style="color: var(--primary-glow);">0 Tracks</span>
+                <span id="vaultTitle">Your Library</span>
+                <span id="trackCount" style="color: var(--text-grey); font-size: 14px;">0 Songs</span>
             </h2>
             <div class="song-grid" id="songGrid"></div>
         </div>
     </div>
 
-    <div class="mobile-nav">
-        <div class="mobile-nav-item active" onclick="window.scrollTo(0,0)"><span>🏠</span>Home</div>
-        <div class="mobile-nav-item pro-only" onclick="openModal('settingsModal')"><span>🎛️</span>Equalizer</div>
-        <div class="mobile-nav-item pro-only" onclick="openModal('roomModal')"><span>👥</span>Party Sync</div>
-        <div class="mobile-nav-item" onclick="openModal('rateUsModal')"><span>⭐</span>Rate Us</div>
-        <div class="mobile-nav-item" onclick="openModal('vipGateModal')"><span>⚡</span>Upgrade</div>
-    </div>
-
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <div style="width:36px; height:36px; background:#111; border:1px solid var(--primary-glow); border-radius:8px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow);">🎵</div>
+            <div style="width:40px; height:40px; background:#282828; border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--spotify-green);">🎵</div>
             <div>
-                <h4 id="p-title" style="font-size: 12px;">Ready System</h4>
-                <p id="p-artist" style="font-size: 10px; color:#aaa;">Global Harmony Pro</p>
+                <h4 id="p-title" style="font-size: 13px;">Ready System</h4>
+                <p id="p-artist" style="font-size: 11px; color:var(--text-grey);">Global Harmony Pro</p>
             </div>
         </div>
         <div class="controls">
@@ -239,333 +202,35 @@
     <div class="modal-overlay" id="rateUsModal">
         <div class="modal-card" style="text-align: center;">
             <div class="modal-header">
-                <h3 style="color: var(--gold-glow);">⭐ Rate Global Harmony Pro</h3>
+                <h3>Rate Global Harmony Pro</h3>
                 <span style="cursor:pointer;" onclick="closeModal('rateUsModal')">✕</span>
             </div>
-            <p style="font-size:11px; color:#aaa; margin-top:5px;">How is your audio experience so far?</p>
-            <div style="font-size: 32px; margin: 12px 0; cursor: pointer;" id="starContainer">
+            <p style="font-size:12px; color:var(--text-grey);">How is your experience so far?</p>
+            <div style="font-size: 30px; margin: 12px 0; cursor: pointer;" id="starContainer">
                 <span onclick="setRating(1)">⭐</span>
                 <span onclick="setRating(2)">⭐</span>
                 <span onclick="setRating(3)">⭐</span>
                 <span onclick="setRating(4)">⭐</span>
                 <span onclick="setRating(5)">⭐</span>
             </div>
-            <textarea id="feedbackText" placeholder="Write your valuable feedback here for Founder Karan..." style="width:100%; height:65px; background:#1a1a24; border:1px solid #333; color:#fff; border-radius:8px; padding:8px; font-size:11px; outline:none;"></textarea>
-            <button class="btn-3d btn-3d-gold" style="margin-top:10px; justify-content:center; width:100%;" onclick="submitRating()">Submit Star Rating</button>
-        </div>
-    </div>
-
-    <!-- SLEEP TIMER MODAL -->
-    <div class="modal-overlay" id="sleepTimerModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 style="color: var(--primary-glow);">⏱️ Smart Sleep Timer</h3>
-                <span style="cursor:pointer;" onclick="closeModal('sleepTimerModal')">✕</span>
-            </div>
-            <p style="font-size:11px; color:#aaa;">Audio will automatically stop after chosen time:</p>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                <button class="btn-3d" onclick="setSleepTimer(15)">15 Mins</button>
-                <button class="btn-3d" onclick="setSleepTimer(30)">30 Mins</button>
-                <button class="btn-3d" onclick="setSleepTimer(60)">60 Mins</button>
-                <button class="btn-3d btn-3d-pink" onclick="clearSleepTimer()">Turn Off Timer</button>
-            </div>
-            <div id="timerStatus" style="font-size:11px; color:var(--gold-glow); margin-top:8px;">Timer: Off</div>
-        </div>
-    </div>
-
-    <!-- EQUALIZER MODAL -->
-    <div class="modal-overlay" id="settingsModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 style="color: var(--primary-glow);">🎛️ Studio Equalizer & Audio FX</h3>
-                <span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center;">
-                <label style="font-size:11px; font-weight:bold;">Equalizer Preset:</label>
-                <select id="eqPresetSelect" onchange="applyEQPreset(this.value)" style="background:#1a1a24; color:#fff; border:1px solid #333; padding:6px 12px; border-radius:8px; font-size:11px;">
-                    <option value="normal">🎵 Normal / Flat</option>
-                    <option value="rock">🎸 Rock</option>
-                    <option value="pop">💃 Pop</option>
-                    <option value="jazz">🎷 Jazz / Vocal</option>
-                    <option value="bass">⚡ Heavy Bass Boost</option>
-                    <option value="custom">🎚️ Custom Mode</option>
-                </select>
-            </div>
-            <div style="display:flex; justify-content:space-between; text-align:center; gap:8px; margin-top:10px;">
-                <div><span>BASS (60Hz)</span><br><input type="range" id="eq60" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>LOW (230Hz)</span><br><input type="range" id="eq230" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>MID (910Hz)</span><br><input type="range" id="eq910" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>TREBLE (4kHz)</span><br><input type="range" id="eq4k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-                <div><span>SPARKLE (14kHz)</span><br><input type="range" id="eq14k" min="-12" max="12" value="0" oninput="setCustomEQ()"></div>
-            </div>
-            
-            <div style="border-top:1px solid #222; padding-top:10px; margin-top:10px;">
-                <label style="font-size:11px; font-weight:bold; color:var(--gold-glow);">🔊 300% Ultra Bass Volume Amplifer:</label>
-                <input type="range" id="volumeBoost" min="1" max="3" step="0.1" value="1" oninput="setVolumeBoost(this.value)" style="width:100%; margin-top:5px;">
-            </div>
-        </div>
-    </div>
-
-    <!-- PARTY SYNC MODAL -->
-    <div class="modal-overlay" id="roomModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>👥 Cyber Sync Party Deck & Realtime Chat</h3>
-                <span style="cursor:pointer;" onclick="closeModal('roomModal')">✕</span>
-            </div>
-            <div style="background:#141420; border:1px dashed var(--primary-glow); padding:12px; border-radius:10px; text-align:center;">
-                <p style="font-size:11px; color:#aaa;">Generated Live Sync Room Code:</p>
-                <div id="partyRoomDisplayCode" style="font-size:20px; font-weight:900; color:var(--primary-glow); margin:5px 0;">83920154</div>
-                <button class="btn-3d" onclick="generateNewPartyRoomCode()">🎲 Generate Unique Room Code</button>
-            </div>
-            <div style="display:flex; gap:8px;">
-                <input type="text" id="partyCodeInput" placeholder="Enter Friend's Room Code" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
-                <button class="btn-3d btn-3d-pink" onclick="connectToPartySyncRoom()">Connect Devices</button>
-            </div>
-            <div class="chat-box" id="chatBox"><div class="chat-msg"><strong>System:</strong> Live Room Chat Connected!</div></div>
-            <div style="display:flex; gap:8px;">
-                <input type="text" id="chatInput" placeholder="Type message..." style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
-                <button class="btn-3d" onclick="sendChatMessage()">Send</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- HELP MODAL -->
-    <div class="modal-overlay" id="helpModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 style="color: var(--primary-glow);">❓ Help & Support Center</h3>
-                <span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:6px;">
-                <h4 style="font-size:11px; color:#aaa;">Common Problems (Tap for Solution):</h4>
-                <div class="faq-item" onclick="showFaqAnswer('Ensure files are MP3/AAC.')"><h5>❓ Songs imported but not playing?</h5><p>Tap to view audio format fix.</p></div>
-                <div class="faq-item" onclick="showFaqAnswer('Send email to globalharmonypro9052@gmail.com for instant free code!')"><h5>🎁 How to get Free VIP Code?</h5><p>Tap to view Free Activation steps.</p></div>
-            </div>
-            <button class="btn-3d btn-3d-gold" style="justify-content:center; margin-top:10px;" onclick="window.location.href='mailto:globalharmonypro9052@gmail.com?subject=Help Support Request'">💬 Support Chat: globalharmonypro9052@gmail.com</button>
-        </div>
-    </div>
-
-    <!-- PROMOTIONAL SHARE MODAL WITH COLOURED VIP CHART BANNER -->
-    <div class="modal-overlay" id="referralModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3 style="color: var(--gold-glow);">🚀 Invite & Share Promotion Pack</h3>
-                <span style="cursor:pointer;" onclick="closeModal('referralModal')">✕</span>
-            </div>
-            
-            <!-- COLOURED VIP COMPARISON BANNER -->
-            <div class="coloured-vip-banner">
-                <div class="banner-header">
-                    <h3>👑 GLOBAL HARMONY PRO STUDIO</h3>
-                    <p>Founded & Developed by Karan Nag</p>
-                </div>
-                <table class="chart-table">
-                    <thead>
-                        <tr>
-                            <th style="text-align: left;">FEATURES</th>
-                            <th>FREE</th>
-                            <th>VIP PRO</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="text-align: left;">Offline Core Vault Storage</td>
-                            <td class="badge-free">Unlimited</td>
-                            <td class="badge-vip">Unlimited</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">300% Sub-Bass Booster</td>
-                            <td class="badge-free">❌ Lock</td>
-                            <td class="badge-vip">⚡ Full Access</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">5-Band Hardware Equalizer</td>
-                            <td class="badge-free">❌ Lock</td>
-                            <td class="badge-vip">🎛️ Full Access</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">360° Quantum Spatial Surround</td>
-                            <td class="badge-free">❌ Lock</td>
-                            <td class="badge-vip">🌌 Full Access</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Realtime Party Sync Rooms</td>
-                            <td class="badge-free">❌ Lock</td>
-                            <td class="badge-vip">👥 Full Access</td>
-                        </tr>
-                        <tr>
-                            <td style="text-align: left;">Auto Karaoke Synced Lyrics</td>
-                            <td class="badge-free">✅ Yes</td>
-                            <td class="badge-vip">✅ Yes</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            
-            <div style="text-align:center;">
-                <div class="qr-box">
-                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=https://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/" alt="App Scan QR Code">
-                </div>
-                <p style="font-size:10px; color:#aaa; margin-top:2px;">Scan QR Code to Download / Launch App</p>
-            </div>
-
-            <div style="display:flex; gap:8px; justify-content:center; margin-top:5px;">
-                <button class="btn-3d btn-whatsapp" style="flex:1;" onclick="shareDirectPromoPack()">📲 Direct Share Promo Pack (Image + Link + Text)</button>
-            </div>
-
-            <div style="display:flex; gap:8px; border-top:1px solid #222; padding-top:10px; margin-top:5px;">
-                <input type="email" id="friendGmailInput" placeholder="Enter Friend's Registered Gmail" style="flex:1; background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px;">
-                <button class="btn-3d btn-3d-pink" onclick="verifyFriendGmailForVip()">Verify & Claim VIP</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- UPGRADE PAYWALL MODAL -->
-    <div class="modal-overlay" id="vipGateModal">
-        <div class="modal-card" style="border-color: #ff007f;">
-            <div class="modal-header">
-                <h3 style="color: #ff007f;">⚡ Upgrade Plans & Premium Inspection</h3>
-                <span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span>
-            </div>
-            <div class="plan-card-row">
-                <div class="plan-card"><h4 style="color:#aaa; font-size:11px;">STARTER PASS</h4><div style="font-size:20px; font-weight:900; color:#fff; margin:4px 0;">₹39</div><p style="font-size:10px; color:#888;">Valid for 1 Month</p></div>
-                <div class="plan-card active"><span style="background:#ff007f; color:#fff; font-size:8px; font-weight:bold; padding:2px 6px; border-radius:10px;">BEST VALUE</span><h4 style="color:var(--gold-glow); font-size:11px; margin-top:2px;">PRO FOUNDER PASS</h4><div style="font-size:20px; font-weight:900; color:var(--gold-glow); margin:4px 0;">₹99</div><p style="font-size:10px; color:#aaa;">Valid for 3 Months</p></div>
-            </div>
-            <div class="trust-box">
-                <span class="trust-badge">✓ VERIFIED FOUNDER</span>
-                <p style="margin-top:4px;">Pay via UPI to Founder Karan Nag. Enter Ref ID for instant activation!</p>
-                <p style="color:var(--gold-glow); font-weight:bold;">UPI / Email: globalharmonypro9052@gmail.com</p>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:8px;">
-                <input type="text" id="transactionIdInput" placeholder="Enter UPI Ref No." style="background:#1a1a24; border:1px solid #333; padding:10px; border-radius:8px; color:#fff; font-size:12px;">
-                <button class="btn-3d btn-3d-gold" onclick="verifyPaymentTrust()">⚡ Instant Verify Payment</button>
-            </div>
-            <div style="display: flex; gap: 8px; border-top:1px solid #222; padding-top:8px;">
-                <input type="text" id="activationKeyInput" placeholder="Or Enter Code" style="background:#1a1a24; border:1px solid #333; padding:8px; border-radius:8px; color:#fff; font-size:11px; flex:1;">
-                <button class="btn-3d btn-3d-pink" onclick="verifySingleUseVIPKey()">Activate</button>
-            </div>
+            <textarea id="feedbackText" placeholder="Write feedback for Founder Karan..." style="width:100%; height:70px; background:#282828; border:none; color:#fff; border-radius:8px; padding:10px; font-size:12px; outline:none;"></textarea>
+            <button class="btn-spotify" style="margin-top:10px; width:100%;" onclick="submitRating()">Submit Rating</button>
         </div>
     </div>
 
     <!-- MAIN ENGINE SCRIPT -->
     <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
-                for(let registration of registrations) { registration.unregister(); }
-            });
-        }
-
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
         
-        let trackList = [], likedTracks = new Set(), db, currentPlayingIndex = -1;
-        let is8DMode = false, spatialInterval = null, panPosition = 0, panDirection = 0.05;
-        let currentSyncedLyrics = [], sleepTimerTimeout = null, userRating = 5;
+        let trackList = [], db, currentPlayingIndex = -1, userRating = 5;
 
-        /* RATING ENGINE */
-        function setRating(stars) {
-            userRating = stars;
-            alert(`You rated us ${stars} Stars! ⭐`);
-        }
-        function submitRating() {
-            const txt = document.getElementById('feedbackText').value;
-            alert(`Thank you for rating us ${userRating} Stars! Feedback sent to Founder Karan.`);
-            closeModal('rateUsModal');
-        }
+        function setRating(stars) { userRating = stars; alert(`You rated us ${stars} Stars! ⭐`); }
+        function submitRating() { alert(`Thank you for rating us ${userRating} Stars!`); closeModal('rateUsModal'); }
 
-        async function shareDirectPromoPack() {
-            const shareText = `🔥 *GLOBAL HARMONY PRO - Cyberpunk Audio Studio* 🔥\n\n🎵 3D Spatial Surround, 300% Sub-Bass Booster aur Friends ke sath Zero-Lag Party Sync me gaana sunne ke liye abhi app open karein:\nhttps://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/`;
-
-            if (navigator.share) {
-                try {
-                    await navigator.share({
-                        title: 'Global Harmony Pro',
-                        text: shareText,
-                        url: 'https://ks1007293-cpu.github.io/GLOBAL-HARMON-PLAYER/'
-                    });
-                } catch(e) {}
-            } else {
-                navigator.clipboard.writeText(shareText);
-                alert("Promotional Message & Link Copied! Paste on WhatsApp / Social Apps.");
-            }
-        }
-
-        /* WEB AUDIO API DSP ENGINE */
-        let audioCtx, sourceNode, pannerNode, gainNode;
-        let eqFilters = [];
-        const freqs = [60, 230, 910, 4000, 14000];
-
-        function initWebAudioAPI() {
-            if (audioCtx) return;
-            const AudioContext = window.AudioContext || window.webkitAudioContext;
-            audioCtx = new AudioContext();
-
-            sourceNode = audioCtx.createMediaElementSource(audio);
-
-            eqFilters = freqs.map((freq, index) => {
-                const filter = audioCtx.createBiquadFilter();
-                if (index === 0) filter.type = 'lowshelf';
-                else if (index === freqs.length - 1) filter.type = 'highshelf';
-                else filter.type = 'peaking';
-                filter.frequency.value = freq;
-                filter.gain.value = 0;
-                return filter;
-            });
-
-            pannerNode = audioCtx.createStereoPanner ? audioCtx.createStereoPanner() : null;
-            gainNode = audioCtx.createGain();
-
-            let currentNode = sourceNode;
-            eqFilters.forEach(f => {
-                currentNode.connect(f);
-                currentNode = f;
-            });
-
-            if (pannerNode) {
-                currentNode.connect(pannerNode);
-                pannerNode.connect(gainNode);
-            } else {
-                currentNode.connect(gainNode);
-            }
-            gainNode.connect(audioCtx.destination);
-        }
-
-        function setVolumeBoost(val) {
-            initWebAudioAPI();
-            if (gainNode) gainNode.gain.setTargetAtTime(parseFloat(val), audioCtx.currentTime, 0.05);
-        }
-
-        function openSleepTimerModal() { openModal('sleepTimerModal'); }
-        function setSleepTimer(minutes) {
-            clearSleepTimer();
-            const ms = minutes * 60 * 1000;
-            document.getElementById('timerStatus').innerText = `Timer Active: Stopping in ${minutes} Mins`;
-            sleepTimerTimeout = setTimeout(() => {
-                audio.pause();
-                alert("⏱️ Sleep Timer: Playback Stopped.");
-                document.getElementById('timerStatus').innerText = "Timer: Off";
-            }, ms);
-            closeModal('sleepTimerModal');
-        }
-
-        function clearSleepTimer() {
-            if (sleepTimerTimeout) clearTimeout(sleepTimerTimeout);
-            document.getElementById('timerStatus').innerText = "Timer: Off";
-        }
-
-        /* INDEXEDDB VAULT ENGINE */
         const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 13);
-        
-        dbRequest.onupgradeneeded = (e) => {
-            db = e.target.result;
-            if (!db.objectStoreNames.contains("saved_songs")) {
-                db.createObjectStore("saved_songs", { keyPath: "id", autoIncrement: true });
-            }
-        };
-
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
             loadTracksFromDB();
@@ -575,9 +240,6 @@
         function checkAppPersistentStates() {
             if (localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
             if (localStorage.getItem('harmony_is_founder') === 'true') document.body.classList.add('founder-active');
-            
-            const savedLikes = localStorage.getItem('harmony_liked_tracks');
-            if (savedLikes) likedTracks = new Set(JSON.parse(savedLikes));
         }
 
         function loadTracksFromDB() {
@@ -592,73 +254,20 @@
 
         function renderSongGridLazy(list) {
             songGrid.innerHTML = '';
-            document.getElementById('trackCount').innerText = `${list.length} Tracks`;
-            
-            let batchSize = 15;
-            let currentIdx = 0;
-
-            function renderBatch() {
-                const limit = Math.min(currentIdx + batchSize, list.length);
-                const fragment = document.createDocumentFragment();
-
-                for (let i = currentIdx; i < limit; i++) {
-                    const track = list[i];
-                    const card = document.createElement('div');
-                    card.className = 'song-card';
-                    const isLiked = likedTracks.has(track.title);
-                    
-                    card.innerHTML = `
-                        <span class="heart-btn ${isLiked ? 'liked' : ''}" onclick="toggleLikeTrack(event, '${track.title.replace(/'/g, "\\'")}')">♥</span>
-                        <div class="media-player-box" onclick="playTrack(${i})">
-                            <span class="play-overlay-icon">▶</span>
-                        </div>
-                        <h3>${track.title}</h3>
-                    `;
-                    fragment.appendChild(card);
-                }
-
-                songGrid.appendChild(fragment);
-                currentIdx = limit;
-
-                if (currentIdx < list.length) {
-                    requestAnimationFrame(renderBatch);
-                }
-            }
-
-            renderBatch();
-        }
-
-        function toggleLikeTrack(e, title) {
-            e.stopPropagation();
-            if (likedTracks.has(title)) likedTracks.delete(title);
-            else likedTracks.add(title);
-            
-            localStorage.setItem('harmony_liked_tracks', JSON.stringify(Array.from(likedTracks)));
-            e.target.classList.toggle('liked');
-        }
-
-        function showSection(type) {
-            if (type === 'favorites') {
-                document.getElementById('vaultTitle').innerText = "Favorite Tracks Vault";
-                const favs = trackList.filter(t => likedTracks.has(t.title));
-                renderSongGridLazy(favs);
-            } else {
-                document.getElementById('vaultTitle').innerText = "Offline Core Vault";
-                renderSongGridLazy(trackList);
-            }
+            document.getElementById('trackCount').innerText = `${list.length} Songs`;
+            list.forEach((track, i) => {
+                const card = document.createElement('div');
+                card.className = 'song-card';
+                card.innerHTML = `<div class="media-player-box" onclick="playTrack(${i})"><span class="play-overlay-icon">▶</span></div><h3>${track.title}</h3>`;
+                songGrid.appendChild(card);
+            });
         }
 
         multiFileInput.addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             if (!files || files.length === 0) return;
 
-            const btnLabel = document.getElementById('importBtnLabel');
-            const total = files.length;
-
-            for (let i = 0; i < total; i++) {
-                const file = files[i];
-                btnLabel.innerText = `⏳ Saving (${i + 1}/${total})...`;
-                
+            for (let file of files) {
                 await new Promise((resolve) => {
                     const reader = new FileReader();
                     reader.onload = (event) => {
@@ -667,37 +276,23 @@
                             const store = tx.objectStore("saved_songs");
                             store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: event.target.result });
                             tx.oncomplete = () => resolve();
-                            tx.onerror = () => resolve();
                         } else resolve();
                     };
                     reader.readAsArrayBuffer(file);
                 });
-                if (i % 2 === 0) await new Promise(r => setTimeout(r, 15));
             }
-
-            btnLabel.innerText = "📁 Import MP3 Tracks";
             loadTracksFromDB();
         });
-
-        audio.addEventListener('ended', () => { playNextTrack(); });
 
         function playTrack(index) {
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
-            
             if (track.audioData) {
                 const blob = new Blob([track.audioData], { type: 'audio/mp3' });
                 audio.src = URL.createObjectURL(blob);
             }
-
             document.getElementById('p-title').innerText = track.title;
-            
-            initWebAudioAPI();
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-
             audio.play().catch(() => {});
             playerBar.classList.add('active');
         }
@@ -705,25 +300,14 @@
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
 
-        function showFaqAnswer(ans) { alert(ans); }
-        function verifyPaymentTrust() { localStorage.setItem('harmony_is_vip', 'true'); checkAppPersistentStates(); closeModal('vipGateModal'); alert("VIP Activated!"); }
-
-        function verifySingleUseVIPKey() { localStorage.setItem('harmony_is_vip', 'true'); checkAppPersistentStates(); closeModal('vipGateModal'); }
-
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-        function searchSongs() {
-            const query = document.getElementById('searchInput').value.toLowerCase();
-            const filtered = trackList.filter(t => t.title.toLowerCase().includes(query));
-            renderSongGridLazy(filtered);
-        }
     </script>
 
-    <!-- FIREBASE AUTH & AUTO CLOUD SYNC -->
+    <!-- FIREBASE AUTH -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDocs, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
@@ -736,62 +320,27 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
         const provider = new GoogleAuthProvider();
 
         window.loginWithGoogle = async function() {
             try {
-                const result = await signInWithPopup(auth, provider);
-                await syncUserToCloud(result.user);
+                await signInWithPopup(auth, provider);
             } catch (error) { alert("Login Error: " + error.message); }
         };
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 document.getElementById('profileNameDisplay').innerText = user.displayName;
-                await syncUserToCloud(user);
-                
-                onSnapshot(doc(db, "app_users", user.uid), (docSnap) => {
-                    if (docSnap.exists() && docSnap.data().isVip) {
-                        localStorage.setItem('harmony_is_vip', 'true');
-                        document.body.classList.add('vip-active');
-                    }
-                });
-            }
-        });
-
-        async function syncUserToCloud(user) {
-            try {
-                await setDoc(doc(db, "app_users", user.uid), {
-                    name: user.displayName,
-                    email: user.email.toLowerCase(),
-                    lastLogin: new Date().toISOString()
-                }, { merge: true });
-
                 const email = user.email.toLowerCase();
-                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422") || user.displayName.toLowerCase().includes("karan")) {
+                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422")) {
                     localStorage.setItem('harmony_is_vip', 'true');
                     localStorage.setItem('harmony_is_founder', 'true');
                     document.body.classList.add('vip-active');
                     document.body.classList.add('founder-active');
                 }
-            } catch(e) {}
-        }
-
-        window.verifyFriendGmailForVip = async function() {
-            const friendEmail = document.getElementById('friendGmailInput').value.trim().toLowerCase();
-            if (!friendEmail) return;
-            try {
-                const q = query(collection(db, "app_users"), where("email", "==", friendEmail));
-                const querySnapshot = await getDocs(q);
-                if (!querySnapshot.empty) {
-                    localStorage.setItem('harmony_is_vip', 'true');
-                    document.body.classList.add('vip-active');
-                    closeModal('referralModal');
-                    alert("1 Month Free VIP Unlocked!");
-                } else alert("Friend has not logged in yet!");
-            } catch (e) {}
-        };
+            }
+        });
     </script>
 </body>
 </html>
+```http://googleusercontent.com/image_generation_content/711
