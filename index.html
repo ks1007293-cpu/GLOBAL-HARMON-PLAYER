@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#00f0ff">
     <title>Global Harmony Pro - Cyberpunk Studio</title>
 
-    <link rel="manifest" href="manifest.json?v=11">
+    <link rel="manifest" href="manifest.json?v=8">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
@@ -29,7 +29,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: #080810; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* CYBERPUNK THEME BUTTONS */
+        /* CYBERPUNK BUTTONS */
         .btn-cyber {
             background: #181824;
             border: 1px solid rgba(0, 240, 255, 0.4);
@@ -68,7 +68,7 @@
 
         .app-container { display: flex; flex: 1; }
 
-        /* SIDEBAR (CYBERPUNK THEME) */
+        /* SIDEBAR */
         .sidebar { width: 230px; background: #0a0a0f; padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid rgba(255,255,255,0.08); }
         .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 11px 14px; border-radius: 12px; cursor: pointer; font-size: 12px; border: 1px solid transparent; }
         .nav-item:hover, .nav-item.active { color: white; background: rgba(0, 240, 255, 0.1); border-color: var(--primary-glow); }
@@ -88,7 +88,7 @@
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
         .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        /* SONG GRID (CYBERPUNK THEME) */
+        /* SONG GRID (FUTURISTIC LAYOUT) */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
         .song-card { background: #141420; padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
         .media-player-box { width: 100%; aspect-ratio: 1/1; background: #0c0c14; border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
@@ -113,25 +113,16 @@
         .control-icon:hover { color: var(--primary-glow); }
         .audio-element-custom { width: 100%; height: 28px; filter: invert(1); }
 
-        /* CYBERPUNK MODALS */
+        /* MODALS */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; }
         .modal-card { background: #12121a; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; width: 92%; max-width: 580px; padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
         .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
-
-        .faq-item { background: #161622; border: 1px solid #282838; padding: 10px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: 0.2s; }
-        .faq-item:hover { background: #202030; }
-        .faq-item h5 { color: var(--primary-glow); margin-bottom: 4px; }
-
-        .plan-card-row { display: flex; gap: 10px; }
-        .plan-card { flex: 1; background: #181824; border: 1px solid #333; padding: 12px; border-radius: 12px; text-align: center; }
-        .plan-card.active { border-color: var(--secondary-glow); background: rgba(255, 0, 127, 0.1); }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .mobile-nav { display: flex; }
             .main { padding-bottom: 180px; }
             .player-bar { bottom: 45px; height: 85px; padding: 8px 12px; }
-            .plan-card-row { flex-direction: column; }
         }
     </style>
 </head>
@@ -149,8 +140,8 @@
         <div class="header-actions">
             <button class="btn-cyber founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL</button>
             <button class="btn-cyber btn-outline" onclick="openModal('rateUsModal')">⭐ Rate Us</button>
-            <button class="btn-cyber btn-outline" onclick="openModal('helpModal')">❓ Help & FAQs</button>
-            <button class="btn-cyber btn-pink" onclick="openModal('vipGateModal')">⚡ Get VIP</button>
+            <button class="btn-cyber btn-outline" onclick="openModal('helpModal')">❓ Help</button>
+            <button class="btn-cyber btn-pink" onclick="openModal('vipGateModal')">⚡ VVIP Access</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
                 <span id="profileNameDisplay">Sign In</span>
             </div>
@@ -186,7 +177,7 @@
             </div>
 
             <h2 class="section-title">
-                <span id="vaultTitle">Your Library</span>
+                <span id="vaultTitle">Your Library Vault</span>
                 <span id="trackCount" style="color: var(--text-grey); font-size: 14px;">0 Songs</span>
             </h2>
             <div class="song-grid" id="songGrid"></div>
@@ -220,62 +211,19 @@
         </div>
     </footer>
 
-    <!-- RATE US MODAL -->
-    <div class="modal-overlay" id="rateUsModal">
-        <div class="modal-card" style="text-align: center;">
-            <div class="modal-header">
-                <h3>Rate Global Harmony Pro</h3>
-                <span style="cursor:pointer;" onclick="closeModal('rateUsModal')">✕</span>
-            </div>
-            <p style="font-size:12px; color:var(--text-grey);">How is your experience so far?</p>
-            <div style="font-size: 30px; margin: 12px 0; cursor: pointer;" id="starContainer">
-                <span onclick="setRating(1)">⭐</span>
-                <span onclick="setRating(2)">⭐</span>
-                <span onclick="setRating(3)">⭐</span>
-                <span onclick="setRating(4)">⭐</span>
-                <span onclick="setRating(5)">⭐</span>
-            </div>
-            <textarea id="feedbackText" placeholder="Write feedback for Founder Karan..." style="width:100%; height:70px; background:#181824; border:1px solid #333; color:#fff; border-radius:8px; padding:10px; font-size:12px; outline:none;"></textarea>
-            <button class="btn-cyber" style="margin-top:10px; width:100%;" onclick="submitRating()">Submit Rating</button>
-        </div>
-    </div>
-
-    <!-- HELP & FAQs MODAL -->
-    <div class="modal-overlay" id="helpModal">
-        <div class="modal-card">
-            <div class="modal-header">
-                <h3>Help Center & FAQs</h3>
-                <span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span>
-            </div>
-            <div style="display:flex; flex-direction:column; gap:8px;">
-                <div class="faq-item" onclick="showFaqAnswer('Ensure files are MP3/AAC.')"><h5>❓ Songs not playing?</h5><p>Tap for solution.</p></div>
-                <div class="faq-item" onclick="showFaqAnswer('Send email to globalharmonypro9052@gmail.com')"><h5>🎁 Get Free VIP?</h5><p>Tap to view activation.</p></div>
-                <div class="faq-item" onclick="showFaqAnswer('Check browser render settings or clear cache.')"><h5>🐢 App is Lagging?</h5><p>Tap for render fix.</p></div>
-            </div>
-            <button class="btn-cyber" style="width:100%; margin-top:10px;" onclick="window.location.href='mailto:globalharmonypro9052@gmail.com?subject=Help Request'">Contact Founder: globalharmonypro9052@gmail.com</button>
-        </div>
-    </div>
-
-    <!-- MAIN ENGINE SCRIPT -->
+    <!-- MAIN ENGINE SCRIPT (COMPACT) -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
         
-        let trackList = [], db, currentPlayingIndex = -1, userRating = 5;
-
-        function setRating(stars) { userRating = stars; alert(`You rated us ${stars} Stars! ⭐`); }
-        function submitRating() { alert(`Thank you for rating us ${userRating} Stars! Feedback sent to Founder Karan.`); closeModal('rateUsModal'); }
-        function showFaqAnswer(ans) { alert(ans); }
+        let trackList = [], likedTracks = new Set(), db, currentPlayingIndex = -1;
+        let equalizerFilters = [], pannerNode, sleepTimerTimeout = null;
 
         /* INDEXEDDB VAULT ENGINE */
         const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 13);
-        dbRequest.onsuccess = (e) => {
-            db = e.target.result;
-            loadTracksFromDB();
-            checkAppPersistentStates();
-        };
+        dbRequest.onsuccess = (e) => { db = e.target.result; loadTracksFromDB(); checkAppPersistentStates(); };
 
         function checkAppPersistentStates() {
             if (localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
@@ -286,10 +234,7 @@
             if (!db) return;
             const tx = db.transaction(["saved_songs"], "readonly");
             const store = tx.objectStore("saved_songs");
-            store.getAll().onsuccess = (event) => {
-                trackList = event.target.result || [];
-                renderSongGridLazy(trackList);
-            };
+            store.getAll().onsuccess = (event) => { trackList = event.target.result || []; renderSongGridLazy(trackList); };
         }
 
         function renderSongGridLazy(list) {
@@ -339,7 +284,6 @@
 
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
-
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
