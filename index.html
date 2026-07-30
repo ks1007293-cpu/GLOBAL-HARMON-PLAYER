@@ -6,117 +6,132 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="description" content="Global Harmony Pro - Minimal Audio Studio">
+    <meta name="description" content="Global Harmony Pro - Cyberpunk Audio Studio">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#121212">
-    <title>Global Harmony Pro - Premium Audio Studio</title>
+    <meta name="theme-color" content="#00f0ff">
+    <title>Global Harmony Pro - Cyberpunk Studio</title>
 
-    <link rel="manifest" href="manifest.json?v=10">
+    <link rel="manifest" href="manifest.json?v=11">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
         :root {
-            --spotify-green: #1db954;
-            --spotify-green-hover: #1ed760;
-            --bg-black: #121212;
-            --card-bg: #181818;
-            --card-hover: #282828;
-            --text-white: #ffffff;
+            --primary-glow: #00f0ff;
+            --secondary-glow: #ff007f;
+            --gold-glow: #ffd700;
+            --bg-black: #080808;
+            --card-bg: rgba(20, 20, 30, 0.85);
             --text-grey: #b3b3b3;
-            --border-color: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-black); color: var(--text-white); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #080810; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        .btn-spotify {
-            background: var(--spotify-green);
-            color: #000;
-            padding: 10px 20px;
-            font-size: 12px;
-            font-weight: 700;
-            border-radius: 50px;
-            border: none;
+        /* CYBERPUNK THEME BUTTONS */
+        .btn-cyber {
+            background: #181824;
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            color: #fff;
+            padding: 9px 16px;
+            font-size: 11px;
+            font-weight: 800;
+            border-radius: 12px;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            transition: transform 0.15s ease, background 0.15s ease;
-            text-decoration: none;
+            text-transform: uppercase;
             letter-spacing: 0.5px;
+            transition: transform 0.1s ease;
+            text-decoration: none;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
         }
-        .btn-spotify:hover { background: var(--spotify-green-hover); transform: scale(1.03); }
-        .btn-spotify:active { transform: scale(0.97); }
+        .btn-cyber:hover { transform: scale(1.03); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+        .btn-cyber:active { transform: scale(0.97); }
 
-        .btn-outline { background: transparent; border: 1px solid var(--text-grey); color: var(--text-white); }
-        .btn-outline:hover { border-color: var(--text-white); }
+        .btn-pink { background: #260a18; border-color: rgba(255, 0, 127, 0.5); }
+        .btn-gold { background: #26200a; border-color: rgba(255, 215, 0, 0.6); color: var(--gold-glow); }
 
         /* HEADER */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #000; padding: 14px 24px; position: sticky; top:0; z-index: 100; border-bottom: 1px solid var(--border-color); }
-        .brand-logo { display: flex; align-items: center; gap: 10px; cursor: pointer; }
-        .brand-logo h1 { font-size: 18px; font-weight: 800; color: var(--text-white); letter-spacing: -0.5px; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #0c0c12; padding: 12px 20px; border-bottom: 2px solid rgba(0, 240, 255, 0.2); position: sticky; top:0; z-index: 100; }
+        .brand-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
+        .brand-logo h1 { font-size: 17px; font-weight: 900; color: var(--primary-glow); }
 
-        .header-actions { display: flex; align-items: center; gap: 10px; }
+        .header-actions { display: flex; align-items: center; gap: 8px; }
         .founder-badge { display: none; }
         body.founder-active .founder-badge { display: inline-flex !important; }
 
-        .profile-badge { display: flex; align-items: center; gap: 6px; background: #282828; padding: 8px 16px; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 12px; }
+        .profile-badge { display: flex; align-items: center; gap: 6px; background: rgba(22, 22, 34, 0.8); padding: 7px 12px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 11px; }
 
         .app-container { display: flex; flex: 1; }
 
-        /* SIDEBAR */
-        .sidebar { width: 240px; background: #000; padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; }
-        .nav-item { display: flex; align-items: center; gap: 12px; color: var(--text-grey); font-weight: 700; padding: 12px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; transition: 0.2s; }
-        .nav-item:hover, .nav-item.active { color: var(--text-white); background: var(--card-hover); }
+        /* SIDEBAR (CYBERPUNK THEME) */
+        .sidebar { width: 230px; background: #0a0a0f; padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid rgba(255,255,255,0.08); }
+        .nav-item { display: flex; align-items: center; gap: 10px; color: var(--text-grey); font-weight: bold; padding: 11px 14px; border-radius: 12px; cursor: pointer; font-size: 12px; border: 1px solid transparent; }
+        .nav-item:hover, .nav-item.active { color: white; background: rgba(0, 240, 255, 0.1); border-color: var(--primary-glow); }
 
         .pro-only { display: none !important; }
         body.vip-active .pro-only { display: flex !important; }
 
-        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #000; border-top: 1px solid var(--border-color); justify-content: space-around; padding: 10px 0; z-index: 2000; }
-        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 10px; color: var(--text-grey); cursor: pointer; }
-        .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--text-white); }
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c12; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
+        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #888; cursor: pointer; }
+        .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary-glow); }
 
         /* MAIN DASHBOARD */
-        .main { flex: 1; padding: 24px; display: flex; flex-direction: column; gap: 20px; padding-bottom: 220px; background: linear-gradient(to bottom, #1f1f1f, var(--bg-black)); }
-        .search-bar { background: #242424; border-radius: 50px; padding: 10px 20px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 360px; }
-        .search-bar input { border: none; outline: none; background: transparent; width: 100%; font-size: 13px; color: #fff; }
+        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 18px; padding-bottom: 220px; }
+        .search-bar { background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 10px 18px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 400px; }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; font-weight: 600; background: transparent; }
 
         .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
-        .section-title { font-size: 20px; font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-top: 10px; }
+        .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
         
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; width: 100%; }
-        .song-card { background: var(--card-bg); padding: 14px; border-radius: 12px; cursor: pointer; border: none; display: flex; flex-direction: column; gap: 10px; position: relative; transition: background 0.2s ease; }
-        .song-card:hover { background: var(--card-hover); }
-        .media-player-box { width: 100%; aspect-ratio: 1/1; background: #282828; border-radius: 8px; display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
-        .play-overlay-icon { font-size: 32px; color: var(--spotify-green); }
-        .song-card h3 { font-size: 13px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-white); width: 100%; }
+        /* SONG GRID (CYBERPUNK THEME) */
+        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
+        .song-card { background: #141420; padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
+        .media-player-box { width: 100%; aspect-ratio: 1/1; background: #0c0c14; border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
+        .play-overlay-icon { position: relative; z-index: 2; font-size: 28px; color: var(--primary-glow); }
+        .heart-btn { position: absolute; top: 6px; right: 6px; font-size: 14px; z-index: 5; color: #666; }
+        .heart-btn.liked { color: var(--secondary-glow); }
+        .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
 
-        .lyrics-box-container { background: var(--card-bg); border-radius: 12px; padding: 16px; height: 110px; overflow-y: auto; text-align: center; }
-        .lyric-line { font-size: 13px; color: var(--text-grey); margin: 6px 0; }
-        .lyric-line.active { font-size: 15px; font-weight: 800; color: var(--spotify-green); }
+        /* LYRICS CONTAINER */
+        .lyrics-box-container { background: #0e0e16; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 12px; height: 110px; overflow-y: auto; text-align: center; }
+        .lyric-line { font-size: 12px; color: #777; margin: 4px 0; }
+        .lyric-line.active { font-size: 14px; font-weight: 900; color: var(--primary-glow); }
 
-        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 90px; background: #000; display: flex; justify-content: space-between; align-items: center; padding: 12px 30px; border-top: 1px solid var(--border-color); z-index: 1000; transform: translateY(100%); transition: transform 0.2s ease; }
+        /* PLAYER BAR */
+        .player-bar { position: fixed; bottom: 0; left: 0; width: 100%; height: 95px; background: #0a0a12; display: flex; justify-content: space-between; align-items: center; padding: 12px 25px; border-top: 2px solid var(--primary-glow); z-index: 1000; transform: translateY(100%); transition: transform 0.2s ease; }
         .player-bar.active { transform: translateY(0); }
-        .now-playing { display: flex; align-items: center; gap: 12px; width: 30%; }
+        .now-playing { display: flex; align-items: center; gap: 10px; width: 35%; }
         
-        .controls { width: 40%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .btn-row { display: flex; gap: 20px; align-items: center; }
-        .control-icon { color: var(--text-grey); font-size: 20px; cursor: pointer; }
-        .control-icon:hover { color: var(--text-white); }
+        .controls { width: 45%; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .btn-row { display: flex; gap: 16px; align-items: center; }
+        .control-icon { color: var(--text-grey); font-size: 18px; cursor: pointer; }
+        .control-icon:hover { color: var(--primary-glow); }
         .audio-element-custom { width: 100%; height: 28px; filter: invert(1); }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #121212; border-radius: 16px; width: 92%; max-width: 520px; padding: 24px; display: flex; flex-direction: column; gap: 16px; max-height: 85vh; overflow-y: auto; border: 1px solid var(--border-color); }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; }
+        /* CYBERPUNK MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; }
+        .modal-card { background: #12121a; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; width: 92%; max-width: 580px; padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+
+        .faq-item { background: #161622; border: 1px solid #282838; padding: 10px; border-radius: 8px; font-size: 11px; cursor: pointer; transition: 0.2s; }
+        .faq-item:hover { background: #202030; }
+        .faq-item h5 { color: var(--primary-glow); margin-bottom: 4px; }
+
+        .plan-card-row { display: flex; gap: 10px; }
+        .plan-card { flex: 1; background: #181824; border: 1px solid #333; padding: 12px; border-radius: 12px; text-align: center; }
+        .plan-card.active { border-color: var(--secondary-glow); background: rgba(255, 0, 127, 0.1); }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .mobile-nav { display: flex; }
             .main { padding-bottom: 180px; }
-            .player-bar { bottom: 50px; height: 80px; padding: 8px 16px; }
+            .player-bar { bottom: 45px; height: 85px; padding: 8px 12px; }
+            .plan-card-row { flex-direction: column; }
         }
     </style>
 </head>
@@ -124,8 +139,7 @@
 
     <div class="top-bar">
         <div class="brand-logo">
-            <!-- CYBER-G STYLIZED LOGO FROM BANNER -->
-            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <svg width="30" height="30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="45" stroke="#00f0ff" stroke-width="6" stroke-dasharray="200 60"/>
                 <path d="M50 20 C32 20 20 32 20 50 C20 68 32 80 50 80 C68 80 80 68 80 50 H50" stroke="#ff007f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
                 <circle cx="50" cy="50" r="12" fill="#ffd700"/>
@@ -133,10 +147,10 @@
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <button class="btn-spotify founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL</button>
-            <button class="btn-spotify btn-outline" onclick="openModal('rateUsModal')">⭐ Rate Us</button>
-            <button class="btn-spotify btn-outline" onclick="openModal('helpModal')">❓ Help</button>
-            <button class="btn-spotify" onclick="openModal('vipGateModal')">⚡ Get VIP</button>
+            <button class="btn-cyber founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL</button>
+            <button class="btn-cyber btn-outline" onclick="openModal('rateUsModal')">⭐ Rate Us</button>
+            <button class="btn-cyber btn-outline" onclick="openModal('helpModal')">❓ Help & FAQs</button>
+            <button class="btn-cyber btn-pink" onclick="openModal('vipGateModal')">⚡ Get VIP</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
                 <span id="profileNameDisplay">Sign In</span>
             </div>
@@ -160,10 +174,10 @@
             </div>
 
             <div class="action-row-btn">
-                <label for="multiFileInput" class="btn-spotify" id="importBtnLabel">📁 Import Songs</label>
-                <button class="btn-spotify btn-outline pro-only" onclick="toggle8DSpatialAudio()">🌌 360° Spatial Sound</button>
-                <button class="btn-spotify btn-outline pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer</button>
-                <button class="btn-spotify btn-outline" onclick="openSleepTimerModal()">⏱️ Sleep Timer</button>
+                <label for="multiFileInput" class="btn-cyber" id="importBtnLabel">📁 Import Songs</label>
+                <button class="btn-cyber btn-outline pro-only" onclick="toggle8DSpatialAudio()">🌌 360° Spatial Sound</button>
+                <button class="btn-cyber btn-outline pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer</button>
+                <button class="btn-cyber btn-outline" onclick="openSleepTimerModal()">⏱️ Sleep Timer</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
@@ -189,7 +203,7 @@
 
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <div style="width:40px; height:40px; background:#282828; border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--spotify-green);">🎵</div>
+            <div style="width:40px; height:40px; background:#282828; border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow);">🎵</div>
             <div>
                 <h4 id="p-title" style="font-size: 13px;">Ready System</h4>
                 <p id="p-artist" style="font-size: 11px; color:var(--text-grey);">Global Harmony Pro</p>
@@ -221,19 +235,24 @@
                 <span onclick="setRating(4)">⭐</span>
                 <span onclick="setRating(5)">⭐</span>
             </div>
-            <textarea id="feedbackText" placeholder="Write feedback for Founder Karan..." style="width:100%; height:70px; background:#282828; border:none; color:#fff; border-radius:8px; padding:10px; font-size:12px; outline:none;"></textarea>
-            <button class="btn-spotify" style="margin-top:10px; width:100%;" onclick="submitRating()">Submit Rating</button>
+            <textarea id="feedbackText" placeholder="Write feedback for Founder Karan..." style="width:100%; height:70px; background:#181824; border:1px solid #333; color:#fff; border-radius:8px; padding:10px; font-size:12px; outline:none;"></textarea>
+            <button class="btn-cyber" style="margin-top:10px; width:100%;" onclick="submitRating()">Submit Rating</button>
         </div>
     </div>
 
-    <!-- HELP MODAL -->
+    <!-- HELP & FAQs MODAL -->
     <div class="modal-overlay" id="helpModal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3>Help & Support</h3>
+                <h3>Help Center & FAQs</h3>
                 <span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span>
             </div>
-            <button class="btn-spotify" style="width:100%;" onclick="window.location.href='mailto:globalharmonypro9052@gmail.com?subject=Help Request'">Contact Founder: globalharmonypro9052@gmail.com</button>
+            <div style="display:flex; flex-direction:column; gap:8px;">
+                <div class="faq-item" onclick="showFaqAnswer('Ensure files are MP3/AAC.')"><h5>❓ Songs not playing?</h5><p>Tap for solution.</p></div>
+                <div class="faq-item" onclick="showFaqAnswer('Send email to globalharmonypro9052@gmail.com')"><h5>🎁 Get Free VIP?</h5><p>Tap to view activation.</p></div>
+                <div class="faq-item" onclick="showFaqAnswer('Check browser render settings or clear cache.')"><h5>🐢 App is Lagging?</h5><p>Tap for render fix.</p></div>
+            </div>
+            <button class="btn-cyber" style="width:100%; margin-top:10px;" onclick="window.location.href='mailto:globalharmonypro9052@gmail.com?subject=Help Request'">Contact Founder: globalharmonypro9052@gmail.com</button>
         </div>
     </div>
 
@@ -248,6 +267,7 @@
 
         function setRating(stars) { userRating = stars; alert(`You rated us ${stars} Stars! ⭐`); }
         function submitRating() { alert(`Thank you for rating us ${userRating} Stars! Feedback sent to Founder Karan.`); closeModal('rateUsModal'); }
+        function showFaqAnswer(ans) { alert(ans); }
 
         /* INDEXEDDB VAULT ENGINE */
         const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 13);
@@ -322,44 +342,6 @@
 
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-    </script>
-
-    <!-- FIREBASE AUTH -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-
-        const firebaseConfig = {
-            apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
-            authDomain: "global-harmony-pro.firebaseapp.com",
-            projectId: "global-harmony-pro",
-            storageBucket: "global-harmony-pro.firebasestorage.app",
-            messagingSenderId: "709699775213",
-            appId: "1:709699775213:web:fc7b76bb24b7a699b17ae4"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const auth = getAuth(app);
-        const provider = new GoogleAuthProvider();
-
-        window.loginWithGoogle = async function() {
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) { alert("Login Error: " + error.message); }
-        };
-
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                document.getElementById('profileNameDisplay').innerText = user.displayName;
-                const email = user.email.toLowerCase();
-                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422")) {
-                    localStorage.setItem('harmony_is_vip', 'true');
-                    localStorage.setItem('harmony_is_founder', 'true');
-                    document.body.classList.add('vip-active');
-                    document.body.classList.add('founder-active');
-                }
-            }
-        });
     </script>
 </body>
 </html>
