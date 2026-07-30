@@ -179,6 +179,14 @@
         </div>
     </div>
 
+    <div class="mobile-nav">
+        <div class="mobile-nav-item active" onclick="window.scrollTo(0,0)"><span>🏠</span>Home</div>
+        <div class="mobile-nav-item pro-only" onclick="openModal('settingsModal')"><span>🎛️</span>Equalizer</div>
+        <div class="mobile-nav-item pro-only" onclick="openModal('roomModal')"><span>👥</span>Party Sync</div>
+        <div class="mobile-nav-item" onclick="openModal('rateUsModal')"><span>⭐</span>Rate Us</div>
+        <div class="mobile-nav-item" onclick="openModal('vipGateModal')"><span>⚡</span>Get VIP</div>
+    </div>
+
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
             <div style="width:40px; height:40px; background:#282828; border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--spotify-green);">🎵</div>
@@ -218,6 +226,17 @@
         </div>
     </div>
 
+    <!-- HELP MODAL -->
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Help & Support</h3>
+                <span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span>
+            </div>
+            <button class="btn-spotify" style="width:100%;" onclick="window.location.href='mailto:globalharmonypro9052@gmail.com?subject=Help Request'">Contact Founder: globalharmonypro9052@gmail.com</button>
+        </div>
+    </div>
+
     <!-- MAIN ENGINE SCRIPT -->
     <script>
         const audio = document.getElementById('audioElement');
@@ -228,8 +247,9 @@
         let trackList = [], db, currentPlayingIndex = -1, userRating = 5;
 
         function setRating(stars) { userRating = stars; alert(`You rated us ${stars} Stars! ⭐`); }
-        function submitRating() { alert(`Thank you for rating us ${userRating} Stars!`); closeModal('rateUsModal'); }
+        function submitRating() { alert(`Thank you for rating us ${userRating} Stars! Feedback sent to Founder Karan.`); closeModal('rateUsModal'); }
 
+        /* INDEXEDDB VAULT ENGINE */
         const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 13);
         dbRequest.onsuccess = (e) => {
             db = e.target.result;
@@ -343,4 +363,3 @@
     </script>
 </body>
 </html>
-```http://googleusercontent.com/image_generation_content/711
