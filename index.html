@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#00f0ff">
     <title>Global Harmony Pro - Cyberpunk Studio</title>
 
-    <link rel="manifest" href="manifest.json?v=8">
+    <link rel="manifest" href="manifest.json?v=12">
     <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/4712/4712109.png">
     
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
@@ -26,13 +26,13 @@
             --text-grey: #b3b3b3;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: #080810; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: #080810; color: white; min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; width: 100%; }
 
-        /* CYBERPUNK BUTTONS */
+        /* 3D EMBOSSED BUTTON STYLES */
         .btn-cyber {
-            background: #181824;
-            border: 1px solid rgba(0, 240, 255, 0.4);
+            background: linear-gradient(145deg, #1f1f30, #12121c);
+            border: 1px solid rgba(0, 240, 255, 0.5);
             color: #fff;
             padding: 9px 16px;
             font-size: 11px;
@@ -45,18 +45,33 @@
             gap: 6px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            transition: transform 0.1s ease;
+            box-shadow: 0 4px 0 #080810, 0 0 12px rgba(0, 240, 255, 0.2);
+            transition: all 0.1s ease;
             text-decoration: none;
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
         }
-        .btn-cyber:hover { transform: scale(1.03); box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
-        .btn-cyber:active { transform: scale(0.97); }
+        .btn-cyber:hover { transform: translateY(-2px); box-shadow: 0 6px 0 #080810, 0 0 16px rgba(0, 240, 255, 0.4); }
+        .btn-cyber:active { transform: translateY(2px); box-shadow: 0 2px 0 #080810; }
 
-        .btn-pink { background: #260a18; border-color: rgba(255, 0, 127, 0.5); }
-        .btn-gold { background: #26200a; border-color: rgba(255, 215, 0, 0.6); color: var(--gold-glow); }
+        /* GOLDEN PREMIUM TICKET BUTTON */
+        .btn-gold-ticket {
+            background: linear-gradient(135deg, #ffe066 0%, #f5af19 50%, #e65c00 100%);
+            color: #000;
+            font-weight: 900;
+            border: 2px dashed #000;
+            padding: 8px 14px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.4);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            transition: transform 0.15s ease;
+        }
+        .btn-gold-ticket:hover { transform: scale(1.05) rotate(-1deg); }
 
         /* HEADER */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #0c0c12; padding: 12px 20px; border-bottom: 2px solid rgba(0, 240, 255, 0.2); position: sticky; top:0; z-index: 100; }
+        .top-bar { display: flex; justify-content: space-between; align-items: center; background: #0c0c12; padding: 12px 20px; border-bottom: 2px solid rgba(0, 240, 255, 0.2); position: sticky; top:0; z-index: 100; width: 100%; }
         .brand-logo { display: flex; align-items: center; gap: 8px; cursor: pointer; }
         .brand-logo h1 { font-size: 17px; font-weight: 900; color: var(--primary-glow); }
 
@@ -66,7 +81,7 @@
 
         .profile-badge { display: flex; align-items: center; gap: 6px; background: rgba(22, 22, 34, 0.8); padding: 7px 12px; border-radius: 20px; border: 1px solid var(--primary-glow); cursor: pointer; font-weight: bold; font-size: 11px; }
 
-        .app-container { display: flex; flex: 1; }
+        .app-container { display: flex; flex: 1; width: 100%; }
 
         /* SIDEBAR */
         .sidebar { width: 230px; background: #0a0a0f; padding: 20px 10px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid rgba(255,255,255,0.08); }
@@ -77,28 +92,25 @@
         body.vip-active .pro-only { display: flex !important; }
 
         .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; width: 100%; background: #0c0c12; border-top: 1px solid #222; justify-content: space-around; padding: 8px 0; z-index: 2000; }
-        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #888; cursor: pointer; }
+        .mobile-nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 9px; color: #888; cursor: pointer; text-align: center; width: 20%; }
         .mobile-nav-item.active, .mobile-nav-item:hover { color: var(--primary-glow); }
 
         /* MAIN DASHBOARD */
-        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 18px; padding-bottom: 220px; }
+        .main { flex: 1; padding: 20px; display: flex; flex-direction: column; gap: 18px; padding-bottom: 220px; overflow-x: hidden; width: 100%; }
         .search-bar { background: rgba(255, 255, 255, 0.95); border-radius: 30px; padding: 10px 18px; display: flex; align-items: center; gap: 10px; width: 100%; max-width: 400px; }
         .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; color: #000; font-weight: 600; background: transparent; }
 
-        .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; }
-        .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; }
+        .action-row-btn { display: flex; gap: 10px; flex-wrap: wrap; width: 100%; }
+        .section-title { font-size: 15px; font-weight: 800; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; justify-content: space-between; width: 100%; }
         
-        /* SONG GRID (FUTURISTIC LAYOUT) */
+        /* SONG GRID */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 14px; width: 100%; }
-        .song-card { background: #141420; padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; }
+        .song-card { background: #141420; padding: 12px; border-radius: 16px; cursor: pointer; text-align: center; border: 1px solid rgba(255,255,255,0.08); display: flex; flex-direction: column; align-items: center; gap: 10px; position: relative; width: 100%; }
         .media-player-box { width: 100%; aspect-ratio: 1/1; background: #0c0c14; border-radius: 12px; border: 1px solid rgba(0,240,255,0.3); display: flex; justify-content: center; align-items: center; position: relative; overflow: hidden; }
         .play-overlay-icon { position: relative; z-index: 2; font-size: 28px; color: var(--primary-glow); }
-        .heart-btn { position: absolute; top: 6px; right: 6px; font-size: 14px; z-index: 5; color: #666; }
-        .heart-btn.liked { color: var(--secondary-glow); }
         .song-card h3 { font-size: 11px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #eee; width: 100%; }
 
-        /* LYRICS CONTAINER */
-        .lyrics-box-container { background: #0e0e16; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 12px; height: 110px; overflow-y: auto; text-align: center; }
+        .lyrics-box-container { background: #0e0e16; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 16px; padding: 12px; height: 110px; overflow-y: auto; text-align: center; width: 100%; }
         .lyric-line { font-size: 12px; color: #777; margin: 4px 0; }
         .lyric-line.active { font-size: 14px; font-weight: 900; color: var(--primary-glow); }
 
@@ -113,15 +125,14 @@
         .control-icon:hover { color: var(--primary-glow); }
         .audio-element-custom { width: 100%; height: 28px; filter: invert(1); }
 
-        /* MODALS */
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; }
-        .modal-card { background: #12121a; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; width: 92%; max-width: 580px; padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
-        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; }
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-card { background: #12121a; border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; width: 100%; max-width: 580px; padding: 22px; display: flex; flex-direction: column; gap: 14px; max-height: 85vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; width: 100%; }
 
         @media (max-width: 768px) {
             .sidebar { display: none; }
             .mobile-nav { display: flex; }
-            .main { padding-bottom: 180px; }
+            .main { padding: 10px; padding-bottom: 180px; }
             .player-bar { bottom: 45px; height: 85px; padding: 8px 12px; }
         }
     </style>
@@ -130,6 +141,7 @@
 
     <div class="top-bar">
         <div class="brand-logo">
+            <!-- CYBER-G SVG LOGO -->
             <svg width="30" height="30" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="50" cy="50" r="45" stroke="#00f0ff" stroke-width="6" stroke-dasharray="200 60"/>
                 <path d="M50 20 C32 20 20 32 20 50 C20 68 32 80 50 80 C68 80 80 68 80 50 H50" stroke="#ff007f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
@@ -138,12 +150,10 @@
             <h1>Global Harmony Pro</h1>
         </div>
         <div class="header-actions">
-            <button class="btn-cyber founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER CONTROL</button>
-            <button class="btn-cyber btn-outline" onclick="openModal('rateUsModal')">⭐ Rate Us</button>
-            <button class="btn-cyber btn-outline" onclick="openModal('helpModal')">❓ Help</button>
-            <button class="btn-cyber btn-pink" onclick="openModal('vipGateModal')">⚡ VVIP Access</button>
+            <button class="btn-cyber founder-badge" id="founderBadge" onclick="window.open('admin.html', '_blank', 'width=520,height=600')">👑 FOUNDER</button>
+            <button class="btn-gold-ticket" onclick="openModal('vipGateModal')">🎟️ +GET PREMIUM</button>
             <div class="profile-badge" onclick="window.loginWithGoogle()">
-                <span id="profileNameDisplay">Sign In</span>
+                <span id="profileNameDisplay">🔑 Sign In</span>
             </div>
         </div>
     </div>
@@ -151,7 +161,7 @@
     <div class="app-container">
         <div class="sidebar">
             <div class="nav-item active" onclick="showSection('all')">🏠 Home</div>
-            <div class="nav-item" onclick="showSection('favorites')">💚 Liked Songs</div>
+            <div class="nav-item" onclick="showSection('favorites')">❤️ Liked Songs</div>
             <div class="nav-item pro-only" onclick="openModal('settingsModal')">🎛️ Equalizer & FX</div>
             <div class="nav-item pro-only" onclick="openModal('roomModal')">👥 Party Sync Room</div>
             <div class="nav-item" onclick="openModal('referralModal')">📢 Share App</div>
@@ -166,14 +176,14 @@
 
             <div class="action-row-btn">
                 <label for="multiFileInput" class="btn-cyber" id="importBtnLabel">📁 Import Songs</label>
-                <button class="btn-cyber btn-outline pro-only" onclick="toggle8DSpatialAudio()">🌌 360° Spatial Sound</button>
-                <button class="btn-cyber btn-outline pro-only" onclick="openModal('settingsModal')">⚙️ Equalizer</button>
-                <button class="btn-cyber btn-outline" onclick="openSleepTimerModal()">⏱️ Sleep Timer</button>
+                <button class="btn-cyber" style="background:#8b0000; border-color:#ff4d4d;" onclick="autoTroubleshootBugs()">🛠️ Fix All Bugs</button>
+                <button class="btn-cyber btn-outline pro-only" onclick="toggle8DSpatialAudio()">🌌 Spatial Sound</button>
+                <button class="btn-cyber btn-outline" onclick="openSleepTimerModal()">⏱️ Timer</button>
             </div>
             <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
             <div class="lyrics-box-container" id="lyricsContainer">
-                <p class="lyric-line active">🎵 Play a track to auto-sync Karaoke Lyrics...</p>
+                <p class="lyric-line active">🎵 Karaoke Lyrics auto-sync engine...</p>
             </div>
 
             <h2 class="section-title">
@@ -186,18 +196,23 @@
 
     <div class="mobile-nav">
         <div class="mobile-nav-item active" onclick="window.scrollTo(0,0)"><span>🏠</span>Home</div>
-        <div class="mobile-nav-item pro-only" onclick="openModal('settingsModal')"><span>🎛️</span>Equalizer</div>
         <div class="mobile-nav-item pro-only" onclick="openModal('roomModal')"><span>👥</span>Party Sync</div>
+        <div class="mobile-nav-item pro-only" onclick="openModal('settingsModal')"><span>🎛️</span>Equalizer</div>
         <div class="mobile-nav-item" onclick="openModal('rateUsModal')"><span>⭐</span>Rate Us</div>
-        <div class="mobile-nav-item" onclick="openModal('vipGateModal')"><span>⚡</span>Get VIP</div>
+        <div class="mobile-nav-item" onclick="openModal('helpModal')"><span>❓</span>Help</div>
     </div>
 
     <footer class="player-bar" id="playerBar">
         <div class="now-playing">
-            <div style="width:40px; height:40px; background:#282828; border-radius:6px; display:flex; align-items:center; justify-content:center; color:var(--primary-glow);">🎵</div>
+            <!-- CYBER-G SVG LOGO IN PLAYER BAR -->
+            <svg width="32" height="32" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="50" cy="50" r="45" stroke="#00f0ff" stroke-width="6" stroke-dasharray="200 60"/>
+                <path d="M50 20 C32 20 20 32 20 50 C20 68 32 80 50 80 C68 80 80 68 80 50 H50" stroke="#ff007f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="50" cy="50" r="12" fill="#ffd700"/>
+            </svg>
             <div>
-                <h4 id="p-title" style="font-size: 13px;">Ready System</h4>
-                <p id="p-artist" style="font-size: 11px; color:var(--text-grey);">Global Harmony Pro</p>
+                <h4 id="p-title" style="font-size: 12px;">Ready System</h4>
+                <p id="p-artist" style="font-size: 10px; color:var(--text-grey);">Global Harmony Pro</p>
             </div>
         </div>
         <div class="controls">
@@ -211,19 +226,43 @@
         </div>
     </footer>
 
-    <!-- MAIN ENGINE SCRIPT (COMPACT) -->
+    <!-- MAIN ENGINE SCRIPT -->
     <script>
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playerBar = document.getElementById('playerBar');
         const multiFileInput = document.getElementById('multiFileInput');
         
-        let trackList = [], likedTracks = new Set(), db, currentPlayingIndex = -1;
-        let equalizerFilters = [], pannerNode, sleepTimerTimeout = null;
+        let trackList = [], db, currentPlayingIndex = -1;
+
+        /* AUTOMATIC TROUBLESHOOTING ENGINE */
+        function autoTroubleshootBugs() {
+            try {
+                if (navigator.serviceWorker) {
+                    navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister()));
+                }
+                localStorage.setItem('harmony_troubleshoot_time', Date.now());
+                alert("🛠️ Auto-Fixing Audio Cache & Vault Connections...");
+                window.location.reload(true);
+            } catch(e) {
+                alert("Refresh needed!");
+            }
+        }
 
         /* INDEXEDDB VAULT ENGINE */
-        const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 13);
-        dbRequest.onsuccess = (e) => { db = e.target.result; loadTracksFromDB(); checkAppPersistentStates(); };
+        const dbRequest = indexedDB.open("HarmonyAudioVaultDB", 14);
+        dbRequest.onupgradeneeded = (e) => {
+            const dbRef = e.target.result;
+            if (!dbRef.objectStoreNames.contains("saved_songs")) {
+                dbRef.createObjectStore("saved_songs", { keyPath: "id", autoIncrement: true });
+            }
+        };
+
+        dbRequest.onsuccess = (e) => {
+            db = e.target.result;
+            loadTracksFromDB();
+            checkAppPersistentStates();
+        };
 
         function checkAppPersistentStates() {
             if (localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
@@ -234,7 +273,10 @@
             if (!db) return;
             const tx = db.transaction(["saved_songs"], "readonly");
             const store = tx.objectStore("saved_songs");
-            store.getAll().onsuccess = (event) => { trackList = event.target.result || []; renderSongGridLazy(trackList); };
+            store.getAll().onsuccess = (event) => {
+                trackList = event.target.result || [];
+                renderSongGridLazy(trackList);
+            };
         }
 
         function renderSongGridLazy(list) {
@@ -284,8 +326,49 @@
 
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
+
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+    </script>
+
+    <!-- FIREBASE AUTH -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
+            authDomain: "global-harmony-pro.firebaseapp.com",
+            projectId: "global-harmony-pro",
+            storageBucket: "global-harmony-pro.firebasestorage.app",
+            messagingSenderId: "709699775213",
+            appId: "1:709699775213:web:fc7b76bb24b7a699b17ae4"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const provider = new GoogleAuthProvider();
+
+        window.loginWithGoogle = async function() {
+            try {
+                const res = await signInWithPopup(auth, provider);
+                document.getElementById('profileNameDisplay').innerText = res.user.displayName;
+                alert("Sign-In Successful: " + res.user.displayName);
+            } catch (error) { alert("Login Error: " + error.message); }
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                document.getElementById('profileNameDisplay').innerText = user.displayName;
+                const email = user.email.toLowerCase();
+                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422")) {
+                    localStorage.setItem('harmony_is_vip', 'true');
+                    localStorage.setItem('harmony_is_founder', 'true');
+                    document.body.classList.add('vip-active');
+                    document.body.classList.add('founder-active');
+                }
+            }
+        });
     </script>
 </body>
 </html>
