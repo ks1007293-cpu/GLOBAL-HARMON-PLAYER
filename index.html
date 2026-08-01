@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#000000">
     <title>Global Harmony Pro</title>
 
-    <link rel="manifest" href="manifest.json?v=16">
+    <link rel="manifest" href="manifest.json?v=17">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -91,7 +91,7 @@
 
         .right-actions { display: flex; align-items: center; gap: 15px; }
         
-        /* UPDATED PROFILE PILL (Fixes Login Name Crash) */
+        /* UPDATED PROFILE PILL */
         .profile-icon { height: 36px; padding: 0 16px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 13px; cursor: pointer; background: var(--btn-white); color: #000; font-weight: 800; gap: 6px; box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); }
         .profile-icon:hover { transform: scale(1.05); }
 
@@ -171,7 +171,7 @@
                 <!-- ADMIN PANEL BUTTON -->
                 <button class="btn-white founder-badge" onclick="openModal('adminDashboardModal'); fetchActiveUsers();">👑 ADMIN</button>
                 <div class="golden-ticket" onclick="openModal('vipGateModal')">🎟️ +GET PREMIUM</div>
-                <!-- PROFILE BUTTON FIXED FOR LOGIN -->
+                <!-- PROFILE BUTTON -->
                 <div class="profile-icon" onclick="window.loginWithGoogle()">
                     👤 <span id="profileNameDisplay">Login</span>
                 </div>
@@ -215,7 +215,7 @@
 
         <div class="player-controls">
             <span class="control-icon" onclick="playPreviousTrack()" style="font-size: 24px; cursor:pointer; color:#fff;">⏮</span>
-            <!-- 8D SPATIAL AUDIO BUTTON RESTORED -->
+            <!-- 8D SPATIAL AUDIO BUTTON -->
             <span class="control-icon" id="spatialBtn" onclick="toggle8DSpatialAudio()" style="font-size: 24px; cursor:pointer; color:#fff; font-weight:bold;" title="Toggle Spatial Audio">🌌</span>
             <audio id="audioElement" class="audio-element" controls crossorigin="anonymous"></audio>
             <span class="control-icon" onclick="playNextTrack()" style="font-size: 24px; cursor:pointer; color:#fff;">⏭</span>
@@ -262,12 +262,16 @@
         
         let trackList = [], playlists = [], db, currentPlayingIndex = -1;
 
+        // --- 🚀 AUTO-PLAY NEXT SONG FIX 🚀 ---
+        // Jaise hi ek gaana khatam hoga, agla gaana automatic chal padega
+        audio.addEventListener('ended', playNextTrack);
+        // -------------------------------------
+
         // --- SPATIAL AUDIO (WEB AUDIO API) ---
         let audioCtx, trackNode, pannerNode, isSpatialActive = false, spatialInterval;
         
         function initAudioContext() {
             if (!audioCtx) {
-                // Creates the audio nodes only once when user clicks
                 audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 trackNode = audioCtx.createMediaElementSource(audio);
                 pannerNode = audioCtx.createStereoPanner();
@@ -278,7 +282,7 @@
         
         window.toggle8DSpatialAudio = function() {
             initAudioContext();
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); } // Fix for Chrome autoplay policy
+            if (audioCtx.state === 'suspended') { audioCtx.resume(); } 
             
             isSpatialActive = !isSpatialActive;
             const btn = document.getElementById('spatialBtn');
@@ -388,7 +392,6 @@
             
             document.getElementById('p-title').innerText = track.title;
             
-            // Auto initialize audio context if spatial audio is turned on early
             if(audioCtx && audioCtx.state === 'suspended') { audioCtx.resume(); }
             audio.play().catch(() => {});
         }
@@ -408,7 +411,7 @@
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 
-    <!-- FIREBASE AUTH & FIRESTORE (Fixed Login ID Crash) -->
+    <!-- FIREBASE AUTH & FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -440,10 +443,8 @@
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                // Fallback check just in case displayName is null
                 const firstName = user.displayName ? user.displayName.split(" ")[0] : "User";
                 
-                // This ID was missing in the HTML before! Now it will update safely.
                 const nameDisplayElement = document.getElementById('profileNameDisplay');
                 if(nameDisplayElement) {
                     nameDisplayElement.innerText = firstName;
