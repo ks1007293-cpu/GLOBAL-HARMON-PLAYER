@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#e0e5ec">
     <title>Global Harmony Pro</title>
 
-    <link rel="manifest" href="manifest.json?v=26">
+    <link rel="manifest" href="manifest.json?v=27">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -298,14 +298,14 @@
                     <h4 style="color: var(--accent-blue); font-size: 14px;">1 MONTH</h4>
                     <h2 style="margin: 5px 0; font-size: 26px;">₹29</h2>
                     <ul><li>✔️ 360° Spatial Audio</li><li>✔️ Pro Equalizer</li><li>✔️ Cyber Sync Room</li></ul>
-                    <button class="btn-white neumorphic" style="width: 100%;" onclick="buyVIP('1 Month', 29)">🛒 Buy Now</button>
+                    <button class="btn-white neumorphic" style="width: 100%; color:var(--accent-blue);" onclick="buyVIP('1 Month', 29)">🛒 Buy Now</button>
                 </div>
                 <div class="pricing-card neumorphic-inset">
                     <span style="position: absolute; top: -10px; right: -10px; background: var(--accent-pink); color: #fff; font-size: 10px; font-weight:bold; padding: 4px 10px; border-radius: 12px;">Best Value</span>
                     <h4 style="color: var(--accent-pink); font-size: 14px;">3 MONTHS</h4>
                     <h2 style="margin: 5px 0; font-size: 26px;">₹99</h2>
                     <ul><li>✔️ All Premium Features</li><li>✔️ Ad-Free Experience</li><li>✔️ Priority Support</li></ul>
-                    <button class="btn-white neumorphic" style="width: 100%;" onclick="buyVIP('3 Months', 99)">🛒 Buy Now</button>
+                    <button class="btn-white neumorphic" style="width: 100%; color:var(--accent-pink);" onclick="buyVIP('3 Months', 99)">🛒 Buy Now</button>
                 </div>
             </div>
             <hr style="border: 1px solid #d1d8e0; margin: 15px 0;">
@@ -324,17 +324,20 @@
         </div>
     </div>
 
-    <!-- MAIN ENGINE SCRIPT (COMPLETELY FIXED) -->
+    <!-- MAIN ENGINE SCRIPT -->
     <script>
-        // All functions made global to prevent scope issues
+        // Global Modal Logic
         window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
         window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- WHATSAPP BUY NOW ---
+        // --- 📧 GMAIL BUY NOW LOGIC (REPLACED WHATSAPP) ---
         window.buyVIP = function(plan, price) {
-            const phone = "919005228780"; 
-            const text = `Hello Founder Karan,%0A%0AI want to purchase the *Global Harmony Pro* Premium plan.%0A%0A*Plan:* ${plan}%0A*Price:* ₹${price}%0A%0AI am ready to pay first. Please provide your UPI details.`;
-            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+            const email = "globalharmonypro@gmail.com";
+            const subject = encodeURIComponent(`Purchase Request: Global Harmony Pro - ${plan}`);
+            const body = encodeURIComponent(`Hello Founder Karan,\n\nI want to purchase the Global Harmony Pro Premium plan.\n\nPlan: ${plan}\nPrice: ₹${price}\n\nI am ready to pay first. Please provide your UPI details so I can make the payment and receive my VIP Code.\n\nMy Details:\nName: \nEmail: `);
+            
+            // This will directly open the user's Gmail app/website
+            window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
         };
 
         // --- WHATSAPP SHARE REFERRAL ENGINE ---
@@ -432,7 +435,7 @@
             });
         }
 
-        // 🚀 FIXED: 100% WORKING IMPORT LOGIC 🚀
+        // Import Logic fixed
         multiFileInput.addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             if (!files || files.length === 0) return;
@@ -440,7 +443,6 @@
             const importLabel = document.getElementById('importBtnLabel');
             importLabel.innerText = "⏳ Reading...";
 
-            // 1. Pehle saari files ko read karo (Bina database open kiye)
             const processedData = [];
             for (let file of files) {
                 const buffer = await file.arrayBuffer();
@@ -449,7 +451,6 @@
 
             importLabel.innerText = "⏳ Saving...";
 
-            // 2. Uske baad Database open karke sab ek sath save kardo
             const tx = db.transaction(["saved_songs"], "readwrite");
             const store = tx.objectStore("saved_songs");
             
@@ -480,7 +481,7 @@
             if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             audio.play().catch(() => {});
 
-            // 🚨 AD LOGIC: EVERY 3 SONGS FOR NON-VIPS
+            // AD LOGIC
             songsPlayedCount++;
             if(songsPlayedCount > 1 && songsPlayedCount % 3 === 0) {
                 if(!document.body.classList.contains('vip-active')) {
@@ -576,7 +577,7 @@
                 if(nameDisplayElement) nameDisplayElement.innerText = firstName;
                 
                 const email = user.email.toLowerCase();
-                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422")) {
+                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422") || email.includes("globalharmonypro")) {
                     document.body.classList.add('founder-active');
                     document.body.classList.add('vip-active');
                 }
