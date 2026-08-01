@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#000000">
     <title>Global Harmony Pro</title>
 
-    <link rel="manifest" href="manifest.json?v=23">
+    <link rel="manifest" href="manifest.json?v=24">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -38,7 +38,7 @@
         .golden-ticket { background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%); color: #422006; font-weight: 900; border: 2px dashed #000; padding: 8px 16px; border-radius: 8px; box-shadow: 0 0 15px rgba(202, 138, 4, 0.6); cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-size: 12px; transition: 0.15s; text-transform: uppercase; }
         .golden-ticket:hover { transform: scale(1.05) rotate(-1deg); }
 
-        .header { padding: 15px 30px; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 0; z-index: 100; background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(10px); border-bottom: 2px solid var(--neon-pink); }
+        .header { padding: 15px 30px; display: flex; flex-direction: column; gap: 20px; position: sticky; top: 0; z-index: 100; background: rgba(5, 5, 8, 0.85); backdrop-filter: blur(10px); }
         .top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 15px; }
         .brand { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: var(--neon-cyan); letter-spacing: 1px; }
         .brand svg { width: 32px; height: 32px; filter: drop-shadow(0 0 5px var(--neon-cyan)); }
@@ -50,9 +50,17 @@
         .right-actions { display: flex; align-items: center; gap: 15px; }
         .profile-icon { height: 36px; padding: 0 16px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 13px; cursor: pointer; background: var(--btn-white); color: #000; font-weight: 800; gap: 6px; box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); }
         
+        /* 🚨 VIP & ADMIN HIDE/SHOW LOGIC 🚨 */
         .founder-badge, .pro-only { display: none !important; }
         body.founder-active .founder-badge { display: inline-flex !important; }
-        body.vip-active .pro-only { display: inline-flex !important; }
+        
+        /* Jab VIP hoga tabhi ye block ya flex banenge */
+        body.vip-active div.pro-only { display: flex !important; }
+        body.vip-active span.pro-only { display: flex !important; }
+
+        /* 🔥 NEWS TICKER FOR ADS 🔥 */
+        .premium-ticker { background: var(--neon-pink); color: #fff; padding: 6px 0; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; width: 100%; z-index: 99; box-shadow: 0 4px 15px rgba(255,0,127,0.4); }
+        body.vip-active .premium-ticker { display: none !important; } /* VIPs ko ad nahi dikhegi */
 
         .sub-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
         .sub-title { font-weight: 800; font-size: 16px; letter-spacing: 0.5px; color: var(--neon-pink); }
@@ -111,7 +119,7 @@
 </head>
 <body>
 
-    <header class="header" id="topHeader">
+    <header class="header" id="topHeader" style="border-bottom:none; padding-bottom:10px;">
         <div class="top-row">
             <div class="brand" onclick="window.scrollTo(0,0)" style="cursor:pointer;">
                 <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -144,6 +152,13 @@
         </div>
     </header>
 
+    <!-- 🚨 PREMIUM NEWS TICKER (Only shows for non-VIPs) 🚨 -->
+    <div class="premium-ticker" onclick="openModal('vipGateModal')" style="cursor:pointer;">
+        <marquee behavior="scroll" direction="left" scrollamount="8">
+            🔥 UPGRADE TO GLOBAL HARMONY PRO! UNLOCK 360° SPATIAL AUDIO, PARTY SYNC, PRO EQUALIZER, AND AD-FREE LISTENING. CLICK "+GET PREMIUM" NOW TO UNLOCK! 🔥
+        </marquee>
+    </div>
+
     <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
     <div class="main-content">
@@ -153,7 +168,7 @@
         </div>
 
         <div class="panel neon-panel" id="syncPanel">
-            <div class="panel-header"><span>Sync Console & Playlists</span></div>
+            <div class="panel-header"><span>Playlists</span></div>
             <div class="btn-white" style="width: max-content;" onclick="openModal('createPlaylistModal')">➕ New Playlist</div>
             <div class="song-grid" id="playlistGrid" style="margin-top: 20px;"></div>
         </div>
@@ -161,17 +176,18 @@
 
     <footer class="bottom-bar">
         <div class="nav-items">
-            <!-- ALL NAVIGATION ICONS ARE NOW FULLY ACTIVE -->
             <div class="nav-icon" title="Home" onclick="window.scrollTo(0,0)">🏠</div>
+            <div class="nav-icon" title="Help Center" onclick="openModal('helpModal')">❓</div>
+            <!-- THESE ARE COMPLETELY HIDDEN UNTIL VIP IS PURCHASED -->
             <div class="nav-icon pro-only" title="Equalizer" onclick="openModal('settingsModal')">🎛️</div>
             <div class="nav-icon pro-only" title="Party Sync" onclick="openModal('roomModal')">👥</div>
-            <div class="nav-icon" title="Help Center" onclick="openModal('helpModal')">❓</div>
         </div>
 
         <div class="player-controls">
             <span class="control-icon" onclick="playPreviousTrack()" title="Previous Song">⏮</span>
             <audio id="audioElement" class="audio-element" controls crossorigin="anonymous"></audio>
             <span class="control-icon" onclick="playNextTrack()" title="Next Song">⏭</span>
+            <!-- HIDDEN UNTIL VIP -->
             <span class="control-icon pro-only" id="spatialBtn" onclick="toggle8DSpatialAudio()" title="360° Spatial Audio">🌌</span>
         </div>
 
@@ -207,8 +223,7 @@
             <div class="modal-header"><h3>❓ Help Center</h3><span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span></div>
             <div style="text-align: left; font-size: 13px; line-height: 1.6; color: #ccc;">
                 <p><strong>🎵 How to play songs?</strong><br>Click 'Import' to load MP3s. They save offline instantly.</p><br>
-                <p><strong>🎟️ How to get VIP?</strong><br>Click 'Get Premium' or share your referral link with a friend via WhatsApp.</p><br>
-                <p><strong>🔄 Updates:</strong><br>The app auto-updates! If Karan Sir pushes new code, it syncs automatically.</p>
+                <p><strong>🎟️ How to unlock 🌌 Spatial Audio & 👥 Sync?</strong><br>These are Premium features. Click 'Get Premium' to purchase a VIP code and unlock them instantly.</p><br>
             </div>
             <div class="btn-white" onclick="closeModal('helpModal')" style="margin-top: 15px;">Close Help</div>
         </div>
@@ -268,11 +283,11 @@
         </div>
     </div>
 
-    <!-- 🎟️ VIP REDEEM & PRICING MODAL -->
+    <!-- 🎟️ VIP REDEEM / AD MODAL (Popped up every 3 songs) -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card">
             <div class="modal-header"><h3>🎟️ Premium Access</h3><span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span></div>
-            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Unlock 360° Spatial Audio, Party Sync Room & PRO Equalizer!</p>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Upgrade to unlock 360° Spatial Audio, Party Sync Room & PRO Equalizer!</p>
             <div class="pricing-grid">
                 <div class="pricing-card" style="border-color: var(--neon-cyan);">
                     <h4 style="color: var(--neon-cyan); font-size: 14px;">1 MONTH</h4>
@@ -306,15 +321,12 @@
 
     <script>
         // --- 🔥 AUTO-UPDATE ENGINE (LIVE RELOAD) 🔥 ---
-        // Yeh script har 5 second mein check karegi ki Github par code update hua hai ya nahi.
-        // Agar hua hai, toh apne aap page refresh kar degi!
         let lastEtag = '';
         setInterval(async () => {
             try {
                 const res = await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
                 const currentEtag = res.headers.get('etag') || res.headers.get('last-modified');
                 if (lastEtag && currentEtag && lastEtag !== currentEtag) {
-                    console.log("New Code Detected! Auto-updating...");
                     window.location.reload(true);
                 }
                 lastEtag = currentEtag;
@@ -367,16 +379,12 @@
         
         // --- CYBER SYNC LOGIC (PUSHER) ---
         let pusherClient = null, currentRoomChannel = null, currentRoomCode = null;
-
-        function initPusher() {
-            if(!pusherClient) pusherClient = new Pusher('b27e87515b14f85e4e3e', { cluster: 'ap2' });
-        }
+        function initPusher() { if(!pusherClient) pusherClient = new Pusher('b27e87515b14f85e4e3e', { cluster: 'ap2' }); }
 
         window.joinPartySyncRoom = function() {
             initPusher();
             const code = document.getElementById('roomCodeInput').value.trim().toUpperCase();
             if (code.length < 3) { alert("Code too short!"); return; }
-            
             currentRoomCode = code;
             document.getElementById('currentRoomDisplay').innerText = currentRoomCode;
             document.getElementById('roomControls').style.display = 'none';
@@ -404,8 +412,7 @@
         window.leavePartySyncRoom = function() {
             if (currentRoomChannel) {
                 pusherClient.unsubscribe('harmony-room-' + currentRoomCode);
-                currentRoomChannel = null;
-                currentRoomCode = null;
+                currentRoomChannel = null; currentRoomCode = null;
                 document.getElementById('roomControls').style.display = 'block';
                 document.getElementById('roomActiveInterface').style.display = 'none';
                 document.getElementById('chatMessages').innerHTML = '<p style="margin-bottom: 5px;"><span style="color: var(--neon-pink); font-weight: bold;">System:</span> Disconnected.</p>';
@@ -417,7 +424,7 @@
         const songGrid = document.getElementById('songGrid');
         const playlistGrid = document.getElementById('playlistGrid');
         const multiFileInput = document.getElementById('multiFileInput');
-        let trackList = [], playlists = [], db, currentPlayingIndex = -1;
+        let trackList = [], playlists = [], db, currentPlayingIndex = -1, songsPlayedCount = 0;
 
         audio.addEventListener('ended', playNextTrack);
 
@@ -488,7 +495,6 @@
             });
         }
 
-        // 🚀 FAST & SAFE ARRAYBUFFER IMPORT 🚀
         multiFileInput.addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             if (!files || files.length === 0) return;
@@ -499,10 +505,9 @@
             const store = tx.objectStore("saved_songs");
             
             for (let file of files) {
-                const buffer = await file.arrayBuffer(); // Safe & fast conversion
+                const buffer = await file.arrayBuffer();
                 store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: buffer });
             }
-
             tx.oncomplete = () => { importLabel.innerText = "➕ Import"; loadAllAppStates(); };
         });
 
@@ -519,6 +524,15 @@
             document.getElementById('p-title').innerText = track.title;
             if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             audio.play().catch(() => {});
+
+            // 🚨 AD LOGIC: EVERY 3 SONGS FOR NON-VIPS 🚨
+            songsPlayedCount++;
+            if(songsPlayedCount > 1 && songsPlayedCount % 3 === 0) {
+                if(!document.body.classList.contains('vip-active')) {
+                    audio.pause(); // Pause the song
+                    openModal('vipGateModal'); // Show Premium Pricing Chart
+                }
+            }
         }
 
         window.playNextTrack = function() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
