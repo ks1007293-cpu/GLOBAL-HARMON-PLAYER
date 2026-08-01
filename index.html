@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#000000">
     <title>Global Harmony Pro</title>
 
-    <link rel="manifest" href="manifest.json?v=19">
+    <link rel="manifest" href="manifest.json?v=20">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -80,9 +80,15 @@
         .control-icon:hover { transform: scale(1.1); text-shadow: 0 0 10px rgba(255,255,255,0.5); }
 
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-card { width: 100%; max-width: 450px; padding: 25px; display: flex; flex-direction: column; gap: 15px; text-align: center; background: #111; border: 1px solid var(--neon-cyan); border-radius: 16px; box-shadow: 0 0 20px rgba(0,240,255,0.2); }
+        .modal-card { width: 100%; max-width: 550px; padding: 25px; display: flex; flex-direction: column; gap: 15px; text-align: center; background: #111; border: 1px solid var(--neon-cyan); border-radius: 16px; box-shadow: 0 0 20px rgba(0,240,255,0.2); max-height: 90vh; overflow-y: auto;}
         .modal-header { display: flex; justify-content: space-between; align-items: center; font-weight: bold; font-size: 18px; color: var(--neon-pink); }
 
+        /* PRICING CHART STYLES */
+        .pricing-grid { display: flex; gap: 15px; margin: 15px 0; }
+        .pricing-card { flex: 1; border: 1px solid #333; padding: 15px; border-radius: 12px; background: #161622; transition: 0.2s; position: relative; }
+        .pricing-card:hover { transform: translateY(-5px); border-color: var(--neon-cyan); box-shadow: 0 5px 15px rgba(0,240,255,0.1); }
+        .pricing-card ul { text-align: left; font-size: 12px; color: #bbb; list-style: none; padding: 0; margin: 15px 0; line-height: 1.8; }
+        
         .admin-user-row { display: flex; align-items: center; gap: 15px; padding: 12px; text-align: left; background: #1a1a24; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1); }
         .admin-user-img { width: 40px; height: 40px; border-radius: 50%; }
         
@@ -92,6 +98,7 @@
             .search-container { order: 3; max-width: 100%; }
             .bottom-bar { flex-direction: column; gap: 15px; padding: 15px; border-radius: 16px 16px 0 0; }
             .player-controls { width: 100%; padding: 0; }
+            .pricing-grid { flex-direction: column; }
         }
     </style>
 </head>
@@ -124,7 +131,6 @@
         <div class="sub-row">
             <div class="sub-title">PROGRESSION WAVE × CYBER STUDIO</div>
             <div class="sub-actions">
-                <!-- VIRAL SHARE REFERRAL BUTTON -->
                 <div class="btn-white" style="padding: 6px 12px; font-size: 11px; background: #25D366; color: #fff;" onclick="shareAppForVIP()">📲 Share App & Get VIP</div>
                 <div class="btn-white" style="padding: 6px 12px; font-size: 11px;" onclick="window.location.reload(true);">🛠️ Refresh App</div>
             </div>
@@ -171,35 +177,85 @@
 
     <!-- 👑 ADMIN DASHBOARD MODAL -->
     <div class="modal-overlay" id="adminDashboardModal">
-        <div class="modal-card" style="max-width: 500px;">
+        <div class="modal-card" style="max-width: 550px;">
             <div class="modal-header">
                 <h3>👑 Admin Dashboard</h3>
                 <span style="cursor:pointer;" onclick="closeModal('adminDashboardModal')">✕</span>
             </div>
             
+            <!-- SECTION 1: Generate Code -->
             <div style="background: #0c0c12; padding: 15px; border-radius: 10px; border: 1px solid var(--neon-cyan); margin-bottom: 15px;">
                 <h4 style="color: var(--neon-cyan); margin-bottom: 10px;">🎟️ Generate VIP Code</h4>
                 <div class="btn-white" onclick="generateVIPCode()" style="width: 100%;">⚡ Generate New Code</div>
-                <div id="generatedCodeDisplay" style="margin-top: 15px; font-size: 20px; font-weight: 900; color: var(--neon-pink); letter-spacing: 2px;"></div>
+                <div id="generatedCodeDisplay" style="margin-top: 15px; font-size: 22px; font-weight: 900; color: var(--neon-pink); letter-spacing: 2px;"></div>
             </div>
 
+            <!-- SECTION 2: Grant VIP by Email (NEW) -->
+            <div style="background: #0c0c12; padding: 15px; border-radius: 10px; border: 1px solid var(--neon-pink); margin-bottom: 15px;">
+                <h4 style="color: var(--neon-pink); margin-bottom: 10px;">🎁 Grant VIP Access Directly</h4>
+                <input type="email" id="adminGrantEmail" class="search-bar" placeholder="Enter User Gmail..." style="margin-bottom: 10px;">
+                <select id="adminGrantDays" class="search-bar" style="margin-bottom: 10px; padding: 10px; cursor: pointer;">
+                    <option value="30">1 Month (30 Days)</option>
+                    <option value="90">3 Months (90 Days)</option>
+                    <option value="365">1 Year (365 Days)</option>
+                </select>
+                <div class="btn-white" onclick="grantVIPToEmail()" style="width: 100%;">⚡ Grant VIP Now</div>
+            </div>
+
+            <!-- SECTION 3: Active Users -->
             <h4 style="text-align: left; color: #fff;">Active Users</h4>
             <div class="btn-white" style="margin-bottom: 10px;" onclick="fetchActiveUsers()">🔄 Refresh List</div>
             <div id="adminUsersList" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px;"></div>
         </div>
     </div>
 
-    <!-- 🎟️ VIP REDEEM MODAL -->
+    <!-- 🎟️ VIP REDEEM & PRICING MODAL -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card">
-            <div class="modal-header"><h3>🎟️ Unlock Premium</h3><span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span></div>
-            <p style="font-size: 12px; color: var(--text-muted);">Enter the special VIP Code provided by Karan Sir to unlock 360° Spatial Audio, Equalizer & Party Sync.</p>
-            <input type="text" id="vipCodeInput" class="search-bar" placeholder="Enter VIP Code (e.g. VIP-XXXX)" style="text-transform: uppercase; text-align: center; font-size: 16px; font-weight: bold; letter-spacing: 2px;">
-            <div class="btn-white" style="margin-top: 10px;" onclick="redeemVIPCode()">🔓 Unlock Features Now</div>
+            <div class="modal-header"><h3>🎟️ Premium Access</h3><span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span></div>
             
-            <hr style="border: 1px solid #333; margin: 15px 0;">
-            <p style="font-size: 12px; color: var(--neon-cyan); font-weight:bold;">🔥 FREE VIP TRICK: Share App via WhatsApp, get 1 Month VIP when your friend logs in!</p>
-            <div class="btn-white" style="margin-top: 5px; background:#25D366; color:#fff;" onclick="shareAppForVIP()">📲 Share via WhatsApp</div>
+            <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 10px;">Unlock 360° Spatial Audio, Party Sync Room & PRO Equalizer!</p>
+
+            <!-- PRICING CHART (NEW) -->
+            <div class="pricing-grid">
+                <div class="pricing-card" style="border-color: var(--neon-cyan);">
+                    <h4 style="color: var(--neon-cyan); font-size: 14px;">1 MONTH</h4>
+                    <h2 style="color: #fff; margin: 5px 0; font-size: 26px;">₹29</h2>
+                    <ul>
+                        <li>✔️ 360° Spatial Audio</li>
+                        <li>✔️ 5-Band Pro Equalizer</li>
+                        <li>✔️ Party Sync Features</li>
+                    </ul>
+                    <button class="btn-white" style="width: 100%;" onclick="buyVIP('1 Month', 29)">🛒 Buy Now</button>
+                </div>
+
+                <div class="pricing-card" style="border-color: var(--neon-pink);">
+                    <span style="position: absolute; top: -10px; right: -10px; background: var(--neon-pink); color: #fff; font-size: 10px; font-weight:bold; padding: 4px 10px; border-radius: 12px; text-transform: uppercase;">Best Value</span>
+                    <h4 style="color: var(--neon-pink); font-size: 14px;">3 MONTHS</h4>
+                    <h2 style="color: #fff; margin: 5px 0; font-size: 26px;">₹99</h2>
+                    <ul>
+                        <li>✔️ All Premium Features</li>
+                        <li>✔️ Ad-Free Experience</li>
+                        <li>✔️ Priority Support</li>
+                    </ul>
+                    <button class="btn-white" style="width: 100%;" onclick="buyVIP('3 Months', 99)">🛒 Buy Now</button>
+                </div>
+            </div>
+
+            <hr style="border: 1px solid #222; margin: 15px 0;">
+
+            <p style="font-size: 12px; font-weight: bold; color: #fff;">Already have a Code?</p>
+            <input type="text" id="vipCodeInput" class="search-bar" placeholder="Enter VIP Code (e.g. VIP-XXXX)" style="text-transform: uppercase; text-align: center; font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-top: 10px;">
+            <div class="btn-white" style="margin-top: 10px; width: 100%;" onclick="redeemVIPCode()">🔓 Redeem Code</div>
+        </div>
+    </div>
+
+    <!-- CREATE PLAYLIST MODAL -->
+    <div class="modal-overlay" id="createPlaylistModal">
+        <div class="modal-card">
+            <div class="modal-header"><h3>New Playlist</h3><span style="cursor:pointer;" onclick="closeModal('createPlaylistModal')">✕</span></div>
+            <input type="text" id="playlistNameInput" class="search-bar" placeholder="Playlist Name...">
+            <div class="btn-white" style="margin-top: 10px;" onclick="createPlaylist()">Create Playlist</div>
         </div>
     </div>
 
@@ -207,7 +263,7 @@
         // --- ⚙️ OFFLINE SERVICE WORKER ENGINE (PWA READY) ---
         if ('serviceWorker' in navigator) {
             const swCode = `
-                const CACHE_NAME = 'harmony-offline-v1';
+                const CACHE_NAME = 'harmony-offline-v2';
                 self.addEventListener('install', (event) => {
                     event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(['./'])));
                 });
@@ -220,49 +276,42 @@
             const blob = new Blob([swCode], { type: 'application/javascript' });
             navigator.serviceWorker.register(URL.createObjectURL(blob)).then(() => console.log('Offline Engine Active!'));
         }
-        // ----------------------------------------------------
+        
+        // --- WHATSAPP BUY NOW INTEGRATION ---
+        window.buyVIP = function(plan, price) {
+            const phone = "919005228780"; // Hidden Mobile Number for WhatsApp Trigger
+            const text = `Hello Founder Karan,%0A%0AI want to purchase the *Global Harmony Pro* Premium plan.%0A%0A*Plan:* ${plan}%0A*Price:* ₹${price}%0A%0AI am ready to pay first. Please provide your UPI details so I can make the payment and receive my VIP Code.`;
+            window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+        };
 
         // --- 🔗 WHATSAPP SHARE REFERRAL ENGINE ---
         window.shareAppForVIP = async function() {
-            // Get user's unique ID for referral link, or guest if not logged in
             const currentUid = localStorage.getItem('harmony_user_uid') || "guest";
-            
-            // Build the Viral Referral Link
             const baseUrl = window.location.origin + window.location.pathname;
             const referralLink = `${baseUrl}?ref=${currentUid}`;
-            
-            const shareTitle = "Global Harmony Pro - Offline Studio";
-            const shareText = "Bro! Check out this zero-lag Neon Audio Player with 360° Spatial Audio. Try it here without internet! 🎧🔥";
+            const shareTitle = "Global Harmony Pro";
+            const shareText = "Bro! Check out this zero-lag Audio Player with 360° Spatial Audio. Try it here without internet! 🎧🔥";
 
             if (navigator.share) {
-                try {
-                    await navigator.share({ title: shareTitle, text: shareText, url: referralLink });
-                } catch (error) { console.log('Share canceled', error); }
+                try { await navigator.share({ title: shareTitle, text: shareText, url: referralLink }); } 
+                catch (error) { console.log('Share canceled', error); }
             } else {
-                // Fallback for laptops
                 prompt("Copy this link and share with your friends on WhatsApp to get 1 Month VIP!", referralLink);
             }
         }
 
-        // On Page Load: Check if someone clicked a referral link
         const urlParams = new URLSearchParams(window.location.search);
         const refId = urlParams.get('ref');
-        if(refId) {
-            localStorage.setItem('pending_referral', refId);
-        }
-        // ------------------------------------------
-
+        if(refId) localStorage.setItem('pending_referral', refId);
+        
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playlistGrid = document.getElementById('playlistGrid');
         const multiFileInput = document.getElementById('multiFileInput');
-        
         let trackList = [], playlists = [], db, currentPlayingIndex = -1;
 
-        // Auto-Play Next
         audio.addEventListener('ended', playNextTrack);
 
-        // Spatial Audio
         let audioCtx, trackNode, pannerNode, isSpatialActive = false, spatialInterval;
         function initAudioContext() {
             if (!audioCtx) {
@@ -288,12 +337,8 @@
             }
         }
 
-        // Check Local VIP Status
-        if(localStorage.getItem('harmony_is_vip') === 'true') {
-            document.body.classList.add('vip-active');
-        }
+        if(localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
 
-        // IndexedDB Database for 100% Offline Songs
         const dbRequest = indexedDB.open("HarmonyAudioVaultDB_Neon", 2);
         dbRequest.onupgradeneeded = (e) => {
             const dbRef = e.target.result;
@@ -350,10 +395,8 @@
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
-            
             if (track.fileObj) audio.src = URL.createObjectURL(track.fileObj);
             else if (track.audioData) audio.src = URL.createObjectURL(new Blob([track.audioData], { type: 'audio/mp3' }));
-            
             document.getElementById('p-title').innerText = track.title;
             if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             audio.play().catch(() => {});
@@ -362,15 +405,23 @@
         function playNextTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex + 1) % trackList.length); }
         function playPreviousTrack() { if (trackList.length > 0) playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
         
+        function createPlaylist() {
+            const name = document.getElementById('playlistNameInput').value;
+            if(!name || !db) return;
+            const tx = db.transaction(["saved_playlists"], "readwrite");
+            tx.oncomplete = () => { closeModal('createPlaylistModal'); loadAllAppStates(); };
+            tx.objectStore("saved_playlists").add({ name: name, songs: [] });
+        }
+
         function openModal(id) { document.getElementById(id).style.display = 'flex'; }
         function closeModal(id) { document.getElementById(id).style.display = 'none'; }
     </script>
 
-    <!-- FIREBASE AUTH & FIRESTORE (Handles VIP Referrals securely) -->
+    <!-- FIREBASE AUTH & FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc, getDocs, getDoc, updateDoc, collection } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getFirestore, doc, setDoc, getDocs, getDoc, updateDoc, collection, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyC3e0JDyDUQSMzHrHq_RKJKvPfCHWkItCo",
@@ -393,7 +444,7 @@
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
-                localStorage.setItem('harmony_user_uid', user.uid); // Save UID for sharing
+                localStorage.setItem('harmony_user_uid', user.uid);
 
                 const firstName = user.displayName ? user.displayName.split(" ")[0] : "User";
                 const nameDisplayElement = document.getElementById('profileNameDisplay');
@@ -405,34 +456,30 @@
                     document.body.classList.add('vip-active');
                 }
 
-                // --- REFERRAL SYSTEM LOGIC ---
-                // Agar user kisi ke share link se aaya hai
+                // REFERRAL VIP LOGIC
                 const pendingRef = localStorage.getItem('pending_referral');
                 if (pendingRef && pendingRef !== user.uid && pendingRef !== "guest") {
                     try {
-                        // Jisne link bheja usko 1 Month VIP de do!
                         await setDoc(doc(dbFirestore, "active_users", pendingRef), {
-                            vip_until: Date.now() + (30 * 24 * 60 * 60 * 1000) // Adds 30 Days Timestamp
+                            vip_until: Date.now() + (30 * 24 * 60 * 60 * 1000)
                         }, { merge: true });
                         alert("🎉 You successfully helped your friend earn 1 Month of Premium!");
-                        localStorage.removeItem('pending_referral'); // Sirf ek baar kaam karega
+                        localStorage.removeItem('pending_referral');
                     } catch(e) { console.error("Referral Error"); }
                 }
 
-                // Check Current User's Cloud VIP Expiry Status
+                // Check VIP Expiry
                 try {
                     const myDoc = await getDoc(doc(dbFirestore, "active_users", user.uid));
                     if (myDoc.exists() && myDoc.data().vip_until) {
                         if (Date.now() < myDoc.data().vip_until) {
                             localStorage.setItem('harmony_is_vip', 'true');
                             document.body.classList.add('vip-active');
-                            console.log("VIP Active through Referral!");
                         } else {
-                            localStorage.removeItem('harmony_is_vip'); // Expired
+                            localStorage.removeItem('harmony_is_vip');
                         }
                     }
                 } catch(e) {}
-                // -----------------------------
 
                 try {
                     await setDoc(doc(dbFirestore, "active_users", user.uid), {
@@ -445,20 +492,49 @@
             }
         });
 
-        // 🎟️ GENERATE VIP CODE (ADMIN ONLY)
+        // 🎟️ GENERATE VIP CODE (FIXED: UI UPDATES INSTANTLY NOW)
         window.generateVIPCode = async function() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
             let code = 'VIP-';
             for (let i = 0; i < 6; i++) code += chars.charAt(Math.floor(Math.random() * chars.length));
             
+            // Show immediately on screen
+            document.getElementById('generatedCodeDisplay').innerText = code;
+            
             try {
                 await setDoc(doc(dbFirestore, "vip_codes", code), { valid: true, createdAt: new Date().toLocaleString() });
-                document.getElementById('generatedCodeDisplay').innerText = code;
-                alert("New VIP Code Saved to Cloud: " + code);
-            } catch(e) { alert("Database Error!"); }
+            } catch(e) { console.log("Local code generated, but cloud save failed."); }
         };
 
-        // 🔓 REDEEM VIP CODE (FOR USERS)
+        // 🎁 GRANT VIP BY EMAIL (NEW)
+        window.grantVIPToEmail = async function() {
+            const email = document.getElementById('adminGrantEmail').value.trim().toLowerCase();
+            const days = parseInt(document.getElementById('adminGrantDays').value);
+            if(!email) return alert("Please enter a valid Gmail ID!");
+            
+            try {
+                const usersRef = collection(dbFirestore, "active_users");
+                const q = query(usersRef, where("email", "==", email));
+                const querySnapshot = await getDocs(q);
+                
+                if (querySnapshot.empty) {
+                    alert("User not found! They must login at least once before you can grant VIP.");
+                    return;
+                }
+                
+                querySnapshot.forEach(async (document) => {
+                    await updateDoc(doc(dbFirestore, "active_users", document.id), {
+                        vip_until: Date.now() + (days * 24 * 60 * 60 * 1000)
+                    });
+                    alert(`✅ SUCCESS! VIP Access granted to ${email} for ${days} days!`);
+                    document.getElementById('adminGrantEmail').value = ""; // clear input
+                });
+            } catch (e) {
+                alert("Database Error! Ensure Firestore rules allow read/write.");
+            }
+        };
+
+        // 🔓 REDEEM VIP CODE
         window.redeemVIPCode = async function() {
             const codeInput = document.getElementById('vipCodeInput').value.trim().toUpperCase();
             if(!codeInput) { alert("Please enter a code!"); return; }
