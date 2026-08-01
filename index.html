@@ -9,9 +9,13 @@
     <meta name="description" content="Global Harmony Pro - Offline Neon Audio Studio">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
+    
+    <!-- 🔥 APP VERSION CONTROL (CHANGE THIS NUMBER WHEN YOU UPDATE CODE) 🔥 -->
+    <meta name="app-version" content="25">
+    
     <title>Global Harmony Pro</title>
 
-    <link rel="manifest" href="manifest.json?v=24">
+    <link rel="manifest" href="manifest.json?v=25">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -50,17 +54,13 @@
         .right-actions { display: flex; align-items: center; gap: 15px; }
         .profile-icon { height: 36px; padding: 0 16px; border-radius: 18px; display: flex; justify-content: center; align-items: center; font-size: 13px; cursor: pointer; background: var(--btn-white); color: #000; font-weight: 800; gap: 6px; box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2); }
         
-        /* 🚨 VIP & ADMIN HIDE/SHOW LOGIC 🚨 */
         .founder-badge, .pro-only { display: none !important; }
         body.founder-active .founder-badge { display: inline-flex !important; }
-        
-        /* Jab VIP hoga tabhi ye block ya flex banenge */
         body.vip-active div.pro-only { display: flex !important; }
         body.vip-active span.pro-only { display: flex !important; }
 
-        /* 🔥 NEWS TICKER FOR ADS 🔥 */
         .premium-ticker { background: var(--neon-pink); color: #fff; padding: 6px 0; font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; width: 100%; z-index: 99; box-shadow: 0 4px 15px rgba(255,0,127,0.4); }
-        body.vip-active .premium-ticker { display: none !important; } /* VIPs ko ad nahi dikhegi */
+        body.vip-active .premium-ticker { display: none !important; } 
 
         .sub-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
         .sub-title { font-weight: 800; font-size: 16px; letter-spacing: 0.5px; color: var(--neon-pink); }
@@ -106,6 +106,10 @@
         .eq-slider { -webkit-appearance: none; width: 100%; height: 6px; background: #333; border-radius: 5px; outline: none; margin: 10px 0; }
         .eq-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--neon-cyan); cursor: pointer; box-shadow: 0 0 10px var(--neon-cyan); }
 
+        /* 🔥 UPDATE POPUP STYLES 🔥 */
+        .update-popup { display: none; position: fixed; bottom: 120px; left: 50%; transform: translateX(-50%); background: #1a1a24; border: 2px solid var(--neon-pink); padding: 20px; border-radius: 15px; box-shadow: 0 0 25px rgba(255, 0, 127, 0.6); z-index: 4000; text-align: center; width: 90%; max-width: 400px; animation: popUpAnim 0.5s ease-out; }
+        @keyframes popUpAnim { from { bottom: -100px; opacity: 0; } to { bottom: 120px; opacity: 1; } }
+
         @media (max-width: 900px) {
             .main-content { grid-template-columns: 1fr; }
             .top-row { flex-wrap: wrap; }
@@ -118,6 +122,13 @@
     </style>
 </head>
 <body>
+
+    <!-- 🔥 APP UPDATE POPUP 🔥 -->
+    <div id="updatePopup" class="update-popup">
+        <h3 style="color: var(--neon-cyan); margin-bottom: 10px;">🚀 New Version Available!</h3>
+        <p style="font-size: 12px; color: #ccc; margin-bottom: 15px;">Karan Sir has pushed a new update. Please update the app to enjoy the latest features and bug fixes!</p>
+        <button class="btn-white" style="background: var(--neon-pink); color: #fff; width: 100%;" onclick="applyAppUpdate()">⚡ Update Now</button>
+    </div>
 
     <header class="header" id="topHeader" style="border-bottom:none; padding-bottom:10px;">
         <div class="top-row">
@@ -152,7 +163,6 @@
         </div>
     </header>
 
-    <!-- 🚨 PREMIUM NEWS TICKER (Only shows for non-VIPs) 🚨 -->
     <div class="premium-ticker" onclick="openModal('vipGateModal')" style="cursor:pointer;">
         <marquee behavior="scroll" direction="left" scrollamount="8">
             🔥 UPGRADE TO GLOBAL HARMONY PRO! UNLOCK 360° SPATIAL AUDIO, PARTY SYNC, PRO EQUALIZER, AND AD-FREE LISTENING. CLICK "+GET PREMIUM" NOW TO UNLOCK! 🔥
@@ -178,7 +188,6 @@
         <div class="nav-items">
             <div class="nav-icon" title="Home" onclick="window.scrollTo(0,0)">🏠</div>
             <div class="nav-icon" title="Help Center" onclick="openModal('helpModal')">❓</div>
-            <!-- THESE ARE COMPLETELY HIDDEN UNTIL VIP IS PURCHASED -->
             <div class="nav-icon pro-only" title="Equalizer" onclick="openModal('settingsModal')">🎛️</div>
             <div class="nav-icon pro-only" title="Party Sync" onclick="openModal('roomModal')">👥</div>
         </div>
@@ -187,7 +196,6 @@
             <span class="control-icon" onclick="playPreviousTrack()" title="Previous Song">⏮</span>
             <audio id="audioElement" class="audio-element" controls crossorigin="anonymous"></audio>
             <span class="control-icon" onclick="playNextTrack()" title="Next Song">⏭</span>
-            <!-- HIDDEN UNTIL VIP -->
             <span class="control-icon pro-only" id="spatialBtn" onclick="toggle8DSpatialAudio()" title="360° Spatial Audio">🌌</span>
         </div>
 
@@ -223,7 +231,7 @@
             <div class="modal-header"><h3>❓ Help Center</h3><span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span></div>
             <div style="text-align: left; font-size: 13px; line-height: 1.6; color: #ccc;">
                 <p><strong>🎵 How to play songs?</strong><br>Click 'Import' to load MP3s. They save offline instantly.</p><br>
-                <p><strong>🎟️ How to unlock 🌌 Spatial Audio & 👥 Sync?</strong><br>These are Premium features. Click 'Get Premium' to purchase a VIP code and unlock them instantly.</p><br>
+                <p><strong>🎟️ How to unlock Premium Features?</strong><br>Click 'Get Premium' to purchase a VIP code and unlock Spatial Audio & Sync.</p><br>
             </div>
             <div class="btn-white" onclick="closeModal('helpModal')" style="margin-top: 15px;">Close Help</div>
         </div>
@@ -283,7 +291,7 @@
         </div>
     </div>
 
-    <!-- 🎟️ VIP REDEEM / AD MODAL (Popped up every 3 songs) -->
+    <!-- 🎟️ VIP REDEEM / AD MODAL -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card">
             <div class="modal-header"><h3>🎟️ Premium Access</h3><span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span></div>
@@ -320,18 +328,39 @@
     </div>
 
     <script>
-        // --- 🔥 AUTO-UPDATE ENGINE (LIVE RELOAD) 🔥 ---
-        let lastEtag = '';
-        setInterval(async () => {
-            try {
-                const res = await fetch(window.location.href, { method: 'HEAD', cache: 'no-store' });
-                const currentEtag = res.headers.get('etag') || res.headers.get('last-modified');
-                if (lastEtag && currentEtag && lastEtag !== currentEtag) {
-                    window.location.reload(true);
+        // --- 🚀 NEW VERSION CONTROL ENGINE 🚀 ---
+        const CURRENT_APP_VERSION = "25"; // DONT FORGET TO CHANGE THIS WHEN YOU UPDATE CODE IN FUTURE
+
+        function checkForUpdates() {
+            // Fetch the HTML file with a random number so browser cache is bypassed
+            fetch(window.location.href.split('?')[0] + '?v=' + new Date().getTime(), { cache: 'no-store' })
+            .then(res => res.text())
+            .then(html => {
+                // Check if the server version is different from the local version
+                const match = html.match(/<meta name="app-version" content="([^"]+)">/);
+                if (match && match[1] !== CURRENT_APP_VERSION) {
+                    document.getElementById('updatePopup').style.display = 'block';
                 }
-                lastEtag = currentEtag;
-            } catch(e) {}
-        }, 5000);
+            }).catch(e => console.log("Update check failed"));
+        }
+        
+        // Check for updates every 10 seconds
+        setInterval(checkForUpdates, 10000);
+
+        // This function force cleans the old service worker cache and reloads
+        window.applyAppUpdate = function() {
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(function(registrations) {
+                    for(let registration of registrations) { registration.unregister(); }
+                });
+            }
+            caches.keys().then((keyList) => {
+                return Promise.all(keyList.map((key) => caches.delete(key)));
+            }).then(() => {
+                window.location.reload(true); // Hard reload
+            });
+        }
+        // ------------------------------------------
 
         // --- ⚙️ OFFLINE SERVICE WORKER ENGINE ---
         if ('serviceWorker' in navigator) {
@@ -341,9 +370,10 @@
                     event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(['./'])));
                 });
                 self.addEventListener('fetch', (event) => {
-                    event.respondWith(caches.match(event.request).then((res) => {
-                        return res || fetch(event.request).catch(() => caches.match('./'));
-                    }));
+                    // Network first, fallback to cache (better for updates)
+                    event.respondWith(
+                        fetch(event.request).catch(() => caches.match(event.request))
+                    );
                 });
             `;
             const blob = new Blob([swCode], { type: 'application/javascript' });
