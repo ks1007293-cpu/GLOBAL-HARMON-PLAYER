@@ -11,7 +11,7 @@
     <meta name="theme-color" content="#e0e5ec">
     <title>Global Harmony Pro</title>
 
-    <link rel="manifest" href="manifest.json?v=27">
+    <link rel="manifest" href="manifest.json?v=28">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -81,6 +81,7 @@
         .panel { padding: 25px; display: flex; flex-direction: column; gap: 20px; }
         .panel-header { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; color: var(--text-main); border-bottom: 2px solid #d1d8e0; padding-bottom: 10px; }
         
+        /* Optimized Grid Layout */
         .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 20px; }
         .song-card { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 15px; cursor: pointer; transition: 0.2s; }
         .song-card:hover { transform: translateY(-3px); }
@@ -324,19 +325,17 @@
         </div>
     </div>
 
-    <!-- MAIN ENGINE SCRIPT -->
+    <!-- MAIN ENGINE SCRIPT (COMPLETELY FIXED & MEMORY OPTIMIZED) -->
     <script>
         // Global Modal Logic
         window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
         window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- 📧 GMAIL BUY NOW LOGIC (REPLACED WHATSAPP) ---
+        // --- 📧 GMAIL BUY NOW LOGIC ---
         window.buyVIP = function(plan, price) {
             const email = "globalharmonypro@gmail.com";
             const subject = encodeURIComponent(`Purchase Request: Global Harmony Pro - ${plan}`);
             const body = encodeURIComponent(`Hello Founder Karan,\n\nI want to purchase the Global Harmony Pro Premium plan.\n\nPlan: ${plan}\nPrice: ₹${price}\n\nI am ready to pay first. Please provide your UPI details so I can make the payment and receive my VIP Code.\n\nMy Details:\nName: \nEmail: `);
-            
-            // This will directly open the user's Gmail app/website
             window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
         };
 
@@ -395,7 +394,8 @@
 
         if(localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
 
-        const dbRequest = indexedDB.open("HarmonyAudioVault_White", 1);
+        // INITIALIZE DB
+        const dbRequest = indexedDB.open("HarmonyAudioVault_White", 2);
         dbRequest.onupgradeneeded = (e) => {
             const dbRef = e.target.result;
             if (!dbRef.objectStoreNames.contains("saved_songs")) dbRef.createObjectStore("saved_songs", { keyPath: "id", autoIncrement: true });
@@ -413,58 +413,66 @@
             };
         }
 
+        // DOM FRAGMENT RENDERING (Fast rendering for 500+ songs)
         window.renderSongGridLazy = function(list) {
             songGrid.innerHTML = '';
             document.getElementById('trackCount').innerText = list.length;
             if (list.length === 0) { songGrid.innerHTML = `<p style="font-size:12px; color:var(--text-muted); grid-column: 1/-1;">Vault empty. Click Import to add songs.</p>`; return; }
+            
+            const fragment = document.createDocumentFragment();
             list.forEach((track, i) => {
                 const card = document.createElement('div');
                 card.className = 'song-card neumorphic';
-                card.innerHTML = `<div class="song-icon-box neumorphic-inset" onclick="playTrack(${i})"><span style="color:var(--accent-blue);">▶</span></div><h3 class="song-title" style="margin-top:10px;">${track.title}</h3>`;
-                songGrid.appendChild(card);
+                card.innerHTML = `<div class="song-icon-box neumorphic-inset" onclick="playTrack(${i})"><span style="color:var(--accent-blue);">▶</span></div><h3 class="song-title" style="margin-top:10px;" title="${track.title}">${track.title}</h3>`;
+                fragment.appendChild(card);
             });
+            songGrid.appendChild(fragment);
         }
 
         window.renderPlaylistGrid = function(list) {
             playlistGrid.innerHTML = '';
+            const fragment = document.createDocumentFragment();
             list.forEach((pl) => {
                 const card = document.createElement('div');
                 card.className = 'song-card neumorphic';
                 card.innerHTML = `<div class="song-icon-box neumorphic-inset"><span style="color:var(--accent-gold);">📂</span></div><h3 class="song-title" style="margin-top:10px;">${pl.name}</h3>`;
-                playlistGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+            playlistGrid.appendChild(fragment);
         }
 
-        // Import Logic fixed
+        // 🚀🔥 THE ULTIMATE FIX FOR 500+ SONGS (BATCH PROCESSING) 🔥🚀
         multiFileInput.addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             if (!files || files.length === 0) return;
             
             const importLabel = document.getElementById('importBtnLabel');
-            importLabel.innerText = "⏳ Reading...";
+            
+            // Loop through each file one by one to save Memory (RAM)
+            for (let i = 0; i < files.length; i++) {
+                importLabel.innerText = `⏳ Saving ${i + 1}/${files.length}`;
+                
+                const file = files[i];
+                const buffer = await file.arrayBuffer(); // Read only 1 file into memory
+                
+                // Wait for the single file to be saved in DB before moving to next
+                await new Promise((resolve, reject) => {
+                    const tx = db.transaction(["saved_songs"], "readwrite");
+                    const store = tx.objectStore("saved_songs");
+                    const request = store.add({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: buffer });
+                    request.onsuccess = () => resolve();
+                    request.onerror = () => reject();
+                });
 
-            const processedData = [];
-            for (let file of files) {
-                const buffer = await file.arrayBuffer();
-                processedData.push({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: buffer });
+                // Crucial step: Pause for 10ms after every 10 songs to let the CPU breathe and prevent laptop freeze
+                if(i % 10 === 0) {
+                    await new Promise(r => setTimeout(r, 10));
+                }
             }
 
-            importLabel.innerText = "⏳ Saving...";
-
-            const tx = db.transaction(["saved_songs"], "readwrite");
-            const store = tx.objectStore("saved_songs");
-            
-            processedData.forEach(item => { store.add(item); });
-
-            tx.oncomplete = () => { 
-                importLabel.innerHTML = "<span style='color:var(--accent-blue);'>➕</span> Import"; 
-                window.loadAllAppStates(); 
-                alert("✅ All Songs Imported Successfully!");
-            };
-            tx.onerror = () => {
-                importLabel.innerHTML = "❌ Failed"; 
-                alert("Error saving songs.");
-            };
+            importLabel.innerHTML = "<span style='color:var(--accent-blue);'>➕</span> Import"; 
+            window.loadAllAppStates(); 
+            alert(`✅ Successfully Imported ${files.length} Songs!`);
         });
 
         window.playTrack = function(index) {
@@ -481,7 +489,7 @@
             if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             audio.play().catch(() => {});
 
-            // AD LOGIC
+            // 🚨 AD LOGIC: EVERY 3 SONGS FOR NON-VIPS
             songsPlayedCount++;
             if(songsPlayedCount > 1 && songsPlayedCount % 3 === 0) {
                 if(!document.body.classList.contains('vip-active')) {
