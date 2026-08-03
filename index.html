@@ -11,10 +11,8 @@
     <meta name="theme-color" content="#e0e5ec">
     <title>Global Harmony Pro</title>
 
-    <!-- 🔥 BROWSER TAB LOGO (FAVICON) 🔥 -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' stroke='%230984e3' stroke-width='8' fill='none'/><path d='M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50' stroke='%23fd79a8' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
-
-    <link rel="manifest" href="manifest.json?v=29">
+    <link rel="manifest" href="manifest.json?v=30">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -33,7 +31,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; scroll-behavior: smooth; }
 
-        /* NEUMORPHIC UI */
         .neumorphic { background: var(--bg-color); box-shadow: 6px 6px 12px var(--shadow-dark), -6px -6px 12px var(--shadow-light); border-radius: 12px; border: none; transition: all 0.2s ease; color: var(--text-main); }
         .neumorphic:active { box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); }
         .neumorphic-inset { background: var(--bg-color); box-shadow: inset 4px 4px 8px var(--shadow-dark), inset -4px -4px 8px var(--shadow-light); border-radius: 12px; border: none; }
@@ -54,7 +51,6 @@
         .right-actions { display: flex; align-items: center; gap: 15px; }
         .profile-icon { height: 36px; padding: 0 16px; display: flex; justify-content: center; align-items: center; font-size: 13px; cursor: pointer; font-weight: 800; gap: 6px; border-radius: 18px; }
 
-        /* VIP & PRO LOGIC */
         .founder-badge, .pro-only { display: none !important; }
         body.founder-active .founder-badge { display: inline-flex !important; }
         body.vip-active div.pro-only { display: flex !important; }
@@ -196,15 +192,13 @@
         </div>
     </footer>
 
-    <!-- 🔥 DJ MIXER MODAL (MEME MIXUP) 🔥 -->
+    <!-- 🔥 DJ MIXER MODAL 🔥 -->
     <div class="modal-overlay" id="djMixerModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-pink);">🎛️</span> DJ Meme Mixup</h3><span style="cursor:pointer;" onclick="closeModal('djMixerModal')">✕</span></div>
             <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Play a main song, then load a Meme/Beat track here to mix them!</p>
-            
             <input type="file" id="memeTrackInput" accept="audio/*" class="search-bar neumorphic-inset" style="background:#fff; margin-bottom: 10px;">
             <audio id="memeAudioElement" controls class="audio-element neumorphic-inset" style="width: 100%; height: 35px;"></audio>
-            
             <div style="display:flex; flex-direction:column; gap:5px; margin-top:15px;">
                 <label style="font-size:12px; font-weight:bold;">Crossfade Mix (Main <-> Meme)</label>
                 <input type="range" id="djCrossfader" min="0" max="100" value="50" class="eq-slider" oninput="adjustDJVolume()">
@@ -213,11 +207,10 @@
         </div>
     </div>
 
-    <!-- 🎛️ PRO EQUALIZER & PITCH/AUTO-TUNE MODAL -->
+    <!-- 🎛️ PRO EQUALIZER & PITCH MODAL -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-pink);">🎛️</span> Pro Studio Effects</h3><span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span></div>
-            
             <div class="neumorphic-inset" style="padding:15px; margin-top:15px; border: 1px solid var(--accent-blue);">
                 <h4 style="color:var(--accent-blue); margin-bottom:5px;">🎤 Auto-Tune & Pitch Shift</h4>
                 <p style="font-size:11px; color:var(--text-muted); margin-bottom:10px;">Change Voice (Moti / Patli / Chipmunk)</p>
@@ -226,7 +219,6 @@
                     <span>Slow/Moti</span><span>Normal</span><span>Chipmunk/Patli</span>
                 </div>
             </div>
-
             <div style="display:flex; flex-direction:column; gap:5px; margin-top:15px;">
                 <label style="font-size:12px; font-weight:bold;">Bass Boost</label>
                 <input type="range" min="0" max="100" value="50" class="eq-slider">
@@ -247,7 +239,6 @@
             <div id="roomControls">
                 <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 15px;">Listen together with your friends in real-time!</p>
                 <input type="text" id="roomCodeInput" class="search-bar neumorphic-inset" placeholder="Enter Room Code (e.g., SYNC-X123)" style="text-align: center; font-weight: bold; margin-bottom: 15px; text-transform: uppercase;">
-                
                 <div style="display: flex; gap: 10px; margin-bottom:10px;">
                     <div class="btn-white neumorphic" onclick="generateSyncCode()" style="flex:1; background:var(--bg-color); color:var(--accent-blue);">🎲 Auto Gen Code</div>
                     <div class="btn-white neumorphic" onclick="joinPartySyncRoom()" style="flex:1;"><span style="color:var(--accent-blue);">⚡</span> Join Room</div>
@@ -282,11 +273,6 @@
             <div class="neumorphic-inset" style="padding: 15px; margin-bottom: 15px;">
                 <h4 style="margin-bottom: 10px;">🎁 Grant VIP Access Directly</h4>
                 <input type="email" id="adminGrantEmail" class="search-bar neumorphic-inset" placeholder="Enter User Gmail..." style="margin-bottom: 10px; background:#fff;">
-                <select id="adminGrantDays" class="search-bar neumorphic-inset" style="margin-bottom: 10px; padding: 10px; cursor: pointer; background:#fff;">
-                    <option value="30">1 Month (30 Days)</option>
-                    <option value="90">3 Months (90 Days)</option>
-                    <option value="365">1 Year (365 Days)</option>
-                </select>
                 <div class="btn-white neumorphic" onclick="grantVIPToEmail()" style="width: 100%;">⚡ Grant VIP Now</div>
             </div>
             <div class="btn-white neumorphic" style="margin-bottom: 10px;" onclick="fetchActiveUsers()">🔄 Refresh User List</div>
@@ -316,12 +302,30 @@
             </div>
             <hr style="border: 1px solid #d1d8e0; margin: 15px 0;">
             <p style="font-size: 12px; font-weight: bold;">Already have a Code?</p>
-            <input type="text" id="vipCodeInput" class="search-bar neumorphic-inset" placeholder="Enter VIP Code (e.g. ADMIN-KARAN)" style="text-transform: uppercase; text-align: center; font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-top: 10px; background:#fff;">
+            <input type="text" id="vipCodeInput" class="search-bar neumorphic-inset" placeholder="Enter VIP Code" style="text-transform: uppercase; text-align: center; font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-top: 10px; background:#fff;">
             <div class="btn-white neumorphic" style="margin-top: 10px; width: 100%;" onclick="redeemVIPCode()">🔓 Redeem Code</div>
         </div>
     </div>
 
-    <!-- HELP & PLAYLIST MODALS -->
+    <!-- 💸 IN-APP PAYMENT MODAL (NEW) 💸 -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-card neumorphic">
+            <div class="modal-header"><h3>💳 Complete Payment</h3><span style="cursor:pointer;" onclick="closeModal('paymentModal')">✕</span></div>
+            <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Scan the QR code below to pay <strong id="payAmountDisplay" style="color:var(--accent-pink);">₹0</strong> for the <span id="payPlanDisplay">Plan</span>.</p>
+
+            <div class="neumorphic-inset" style="padding: 15px; margin-bottom: 15px; background: #fff; display: flex; flex-direction: column; align-items: center;">
+                <!-- DYNAMIC QR CODE -->
+                <img id="qrCodeImage" src="" style="width: 150px; height: 150px; border-radius: 10px; margin-bottom: 10px; border: 2px solid var(--accent-blue);">
+                <p style="font-size: 14px; font-weight: bold; color: #000;">UPI ID: globalharmony@ybl</p>
+                <p style="font-size: 10px; color: #666; margin-top: 5px;">(You can change this UPI ID in the code later)</p>
+            </div>
+
+            <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 15px;">After payment, click the button below to attach your screenshot in an Email.</p>
+
+            <div class="btn-white neumorphic" style="width: 100%; color:var(--accent-blue);" onclick="confirmPaymentAndEmail()">📧 I Have Paid (Send Proof)</div>
+        </div>
+    </div>
+
     <div class="modal-overlay" id="helpModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-gold);">❓</span> Help Center</h3><span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span></div>
@@ -339,76 +343,80 @@
 
     <!-- MAIN ENGINE SCRIPT -->
     <script>
-        // Check local storage immediately to prevent UI jumps
         if(localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
         if(localStorage.getItem('harmony_is_admin') === 'true') document.body.classList.add('founder-active');
 
         window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
         window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 
-        // --- DJ MEME MIXUP LOGIC ---
+        // --- DJ MEME MIXUP ---
         const memeAudio = document.getElementById('memeAudioElement');
-        const memeInput = document.getElementById('memeTrackInput');
-        memeInput.addEventListener('change', function() {
-            if(this.files && this.files[0]){
-                memeAudio.src = URL.createObjectURL(this.files[0]);
-            }
+        document.getElementById('memeTrackInput').addEventListener('change', function() {
+            if(this.files && this.files[0]) memeAudio.src = URL.createObjectURL(this.files[0]);
         });
-        
         window.adjustDJVolume = function() {
             const faderValue = document.getElementById('djCrossfader').value;
-            const mainVol = (100 - faderValue) / 100;
-            const memeVol = faderValue / 100;
-            document.getElementById('audioElement').volume = mainVol;
-            memeAudio.volume = memeVol;
+            document.getElementById('audioElement').volume = (100 - faderValue) / 100;
+            memeAudio.volume = faderValue / 100;
         };
 
-        // --- AUTO-TUNE / PITCH SHIFTER LOGIC ---
+        // --- AUTO-TUNE / PITCH ---
         window.changePitch = function() {
             const audio = document.getElementById('audioElement');
-            const pitchVal = document.getElementById('pitchSlider').value;
             audio.preservesPitch = false; 
-            audio.playbackRate = pitchVal;
+            audio.playbackRate = document.getElementById('pitchSlider').value;
         };
 
-        // --- PARTY SYNC CODE GENERATOR ---
         window.generateSyncCode = function() {
-            const code = 'SYNC-' + Math.random().toString(36).substring(2, 6).toUpperCase();
-            document.getElementById('roomCodeInput').value = code;
+            document.getElementById('roomCodeInput').value = 'SYNC-' + Math.random().toString(36).substring(2, 6).toUpperCase();
         };
 
-        // --- 📧 GMAIL BUY NOW LOGIC ---
+        // --- 💳 DIRECT IN-APP PAYMENT LOGIC ---
+        let selectedPlan = "";
+        let selectedPrice = 0;
+
         window.buyVIP = function(plan, price) {
-            const email = "globalharmonypro@gmail.com";
-            const subject = encodeURIComponent(`Purchase Request: Global Harmony Pro - ${plan}`);
-            const body = encodeURIComponent(`Hello Founder Karan,\n\nI want to purchase the Global Harmony Pro Premium plan.\n\nPlan: ${plan}\nPrice: ₹${price}\n\nI am ready to pay first. Please provide your UPI details so I can make the payment and receive my VIP Code.\n\nMy Details:\nName: \nEmail: `);
-            window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
+            selectedPlan = plan;
+            selectedPrice = price;
+            document.getElementById('payPlanDisplay').innerText = plan;
+            document.getElementById('payAmountDisplay').innerText = "₹" + price;
+
+            // Generate Dynamic UPI QR Code
+            const upiID = "globalharmony@ybl"; // KARAN BHAI: CHANGE THIS TO YOUR ACTUAL UPI ID
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${upiID}&pn=Founder%20Karan&am=${price}&cu=INR`;
+            document.getElementById('qrCodeImage').src = qrUrl;
+
+            closeModal('vipGateModal');
+            openModal('paymentModal');
         };
 
-        // --- WHATSAPP SHARE REFERRAL ENGINE ---
+        window.confirmPaymentAndEmail = function() {
+            const email = "globalharmonypro@gmail.com";
+            const subject = encodeURIComponent(`Payment Proof: Global Harmony Pro - ${selectedPlan}`);
+            const body = encodeURIComponent(`Hello Founder Karan,\n\nI have successfully made the payment of ₹${selectedPrice} for the ${selectedPlan} plan.\n\nPLEASE FIND THE PAYMENT SCREENSHOT ATTACHED TO THIS EMAIL.\n\nMy Details:\nName: \nEmail (Used for App Login): \n\nPlease verify and send me my VIP Code!`);
+            
+            // This opens Gmail with pre-filled details. User just attaches screenshot and hits Send.
+            window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
+            closeModal('paymentModal');
+        };
+
         window.shareAppForVIP = async function() {
             const currentUid = localStorage.getItem('harmony_user_uid') || "guest";
-            const baseUrl = window.location.origin + window.location.pathname;
-            const referralLink = `${baseUrl}?ref=${currentUid}`;
-            const shareText = "Check out this Premium Audio Player! 🎧🔥";
-
+            const referralLink = `${window.location.origin + window.location.pathname}?ref=${currentUid}`;
             if (navigator.share) {
-                try { await navigator.share({ title: "Global Harmony Pro", text: shareText, url: referralLink }); } 
+                try { await navigator.share({ title: "Global Harmony Pro", text: "Check out this Premium Audio Player! 🎧🔥", url: referralLink }); } 
                 catch (error) {}
-            } else {
-                prompt("Copy this link and share with your friends on WhatsApp to get 1 Month VIP!", referralLink);
-            }
+            } else { prompt("Copy this link to get 1 Month VIP!", referralLink); }
         }
 
         const urlParams = new URLSearchParams(window.location.search);
         const refId = urlParams.get('ref');
         if(refId) localStorage.setItem('pending_referral', refId);
 
-        // --- CORE AUDIO APP LOGIC ---
+        // --- CORE AUDIO ---
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playlistGrid = document.getElementById('playlistGrid');
-        const multiFileInput = document.getElementById('multiFileInput');
         let trackList = [], playlists = [], db, currentPlayingIndex = -1, songsPlayedCount = 0;
 
         audio.addEventListener('ended', () => { window.playNextTrack(); });
@@ -423,7 +431,6 @@
                 pannerNode.connect(audioCtx.destination);
             }
             if (audioCtx.state === 'suspended') audioCtx.resume(); 
-            
             isSpatialActive = !isSpatialActive;
             const btn = document.getElementById('spatialBtn');
             if(isSpatialActive) {
@@ -431,9 +438,7 @@
                 let pan = -1, direction = 0.04;
                 spatialInterval = setInterval(() => { pan += direction; if(pan >= 1 || pan <= -1) direction = -direction; pannerNode.pan.value = pan; }, 100);
             } else {
-                btn.style.color = 'var(--accent-blue)'; 
-                clearInterval(spatialInterval); 
-                pannerNode.pan.value = 0;
+                btn.style.color = 'var(--accent-blue)'; clearInterval(spatialInterval); pannerNode.pan.value = 0;
             }
         }
 
@@ -456,7 +461,6 @@
             songGrid.innerHTML = '';
             document.getElementById('trackCount').innerText = list.length;
             if (list.length === 0) { songGrid.innerHTML = `<p style="font-size:12px; color:var(--text-muted); grid-column: 1/-1;">Vault empty. Click Import to add songs.</p>`; return; }
-            
             const fragment = document.createDocumentFragment();
             list.forEach((track, i) => {
                 const card = document.createElement('div');
@@ -467,11 +471,10 @@
             songGrid.appendChild(fragment);
         }
 
-        multiFileInput.addEventListener('change', async (e) => {
+        document.getElementById('multiFileInput').addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
             if (!files || files.length === 0) return;
             const importLabel = document.getElementById('importBtnLabel');
-            
             for (let i = 0; i < files.length; i++) {
                 importLabel.innerText = `⏳ Saving ${i + 1}/${files.length}`;
                 const file = files[i];
@@ -492,12 +495,10 @@
             if (index < 0 || index >= trackList.length) return;
             currentPlayingIndex = index;
             const track = trackList[index];
-            
             if (track.audioData) {
                 const blob = new Blob([track.audioData], { type: 'audio/mp3' });
                 audio.src = URL.createObjectURL(blob);
             }
-            
             document.getElementById('p-title').innerText = track.title;
             if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             
@@ -515,10 +516,9 @@
 
         window.playNextTrack = function() { if (trackList.length > 0) window.playTrack((currentPlayingIndex + 1) % trackList.length); }
         window.playPreviousTrack = function() { if (trackList.length > 0) window.playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
-        
         window.createPlaylist = function() { alert("Playlist feature coming in v2.0!"); }
 
-        // --- CYBER SYNC LOGIC ---
+        // --- CYBER SYNC ---
         let pusherClient = null, currentRoomChannel = null, currentRoomCode = null;
         function initPusher() { if(!pusherClient) pusherClient = new Pusher('b27e87515b14f85e4e3e', { cluster: 'ap2' }); }
 
@@ -586,8 +586,6 @@
                 document.getElementById('profileNameDisplay').innerText = user.displayName ? user.displayName.split(" ")[0] : "User";
                 
                 const email = user.email.toLowerCase();
-                
-                // ADMIN CHECK LOGIC
                 if (email.includes("globalharmonypro") || email.includes("ks1007293") || email.includes("kn863422")) {
                     localStorage.setItem('harmony_is_admin', 'true');
                     localStorage.setItem('harmony_is_vip', 'true');
@@ -616,12 +614,10 @@
             }
         });
 
-        // 🚨 100% WORKING VIP REDEEM (WITH OFFLINE/LOCAL BYPASS) 🚨
         window.redeemVIPCode = async function() {
             const codeInput = document.getElementById('vipCodeInput').value.trim().toUpperCase();
             if(!codeInput) return;
 
-            // 🔥 MASTER BYPASS FOR FOUNDER (Never fails, instantly opens Admin Panel) 🔥
             if(codeInput === 'ADMIN-KARAN') {
                 localStorage.setItem('harmony_is_admin', 'true');
                 localStorage.setItem('harmony_is_vip', 'true');
@@ -642,18 +638,16 @@
                     alert("🎉 SUCCESS! VIP Premium Unlocked.");
                     window.closeModal('vipGateModal');
                 } else { alert("❌ Invalid or Expired Code!"); }
-            } catch(e) { alert("Network/Database Error! Please use offline code 'ADMIN-KARAN' for now."); }
+            } catch(e) { alert("Network Error! Please use offline code 'ADMIN-KARAN'."); }
         };
 
         window.generateVIPCode = async function() {
             const code = 'VIP-' + Math.random().toString(36).substring(2, 6).toUpperCase();
             document.getElementById('generatedCodeDisplay').innerText = code;
-            try { await setDoc(doc(dbFirestore, "vip_codes", code), { valid: true }); } catch(e) { alert("Code generated locally (Cloud save failed due to Rules)"); }
+            try { await setDoc(doc(dbFirestore, "vip_codes", code), { valid: true }); } catch(e) { alert("Code generated locally."); }
         };
 
-        window.grantVIPToEmail = async function() {
-            alert("This feature requires Firebase Billing/Rules to be active. Ask user to redeem code 'KARAN-PRO' instead!");
-        };
+        window.grantVIPToEmail = async function() { alert("Requires Firebase Billing. Ask user to redeem code 'ADMIN-KARAN' instead!"); };
 
         window.fetchActiveUsers = async function() {
             const listDiv = document.getElementById('adminUsersList');
@@ -664,7 +658,7 @@
                 querySnapshot.forEach((doc) => {
                     listDiv.innerHTML += `<div class="admin-user-row neumorphic-inset"><p style="font-size:12px; margin:0;">${doc.data().name} (${doc.data().email})</p></div>`;
                 });
-            } catch (error) { listDiv.innerHTML = '<p style="color:var(--accent-pink); font-size:12px;">Database rules block reading users directly. Check Firebase Console.</p>'; }
+            } catch (error) { listDiv.innerHTML = '<p style="color:var(--accent-pink); font-size:12px;">Rules block reading users. Check Firebase.</p>'; }
         }
     </script>
 </body>
