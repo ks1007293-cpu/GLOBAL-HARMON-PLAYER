@@ -14,7 +14,7 @@
     <!-- 🔥 BROWSER TAB LOGO (FAVICON) 🔥 -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' stroke='%230984e3' stroke-width='8' fill='none'/><path d='M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50' stroke='%23fd79a8' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
 
-    <link rel="manifest" href="manifest.json?v=28">
+    <link rel="manifest" href="manifest.json?v=29">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -249,7 +249,6 @@
                 <input type="text" id="roomCodeInput" class="search-bar neumorphic-inset" placeholder="Enter Room Code (e.g., SYNC-X123)" style="text-align: center; font-weight: bold; margin-bottom: 15px; text-transform: uppercase;">
                 
                 <div style="display: flex; gap: 10px; margin-bottom:10px;">
-                    <!-- 🔥 NEW GENERATE CODE BUTTON 🔥 -->
                     <div class="btn-white neumorphic" onclick="generateSyncCode()" style="flex:1; background:var(--bg-color); color:var(--accent-blue);">🎲 Auto Gen Code</div>
                     <div class="btn-white neumorphic" onclick="joinPartySyncRoom()" style="flex:1;"><span style="color:var(--accent-blue);">⚡</span> Join Room</div>
                 </div>
@@ -283,6 +282,11 @@
             <div class="neumorphic-inset" style="padding: 15px; margin-bottom: 15px;">
                 <h4 style="margin-bottom: 10px;">🎁 Grant VIP Access Directly</h4>
                 <input type="email" id="adminGrantEmail" class="search-bar neumorphic-inset" placeholder="Enter User Gmail..." style="margin-bottom: 10px; background:#fff;">
+                <select id="adminGrantDays" class="search-bar neumorphic-inset" style="margin-bottom: 10px; padding: 10px; cursor: pointer; background:#fff;">
+                    <option value="30">1 Month (30 Days)</option>
+                    <option value="90">3 Months (90 Days)</option>
+                    <option value="365">1 Year (365 Days)</option>
+                </select>
                 <div class="btn-white neumorphic" onclick="grantVIPToEmail()" style="width: 100%;">⚡ Grant VIP Now</div>
             </div>
             <div class="btn-white neumorphic" style="margin-bottom: 10px;" onclick="fetchActiveUsers()">🔄 Refresh User List</div>
@@ -312,12 +316,12 @@
             </div>
             <hr style="border: 1px solid #d1d8e0; margin: 15px 0;">
             <p style="font-size: 12px; font-weight: bold;">Already have a Code?</p>
-            <input type="text" id="vipCodeInput" class="search-bar neumorphic-inset" placeholder="Enter VIP Code (e.g. KARAN-PRO)" style="text-transform: uppercase; text-align: center; font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-top: 10px; background:#fff;">
+            <input type="text" id="vipCodeInput" class="search-bar neumorphic-inset" placeholder="Enter VIP Code (e.g. ADMIN-KARAN)" style="text-transform: uppercase; text-align: center; font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-top: 10px; background:#fff;">
             <div class="btn-white neumorphic" style="margin-top: 10px; width: 100%;" onclick="redeemVIPCode()">🔓 Redeem Code</div>
         </div>
     </div>
 
-    <!-- CREATE PLAYLIST & HELP MODALS OMITTED FOR BREVITY BUT FULLY FUNCTIONAL BELOW -->
+    <!-- HELP & PLAYLIST MODALS -->
     <div class="modal-overlay" id="helpModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-gold);">❓</span> Help Center</h3><span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span></div>
@@ -335,6 +339,10 @@
 
     <!-- MAIN ENGINE SCRIPT -->
     <script>
+        // Check local storage immediately to prevent UI jumps
+        if(localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
+        if(localStorage.getItem('harmony_is_admin') === 'true') document.body.classList.add('founder-active');
+
         window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
         window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
 
@@ -349,7 +357,6 @@
         
         window.adjustDJVolume = function() {
             const faderValue = document.getElementById('djCrossfader').value;
-            // 0 = Full Main, 100 = Full Meme
             const mainVol = (100 - faderValue) / 100;
             const memeVol = faderValue / 100;
             document.getElementById('audioElement').volume = mainVol;
@@ -360,7 +367,6 @@
         window.changePitch = function() {
             const audio = document.getElementById('audioElement');
             const pitchVal = document.getElementById('pitchSlider').value;
-            // Modern browsers support preservesPitch = false to change pitch with speed
             audio.preservesPitch = false; 
             audio.playbackRate = pitchVal;
         };
@@ -385,6 +391,7 @@
             const baseUrl = window.location.origin + window.location.pathname;
             const referralLink = `${baseUrl}?ref=${currentUid}`;
             const shareText = "Check out this Premium Audio Player! 🎧🔥";
+
             if (navigator.share) {
                 try { await navigator.share({ title: "Global Harmony Pro", text: shareText, url: referralLink }); } 
                 catch (error) {}
@@ -429,8 +436,6 @@
                 pannerNode.pan.value = 0;
             }
         }
-
-        if(localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
 
         const dbRequest = indexedDB.open("HarmonyAudioVault_White", 2);
         dbRequest.onupgradeneeded = (e) => {
@@ -496,7 +501,6 @@
             document.getElementById('p-title').innerText = track.title;
             if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
             
-            // Apply pitch settings if already set
             window.changePitch();
             audio.play().catch(() => {});
 
@@ -551,7 +555,7 @@
         }
     </script>
 
-    <!-- FIREBASE AUTH & FIRESTORE (WITH LOCAL BYPASS) -->
+    <!-- FIREBASE AUTH & FIRESTORE -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
@@ -582,9 +586,22 @@
                 document.getElementById('profileNameDisplay').innerText = user.displayName ? user.displayName.split(" ")[0] : "User";
                 
                 const email = user.email.toLowerCase();
-                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("globalharmonypro")) {
+                
+                // ADMIN CHECK LOGIC
+                if (email.includes("globalharmonypro") || email.includes("ks1007293") || email.includes("kn863422")) {
+                    localStorage.setItem('harmony_is_admin', 'true');
+                    localStorage.setItem('harmony_is_vip', 'true');
                     document.body.classList.add('founder-active');
                     document.body.classList.add('vip-active');
+                }
+
+                const pendingRef = localStorage.getItem('pending_referral');
+                if (pendingRef && pendingRef !== user.uid && pendingRef !== "guest") {
+                    try {
+                        await setDoc(doc(dbFirestore, "active_users", pendingRef), { vip_until: Date.now() + (30 * 24 * 60 * 60 * 1000) }, { merge: true });
+                        alert("🎉 You helped your friend earn 1 Month of Premium!");
+                        localStorage.removeItem('pending_referral');
+                    } catch(e) {}
                 }
 
                 try {
@@ -604,11 +621,13 @@
             const codeInput = document.getElementById('vipCodeInput').value.trim().toUpperCase();
             if(!codeInput) return;
 
-            // MASTER BYPASS FOR FOUNDER AND TESTING (Never fails)
-            if(codeInput === 'KARAN-PRO' || codeInput === 'VIP-MASTER') {
+            // 🔥 MASTER BYPASS FOR FOUNDER (Never fails, instantly opens Admin Panel) 🔥
+            if(codeInput === 'ADMIN-KARAN') {
+                localStorage.setItem('harmony_is_admin', 'true');
                 localStorage.setItem('harmony_is_vip', 'true');
+                document.body.classList.add('founder-active');
                 document.body.classList.add('vip-active');
-                alert("🎉 SUCCESS! SUPER-VIP Premium Unlocked Locally!");
+                alert("👑 WELCOME BOSS! Admin Panel & VIP Unlocked Locally!");
                 window.closeModal('vipGateModal');
                 return;
             }
@@ -623,7 +642,7 @@
                     alert("🎉 SUCCESS! VIP Premium Unlocked.");
                     window.closeModal('vipGateModal');
                 } else { alert("❌ Invalid or Expired Code!"); }
-            } catch(e) { alert("Network/Database Error! Please use offline code 'KARAN-PRO' for now."); }
+            } catch(e) { alert("Network/Database Error! Please use offline code 'ADMIN-KARAN' for now."); }
         };
 
         window.generateVIPCode = async function() {
