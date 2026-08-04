@@ -12,7 +12,7 @@
     <title>Global Harmony Pro</title>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' stroke='%230984e3' stroke-width='8' fill='none'/><path d='M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50' stroke='%23fd79a8' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
-    <link rel="manifest" href="manifest.json?v=30">
+    <link rel="manifest" href="manifest.json?v=31">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -47,6 +47,7 @@
         
         .search-container { flex: 1; max-width: 400px; display: flex; align-items: center; gap: 10px; }
         .search-bar { width: 100%; padding: 12px 20px; font-size: 14px; color: var(--text-main); outline: none; }
+        textarea.search-bar { resize: vertical; min-height: 100px; }
 
         .right-actions { display: flex; align-items: center; gap: 15px; }
         .profile-icon { height: 36px; padding: 0 16px; display: flex; justify-content: center; align-items: center; font-size: 13px; cursor: pointer; font-weight: 800; gap: 6px; border-radius: 18px; }
@@ -61,9 +62,9 @@
 
         .sub-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding-top: 10px; border-top: 1px solid #d1d8e0; }
         .sub-title { font-weight: 800; font-size: 15px; color: var(--text-main); }
-        .sub-actions { display: flex; gap: 15px; }
+        .sub-actions { display: flex; gap: 15px; flex-wrap: wrap; }
         
-        .main-content { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; padding: 20px 30px 120px 30px; flex: 1; }
+        .main-content { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; padding: 20px 30px 140px 30px; flex: 1; }
         .panel { padding: 25px; display: flex; flex-direction: column; gap: 20px; }
         .panel-header { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; color: var(--text-main); border-bottom: 2px solid #d1d8e0; padding-bottom: 10px; }
         
@@ -74,8 +75,8 @@
         .song-title { font-size: 12px; font-weight: 700; text-align: center; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
 
         .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(224, 229, 236, 0.95); backdrop-filter: blur(10px); border-radius: 24px 24px 0 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
-        .nav-items { display: flex; gap: 15px; align-items: center; }
-        .nav-icon { width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; border-radius: 12px; transition: 0.2s; }
+        .nav-items { display: flex; gap: 15px; align-items: center; flex-wrap: nowrap; }
+        .nav-icon { width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; border-radius: 12px; transition: 0.2s; flex-shrink: 0; }
         
         .player-controls { flex: 1; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 0 20px; flex-wrap: nowrap; }
         .audio-element { width: 100%; max-width: 400px; height: 35px; border-radius: 20px; }
@@ -102,13 +103,14 @@
         .eq-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-blue); cursor: pointer; }
 
         @media (max-width: 900px) {
-            .main-content { grid-template-columns: 1fr; }
+            .main-content { grid-template-columns: 1fr; padding-bottom: 160px; }
             .top-row { flex-wrap: wrap; }
             .search-container { order: 3; max-width: 100%; }
             .bottom-bar { flex-direction: column; gap: 15px; padding: 15px; border-radius: 16px 16px 0 0; }
             .player-controls { width: 100%; padding: 0; gap: 10px; }
             .control-icon { width: 35px; height: 35px; font-size: 20px; }
             .pricing-grid { flex-direction: column; }
+            .nav-items { overflow-x: auto; max-width: 100%; padding-bottom: 5px; }
         }
     </style>
 </head>
@@ -172,6 +174,10 @@
         <div class="nav-items">
             <div class="nav-icon neumorphic" title="Home" onclick="window.scrollTo(0,0)"><span style="color:var(--accent-blue);">🏠</span></div>
             <div class="nav-icon neumorphic" title="Help Center" onclick="openModal('helpModal')"><span style="color:var(--accent-gold);">❓</span></div>
+            <!-- 🔥 NEW: Lyrics & Sleep Timer Icons 🔥 -->
+            <div class="nav-icon neumorphic" title="Lyrics & Notes" onclick="openLyricsModal()"><span style="color:var(--accent-pink);">📝</span></div>
+            <div class="nav-icon neumorphic" title="Sleep Timer" onclick="openModal('sleepTimerModal')"><span style="color:var(--accent-blue);">🌙</span></div>
+            
             <div class="nav-icon neumorphic pro-only" title="Equalizer & AutoTune" onclick="openModal('settingsModal')"><span style="color:var(--accent-pink);">🎛️</span></div>
             <div class="nav-icon neumorphic pro-only" title="Party Sync" onclick="openModal('roomModal')"><span style="color:var(--accent-green);">👥</span></div>
         </div>
@@ -188,9 +194,35 @@
             <div class="now-playing-info">
                 <h4 id="p-title">Ready System</h4>
                 <p id="p-artist">Global Harmony Pro</p>
+                <p id="sleepTimerDisplay" style="color:var(--accent-blue); display:none; font-weight:bold;">Timer Active</p>
             </div>
         </div>
     </footer>
+
+    <!-- 🔥 NEW: SLEEP TIMER MODAL 🔥 -->
+    <div class="modal-overlay" id="sleepTimerModal">
+        <div class="modal-card neumorphic">
+            <div class="modal-header"><h3><span style="color:var(--accent-blue);">🌙</span> Sleep Timer</h3><span style="cursor:pointer;" onclick="closeModal('sleepTimerModal')">✕</span></div>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Stop music automatically after a set time.</p>
+            <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin-bottom:15px;">
+                <button class="btn-white neumorphic-inset" onclick="setSleepTimer(15)">15 Min</button>
+                <button class="btn-white neumorphic-inset" onclick="setSleepTimer(30)">30 Min</button>
+                <button class="btn-white neumorphic-inset" onclick="setSleepTimer(60)">60 Min</button>
+            </div>
+            <div class="btn-white neumorphic" style="color:var(--accent-pink);" onclick="cancelSleepTimer()">Cancel Timer</div>
+        </div>
+    </div>
+
+    <!-- 🔥 NEW: LYRICS & NOTES MODAL 🔥 -->
+    <div class="modal-overlay" id="lyricsModal">
+        <div class="modal-card neumorphic">
+            <div class="modal-header"><h3><span style="color:var(--accent-pink);">📝</span> Song Lyrics & Notes</h3><span style="cursor:pointer;" onclick="closeModal('lyricsModal')">✕</span></div>
+            <p style="font-size:12px; color:var(--text-muted); margin-bottom:10px;">Write or paste lyrics for the current playing song here.</p>
+            <h4 id="lyricsSongTitle" style="color:var(--accent-blue); margin-bottom:10px; font-size:14px;">No song playing</h4>
+            <textarea id="lyricsInput" class="search-bar neumorphic-inset" placeholder="Type lyrics or notes here..."></textarea>
+            <div class="btn-white neumorphic" style="margin-top:15px; color:var(--accent-blue);" onclick="saveLyrics()">💾 Save Lyrics</div>
+        </div>
+    </div>
 
     <!-- 🔥 DJ MIXER MODAL 🔥 -->
     <div class="modal-overlay" id="djMixerModal">
@@ -307,14 +339,13 @@
         </div>
     </div>
 
-    <!-- 💸 IN-APP PAYMENT MODAL (NEW) 💸 -->
+    <!-- 💸 IN-APP PAYMENT MODAL 💸 -->
     <div class="modal-overlay" id="paymentModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3>💳 Complete Payment</h3><span style="cursor:pointer;" onclick="closeModal('paymentModal')">✕</span></div>
             <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 15px;">Scan the QR code below to pay <strong id="payAmountDisplay" style="color:var(--accent-pink);">₹0</strong> for the <span id="payPlanDisplay">Plan</span>.</p>
 
             <div class="neumorphic-inset" style="padding: 15px; margin-bottom: 15px; background: #fff; display: flex; flex-direction: column; align-items: center;">
-                <!-- DYNAMIC QR CODE -->
                 <img id="qrCodeImage" src="" style="width: 150px; height: 150px; border-radius: 10px; margin-bottom: 10px; border: 2px solid var(--accent-blue);">
                 <p style="font-size: 14px; font-weight: bold; color: #000;">UPI ID: globalharmony@ybl</p>
                 <p style="font-size: 10px; color: #666; margin-top: 5px;">(You can change this UPI ID in the code later)</p>
@@ -333,6 +364,7 @@
             <div class="btn-white neumorphic" onclick="closeModal('helpModal')">Close</div>
         </div>
     </div>
+    
     <div class="modal-overlay" id="createPlaylistModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3>New Playlist</h3><span style="cursor:pointer;" onclick="closeModal('createPlaylistModal')">✕</span></div>
@@ -348,6 +380,47 @@
 
         window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
         window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+
+        // --- 🌙 SLEEP TIMER LOGIC ---
+        let sleepTimerTimeout;
+        window.setSleepTimer = function(minutes) {
+            clearTimeout(sleepTimerTimeout);
+            const ms = minutes * 60 * 1000;
+            sleepTimerTimeout = setTimeout(() => {
+                document.getElementById('audioElement').pause();
+                alert(`Sleep timer ended after ${minutes} minutes. Music paused.`);
+                window.cancelSleepTimer();
+            }, ms);
+            document.getElementById('sleepTimerDisplay').innerText = `Timer: ${minutes}m left`;
+            document.getElementById('sleepTimerDisplay').style.display = 'block';
+            closeModal('sleepTimerModal');
+            alert(`Sleep timer set for ${minutes} minutes!`);
+        }
+        window.cancelSleepTimer = function() {
+            clearTimeout(sleepTimerTimeout);
+            document.getElementById('sleepTimerDisplay').style.display = 'none';
+            closeModal('sleepTimerModal');
+        }
+
+        // --- 📝 LYRICS / NOTES LOGIC ---
+        window.openLyricsModal = function() {
+            const title = document.getElementById('p-title').innerText;
+            document.getElementById('lyricsSongTitle').innerText = title;
+            const savedLyrics = localStorage.getItem('lyrics_' + title) || "";
+            document.getElementById('lyricsInput').value = savedLyrics;
+            openModal('lyricsModal');
+        }
+        window.saveLyrics = function() {
+            const title = document.getElementById('lyricsSongTitle').innerText;
+            const text = document.getElementById('lyricsInput').value;
+            if(title !== "Ready System") {
+                localStorage.setItem('lyrics_' + title, text);
+                alert("Lyrics/Notes saved locally!");
+                closeModal('lyricsModal');
+            } else {
+                alert("Please play a song first to save lyrics.");
+            }
+        }
 
         // --- DJ MEME MIXUP ---
         const memeAudio = document.getElementById('memeAudioElement');
@@ -381,8 +454,7 @@
             document.getElementById('payPlanDisplay').innerText = plan;
             document.getElementById('payAmountDisplay').innerText = "₹" + price;
 
-            // Generate Dynamic UPI QR Code
-            const upiID = "globalharmony@ybl"; // KARAN BHAI: CHANGE THIS TO YOUR ACTUAL UPI ID
+            const upiID = "globalharmony@ybl"; 
             const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${upiID}&pn=Founder%20Karan&am=${price}&cu=INR`;
             document.getElementById('qrCodeImage').src = qrUrl;
 
@@ -391,11 +463,11 @@
         };
 
         window.confirmPaymentAndEmail = function() {
-            const email = "globalharmonypro@gmail.com";
+            // FIXED THE EMAIL ADDRESS HERE TO MATCH USER'S REQUEST
+            const email = "globalharmonypro9052@gmail.com";
             const subject = encodeURIComponent(`Payment Proof: Global Harmony Pro - ${selectedPlan}`);
             const body = encodeURIComponent(`Hello Founder Karan,\n\nI have successfully made the payment of ₹${selectedPrice} for the ${selectedPlan} plan.\n\nPLEASE FIND THE PAYMENT SCREENSHOT ATTACHED TO THIS EMAIL.\n\nMy Details:\nName: \nEmail (Used for App Login): \n\nPlease verify and send me my VIP Code!`);
             
-            // This opens Gmail with pre-filled details. User just attaches screenshot and hits Send.
             window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
             closeModal('paymentModal');
         };
@@ -586,7 +658,9 @@
                 document.getElementById('profileNameDisplay').innerText = user.displayName ? user.displayName.split(" ")[0] : "User";
                 
                 const email = user.email.toLowerCase();
-                if (email.includes("globalharmonypro") || email.includes("ks1007293") || email.includes("kn863422")) {
+                
+                // ADMIN CHECK LOGIC WITH CORRECTED EMAIL
+                if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422")) {
                     localStorage.setItem('harmony_is_admin', 'true');
                     localStorage.setItem('harmony_is_vip', 'true');
                     document.body.classList.add('founder-active');
@@ -614,10 +688,12 @@
             }
         });
 
+        // 🚨 100% WORKING VIP REDEEM (WITH OFFLINE/LOCAL BYPASS) 🚨
         window.redeemVIPCode = async function() {
             const codeInput = document.getElementById('vipCodeInput').value.trim().toUpperCase();
             if(!codeInput) return;
 
+            // 🔥 MASTER BYPASS FOR FOUNDER (Never fails, instantly opens Admin Panel) 🔥
             if(codeInput === 'ADMIN-KARAN') {
                 localStorage.setItem('harmony_is_admin', 'true');
                 localStorage.setItem('harmony_is_vip', 'true');
