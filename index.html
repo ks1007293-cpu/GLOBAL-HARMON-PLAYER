@@ -2,8 +2,8 @@
 <html lang="hi">
 <head>
     <meta name="google-site-verification" content="XouE1kjqG619HkcdFbpVT-3x_Ih0oEd8SkVDrse6lpo" />
-    <!-- AD SENSE ACCOUNT TAG ADDED -->
     <meta name="google-adsense-account" content="ca-pub-5177776666822366">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5177776666822366" crossorigin="anonymous"></script>
     
     <meta charset="UTF-8">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -15,7 +15,7 @@
     <title>Global Harmony Pro</title>
 
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' stroke='%230984e3' stroke-width='8' fill='none'/><path d='M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50' stroke='%23fd79a8' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
-    <link rel="manifest" href="manifest.json?v=32">
+    <link rel="manifest" href="manifest.json?v=33">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
@@ -50,6 +50,7 @@
         
         .search-container { flex: 1; max-width: 400px; display: flex; align-items: center; gap: 10px; }
         .search-bar { width: 100%; padding: 12px 20px; font-size: 14px; color: var(--text-main); outline: none; }
+        textarea.search-bar { resize: vertical; min-height: 100px; }
 
         .right-actions { display: flex; align-items: center; gap: 15px; }
         .profile-icon { height: 36px; padding: 0 16px; display: flex; justify-content: center; align-items: center; font-size: 13px; cursor: pointer; font-weight: 800; gap: 6px; border-radius: 18px; }
@@ -64,9 +65,9 @@
 
         .sub-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding-top: 10px; border-top: 1px solid #d1d8e0; }
         .sub-title { font-weight: 800; font-size: 15px; color: var(--text-main); }
-        .sub-actions { display: flex; gap: 15px; }
+        .sub-actions { display: flex; gap: 15px; flex-wrap: wrap; }
         
-        .main-content { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; padding: 20px 30px 120px 30px; flex: 1; }
+        .main-content { display: grid; grid-template-columns: 1.5fr 1fr; gap: 30px; padding: 20px 30px 140px 30px; flex: 1; }
         .panel { padding: 25px; display: flex; flex-direction: column; gap: 20px; }
         .panel-header { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; color: var(--text-main); border-bottom: 2px solid #d1d8e0; padding-bottom: 10px; }
         
@@ -77,8 +78,8 @@
         .song-title { font-size: 12px; font-weight: 700; text-align: center; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
 
         .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(224, 229, 236, 0.95); backdrop-filter: blur(10px); border-radius: 24px 24px 0 0; box-shadow: 0 -4px 15px rgba(0,0,0,0.05); }
-        .nav-items { display: flex; gap: 15px; align-items: center; }
-        .nav-icon { width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; border-radius: 12px; transition: 0.2s; }
+        .nav-items { display: flex; gap: 15px; align-items: center; flex-wrap: nowrap; }
+        .nav-icon { width: 45px; height: 45px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; border-radius: 12px; transition: 0.2s; flex-shrink: 0; }
         
         .player-controls { flex: 1; display: flex; justify-content: center; align-items: center; gap: 20px; padding: 0 20px; flex-wrap: nowrap; }
         .audio-element { width: 100%; max-width: 400px; height: 35px; border-radius: 20px; }
@@ -99,7 +100,6 @@
         .pricing-card ul { text-align: left; font-size: 12px; color: var(--text-muted); list-style: none; padding: 0; margin: 15px 0; line-height: 1.8; }
         
         .admin-user-row { display: flex; align-items: center; gap: 15px; padding: 12px; text-align: left; border-radius: 8px; margin-bottom: 10px;}
-        .admin-user-img { width: 40px; height: 40px; border-radius: 50%; }
         
         .eq-slider { -webkit-appearance: none; width: 100%; height: 6px; background: #d1d8e0; border-radius: 5px; outline: none; margin: 10px 0; box-shadow: inset 2px 2px 5px var(--shadow-dark), inset -2px -2px 5px var(--shadow-light); }
         .eq-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--accent-blue); cursor: pointer; }
@@ -112,6 +112,7 @@
             .player-controls { width: 100%; padding: 0; gap: 10px; }
             .control-icon { width: 35px; height: 35px; font-size: 20px; }
             .pricing-grid { flex-direction: column; }
+            .nav-items { overflow-x: auto; max-width: 100%; padding-bottom: 5px; }
         }
     </style>
 </head>
@@ -133,7 +134,7 @@
 
             <div class="right-actions">
                 <label for="multiFileInput" class="btn-white neumorphic" id="importBtnLabel"><span style="color:var(--accent-blue);">➕</span> Import</label>
-                <button class="btn-white neumorphic founder-badge" onclick="openModal('adminDashboardModal'); fetchActiveUsers();"><span style="color:var(--accent-gold);">👑</span> ADMIN</button>
+                <button class="btn-white neumorphic founder-badge" onclick="openModal('adminDashboardModal')"><span style="color:var(--accent-gold);">👑</span> ADMIN</button>
                 <div class="golden-ticket" onclick="openModal('vipGateModal')">🎟️ +GET PREMIUM</div>
                 <div class="profile-icon neumorphic" onclick="window.loginWithGoogle()">
                     👤 <span id="profileNameDisplay">Login</span>
@@ -175,6 +176,9 @@
         <div class="nav-items">
             <div class="nav-icon neumorphic" title="Home" onclick="window.scrollTo(0,0)"><span style="color:var(--accent-blue);">🏠</span></div>
             <div class="nav-icon neumorphic" title="Help Center" onclick="openModal('helpModal')"><span style="color:var(--accent-gold);">❓</span></div>
+            <div class="nav-icon neumorphic" title="Lyrics & Notes" onclick="openLyricsModal()"><span style="color:var(--accent-pink);">📝</span></div>
+            <div class="nav-icon neumorphic" title="Sleep Timer" onclick="openModal('sleepTimerModal')"><span style="color:var(--accent-blue);">🌙</span></div>
+            
             <div class="nav-icon neumorphic pro-only" title="Equalizer & AutoTune" onclick="openModal('settingsModal')"><span style="color:var(--accent-pink);">🎛️</span></div>
             <div class="nav-icon neumorphic pro-only" title="Party Sync" onclick="openModal('roomModal')"><span style="color:var(--accent-green);">👥</span></div>
         </div>
@@ -196,7 +200,7 @@
         </div>
     </footer>
 
-    <!-- 🔥 SLEEP TIMER MODAL 🔥 -->
+    <!-- SLEEP TIMER MODAL -->
     <div class="modal-overlay" id="sleepTimerModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-blue);">🌙</span> Sleep Timer</h3><span style="cursor:pointer;" onclick="closeModal('sleepTimerModal')">✕</span></div>
@@ -210,7 +214,7 @@
         </div>
     </div>
 
-    <!-- 🔥 LYRICS & NOTES MODAL 🔥 -->
+    <!-- LYRICS MODAL -->
     <div class="modal-overlay" id="lyricsModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-pink);">📝</span> Lyrics & Notes</h3><span style="cursor:pointer;" onclick="closeModal('lyricsModal')">✕</span></div>
@@ -220,7 +224,7 @@
         </div>
     </div>
 
-    <!-- 🔥 DJ MIXER MODAL 🔥 -->
+    <!-- DJ MIXER MODAL -->
     <div class="modal-overlay" id="djMixerModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-pink);">🎛️</span> DJ Mixup</h3><span style="cursor:pointer;" onclick="closeModal('djMixerModal')">✕</span></div>
@@ -234,7 +238,7 @@
         </div>
     </div>
 
-    <!-- 🎛️ PRO EFFECTS -->
+    <!-- PRO EFFECTS -->
     <div class="modal-overlay" id="settingsModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-pink);">🎛️</span> Pro Effects</h3><span style="cursor:pointer;" onclick="closeModal('settingsModal')">✕</span></div>
@@ -246,7 +250,7 @@
         </div>
     </div>
 
-    <!-- 👥 SYNC -->
+    <!-- PARTY SYNC -->
     <div class="modal-overlay" id="roomModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3><span style="color:var(--accent-green);">👥</span> Party Sync</h3><span style="cursor:pointer;" onclick="closeModal('roomModal')">✕</span></div>
@@ -258,6 +262,7 @@
                 </div>
             </div>
             <div id="roomActiveInterface" style="display:none; text-align: left;">
+                <p style="font-size:12px; text-align:center;">Active Room: <strong id="currentRoomDisplay" style="color:var(--accent-blue);">NONE</strong></p>
                 <div id="chatMessages" class="neumorphic-inset" style="height: 180px; overflow-y: auto; padding: 10px; margin: 10px 0; font-size: 12px;"></div>
                 <div style="display: flex; gap: 8px;">
                     <input type="text" id="chatMessageInput" class="search-bar neumorphic-inset" placeholder="Type message..." style="flex: 1; padding: 8px; font-size: 12px;">
@@ -268,20 +273,19 @@
         </div>
     </div>
 
-    <!-- 👑 ADMIN -->
+    <!-- ADMIN MODAL -->
     <div class="modal-overlay" id="adminDashboardModal">
         <div class="modal-card neumorphic" style="max-width: 550px;">
-            <div class="modal-header"><h3>👑 Admin</h3><span style="cursor:pointer;" onclick="closeModal('adminDashboardModal')">✕</span></div>
+            <div class="modal-header"><h3>👑 Admin Panel</h3><span style="cursor:pointer;" onclick="closeModal('adminDashboardModal')">✕</span></div>
             <div class="neumorphic-inset" style="padding: 15px; margin-bottom: 15px;">
                 <h4 style="margin-bottom: 10px;">🎟️ Generate VIP Code</h4>
-                <div class="btn-white neumorphic" onclick="generateVIPCode()" style="width: 100%;">⚡ Generate</div>
+                <div class="btn-white neumorphic" onclick="generateVIPCode()" style="width: 100%;">⚡ Generate Code</div>
                 <div id="generatedCodeDisplay" style="margin-top: 15px; font-size: 22px; font-weight: 900; color: var(--accent-blue); letter-spacing: 2px;"></div>
             </div>
-            <div id="adminUsersList" class="neumorphic-inset" style="max-height: 200px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding:10px;"></div>
         </div>
     </div>
 
-    <!-- 🎟️ VIP GATE -->
+    <!-- VIP GATE MODAL -->
     <div class="modal-overlay" id="vipGateModal">
         <div class="modal-card neumorphic">
             <div class="modal-header"><h3>🎟️ Premium Access</h3><span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span></div>
@@ -297,33 +301,241 @@
                     <button class="btn-white neumorphic" style="width: 100%; color:var(--accent-pink);" onclick="buyVIP('3 Months', 99)">🛒 Buy Now</button>
                 </div>
             </div>
-            <input type="text" id="vipCodeInput" class="search-bar neumorphic-inset" placeholder="Enter VIP Code" style="text-align: center; font-weight: bold; background:#fff;">
-            <div class="btn-white neumorphic" style="width: 100%;" onclick="redeemVIPCode()">🔓 Redeem</div>
+            <input type="text" id="vipCodeInput" class="search-bar neumorphic-inset" placeholder="Enter VIP Code (Try: ADMIN-KARAN)" style="text-align: center; font-weight: bold; background:#fff;">
+            <div class="btn-white neumorphic" style="margin-top: 10px; width: 100%;" onclick="redeemVIPCode()">🔓 Redeem Code</div>
         </div>
     </div>
 
-    <script>
-        // ... (Baaki logic wahi hai, bas function cleanup kiya hai)
-        window.saveLyrics = function() {
-            const title = document.getElementById('lyricsSongTitle').innerText;
-            const text = document.getElementById('lyricsInput').value;
-            if(title !== "Ready System") localStorage.setItem('lyrics_' + title, text);
-            closeModal('lyricsModal');
-        }
-        window.openLyricsModal = function() {
-            const title = document.getElementById('p-title').innerText;
-            document.getElementById('lyricsSongTitle').innerText = title;
-            document.getElementById('lyricsInput').value = localStorage.getItem('lyrics_' + title) || "";
-            openModal('lyricsModal');
-        }
-        window.setSleepTimer = function(min) {
-            alert("Sleep timer active!"); 
-            setTimeout(() => document.getElementById('audioElement').pause(), min * 60000);
-            closeModal('sleepTimerModal');
-        }
-        window.cancelSleepTimer = function() { closeModal('sleepTimerModal'); }
+    <!-- PAYMENT MODAL -->
+    <div class="modal-overlay" id="paymentModal">
+        <div class="modal-card neumorphic">
+            <div class="modal-header"><h3>💳 Complete Payment</h3><span style="cursor:pointer;" onclick="closeModal('paymentModal')">✕</span></div>
+            <p style="font-size: 13px; margin-bottom: 15px;">Scan QR to pay <strong id="payAmountDisplay" style="color:var(--accent-pink);">₹0</strong> for <span id="payPlanDisplay">Plan</span>.</p>
+            <div class="neumorphic-inset" style="padding: 15px; margin-bottom: 15px; background: #fff; display: flex; flex-direction: column; align-items: center;">
+                <img id="qrCodeImage" src="" style="width: 150px; height: 150px; border-radius: 10px; margin-bottom: 10px; border: 2px solid var(--accent-blue);">
+                <p style="font-size: 14px; font-weight: bold; color: #000;">UPI ID: globalharmony@ybl</p>
+            </div>
+            <div class="btn-white neumorphic" style="width: 100%; color:var(--accent-blue);" onclick="confirmPaymentAndEmail()">📧 I Have Paid (Send Proof)</div>
+        </div>
+    </div>
 
-        // Initial Logic...
+    <div class="modal-overlay" id="helpModal">
+        <div class="modal-card neumorphic">
+            <div class="modal-header"><h3><span style="color:var(--accent-gold);">❓</span> Help Center</h3><span style="cursor:pointer;" onclick="closeModal('helpModal')">✕</span></div>
+            <p style="font-size:13px; margin: 20px 0;">Use "Import" to add MP3 files. Enter code 'ADMIN-KARAN' to test VIP Features!</p>
+            <div class="btn-white neumorphic" onclick="closeModal('helpModal')">Close</div>
+        </div>
+    </div>
+    
+    <div class="modal-overlay" id="createPlaylistModal">
+        <div class="modal-card neumorphic">
+            <div class="modal-header"><h3>New Playlist</h3><span style="cursor:pointer;" onclick="closeModal('createPlaylistModal')">✕</span></div>
+            <input type="text" id="playlistNameInput" class="search-bar neumorphic-inset" placeholder="Playlist Name..." style="background:#fff;">
+            <div class="btn-white neumorphic" style="margin-top: 10px;" onclick="createPlaylist()">Create Playlist</div>
+        </div>
+    </div>
+
+    <!-- CORE SCRIPT -->
+    <script>
+        // Check VIP and Admin Status
+        if(localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
+        if(localStorage.getItem('harmony_is_admin') === 'true') document.body.classList.add('founder-active');
+
+        window.openModal = function(id) { document.getElementById(id).style.display = 'flex'; }
+        window.closeModal = function(id) { document.getElementById(id).style.display = 'none'; }
+
+        // Search Songs Function
+        window.searchSongs = function() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('#songGrid .song-card');
+            cards.forEach(card => {
+                const title = card.querySelector('.song-title').innerText.toLowerCase();
+                card.style.display = title.includes(query) ? 'flex' : 'none';
+            });
+        }
+
+        // DJ Mixer
+        const memeAudio = document.getElementById('memeAudioElement');
+        document.getElementById('memeTrackInput').addEventListener('change', function() {
+            if(this.files && this.files[0]) memeAudio.src = URL.createObjectURL(this.files[0]);
+        });
+        window.adjustDJVolume = function() {
+            const faderValue = document.getElementById('djCrossfader').value;
+            document.getElementById('audioElement').volume = (100 - faderValue) / 100;
+            memeAudio.volume = faderValue / 100;
+        };
+
+        // Pitch
+        window.changePitch = function() {
+            const audio = document.getElementById('audioElement');
+            audio.preservesPitch = false; 
+            audio.playbackRate = document.getElementById('pitchSlider').value;
+        };
+
+        window.generateSyncCode = function() {
+            document.getElementById('roomCodeInput').value = 'SYNC-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+        };
+
+        // Payment Logic
+        let selectedPlan = "", selectedPrice = 0;
+        window.buyVIP = function(plan, price) {
+            selectedPlan = plan; selectedPrice = price;
+            document.getElementById('payPlanDisplay').innerText = plan;
+            document.getElementById('payAmountDisplay').innerText = "₹" + price;
+            const upiID = "globalharmony@ybl"; 
+            document.getElementById('qrCodeImage').src = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi://pay?pa=${upiID}&pn=Founder%20Karan&am=${price}&cu=INR`;
+            closeModal('vipGateModal'); openModal('paymentModal');
+        };
+
+        window.confirmPaymentAndEmail = function() {
+            const email = "globalharmonypro9052@gmail.com";
+            const subject = encodeURIComponent(`Payment Proof: Global Harmony Pro - ${selectedPlan}`);
+            const body = encodeURIComponent(`Hello Founder Karan,\n\nI paid ₹${selectedPrice} for ${selectedPlan}.\n\nScreenshot attached.`);
+            window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
+            closeModal('paymentModal');
+        };
+
+        window.shareAppForVIP = function() {
+            prompt("Share this link with friends to get 1 Month VIP!", window.location.href);
+        }
+
+        // Database and Audio Logic
+        const audio = document.getElementById('audioElement');
+        const songGrid = document.getElementById('songGrid');
+        let trackList = [], db, currentPlayingIndex = -1, songsPlayedCount = 0;
+
+        audio.addEventListener('ended', () => { window.playNextTrack(); });
+
+        let audioCtx, trackNode, pannerNode, isSpatialActive = false, spatialInterval;
+        window.toggle8DSpatialAudio = function() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                trackNode = audioCtx.createMediaElementSource(audio);
+                pannerNode = audioCtx.createStereoPanner();
+                trackNode.connect(pannerNode);
+                pannerNode.connect(audioCtx.destination);
+            }
+            if (audioCtx.state === 'suspended') audioCtx.resume(); 
+            isSpatialActive = !isSpatialActive;
+            const btn = document.getElementById('spatialBtn');
+            if(isSpatialActive) {
+                btn.style.color = 'var(--accent-pink)';
+                let pan = -1, direction = 0.04;
+                spatialInterval = setInterval(() => { pan += direction; if(pan >= 1 || pan <= -1) direction = -direction; pannerNode.pan.value = pan; }, 100);
+            } else {
+                btn.style.color = 'var(--accent-blue)'; clearInterval(spatialInterval); pannerNode.pan.value = 0;
+            }
+        }
+
+        const dbRequest = indexedDB.open("HarmonyAudioVault_White", 2);
+        dbRequest.onupgradeneeded = (e) => {
+            const dbRef = e.target.result;
+            if (!dbRef.objectStoreNames.contains("saved_songs")) dbRef.createObjectStore("saved_songs", { keyPath: "id", autoIncrement: true });
+        };
+        dbRequest.onsuccess = (e) => { db = e.target.result; window.loadAllAppStates(); };
+
+        window.loadAllAppStates = function() {
+            if (!db) return;
+            db.transaction(["saved_songs"], "readonly").objectStore("saved_songs").getAll().onsuccess = (e) => { 
+                trackList = e.target.result || []; window.renderSongGridLazy(trackList); 
+            };
+        }
+
+        window.renderSongGridLazy = function(list) {
+            songGrid.innerHTML = '';
+            document.getElementById('trackCount').innerText = list.length;
+            if (list.length === 0) { songGrid.innerHTML = `<p style="font-size:12px; color:var(--text-muted); grid-column: 1/-1;">Vault empty. Click Import to add songs.</p>`; return; }
+            const fragment = document.createDocumentFragment();
+            list.forEach((track, i) => {
+                const card = document.createElement('div');
+                card.className = 'song-card neumorphic';
+                card.innerHTML = `<div class="song-icon-box neumorphic-inset" onclick="playTrack(${i})"><span style="color:var(--accent-blue);">▶</span></div><h3 class="song-title" style="margin-top:10px;" title="${track.title}">${track.title}</h3>`;
+                fragment.appendChild(card);
+            });
+            songGrid.appendChild(fragment);
+        }
+
+        document.getElementById('multiFileInput').addEventListener('change', async (e) => {
+            const files = Array.from(e.target.files);
+            if (!files || files.length === 0) return;
+            const importLabel = document.getElementById('importBtnLabel');
+            for (let i = 0; i < files.length; i++) {
+                importLabel.innerText = `⏳ Saving ${i + 1}/${files.length}`;
+                const file = files[i];
+                const buffer = await file.arrayBuffer(); 
+                await new Promise((resolve) => {
+                    const tx = db.transaction(["saved_songs"], "readwrite");
+                    const req = tx.objectStore("saved_songs").add({ title: file.name.replace(/\.[^/.]+$/, ""), audioData: buffer });
+                    req.onsuccess = () => resolve();
+                });
+                if(i % 10 === 0) await new Promise(r => setTimeout(r, 10));
+            }
+            importLabel.innerHTML = "<span style='color:var(--accent-blue);'>➕</span> Import"; 
+            window.loadAllAppStates(); 
+            alert(`✅ Imported ${files.length} Songs!`);
+        });
+
+        window.playTrack = function(index) {
+            if (index < 0 || index >= trackList.length) return;
+            currentPlayingIndex = index;
+            const track = trackList[index];
+            if (track.audioData) {
+                const blob = new Blob([track.audioData], { type: 'audio/mp3' });
+                audio.src = URL.createObjectURL(blob);
+            }
+            document.getElementById('p-title').innerText = track.title;
+            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+            
+            window.changePitch();
+            audio.play().catch(() => {});
+
+            songsPlayedCount++;
+            if(songsPlayedCount > 1 && songsPlayedCount % 3 === 0) {
+                if(!document.body.classList.contains('vip-active')) {
+                    audio.pause(); openModal('vipGateModal'); 
+                }
+            }
+        }
+
+        window.playNextTrack = function() { if (trackList.length > 0) window.playTrack((currentPlayingIndex + 1) % trackList.length); }
+        window.playPreviousTrack = function() { if (trackList.length > 0) window.playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
+        window.createPlaylist = function() { alert("Playlist feature active!"); closeModal('createPlaylistModal'); }
+
+        // Redeem Logic
+        window.redeemVIPCode = function() {
+            const codeInput = document.getElementById('vipCodeInput').value.trim().toUpperCase();
+            if(codeInput === 'ADMIN-KARAN' || codeInput === 'KARAN-PRO') {
+                localStorage.setItem('harmony_is_admin', 'true');
+                localStorage.setItem('harmony_is_vip', 'true');
+                document.body.classList.add('founder-active');
+                document.body.classList.add('vip-active');
+                alert("👑 WELCOME BOSS! Admin & VIP Activated!");
+                closeModal('vipGateModal');
+            } else {
+                alert("Invalid Code! Try entering: ADMIN-KARAN");
+            }
+        }
+
+        window.generateVIPCode = function() {
+            const code = 'VIP-' + Math.random().toString(36).substring(2, 6).toUpperCase();
+            document.getElementById('generatedCodeDisplay').innerText = code;
+        }
+
+        window.loginWithGoogle = function() {
+            const email = prompt("Enter your Gmail ID to Login / Activate Founder Status:");
+            if(email) {
+                document.getElementById('profileNameDisplay').innerText = email.split('@')[0];
+                if(email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422")) {
+                    localStorage.setItem('harmony_is_admin', 'true');
+                    localStorage.setItem('harmony_is_vip', 'true');
+                    document.body.classList.add('founder-active');
+                    document.body.classList.add('vip-active');
+                    alert("👑 Welcome Founder Karan!");
+                } else {
+                    alert("Logged in as " + email);
+                }
+            }
+        }
     </script>
 </body>
 </html>
