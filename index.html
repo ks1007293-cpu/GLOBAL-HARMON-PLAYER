@@ -9,127 +9,171 @@
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
     <meta http-equiv="Pragma" content="no-cache">
     <meta http-equiv="Expires" content="0">
-    <meta name="description" content="Global Harmony Pro - Decent Studio & Music Ecosystem">
+    <meta name="description" content="Global Harmony Pro - Cyber Audio Console & Studio">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#f1f5f9">
-    <title>Global Harmony Pro</title>
+    <meta name="theme-color" content="#07070a">
+    <title>Global Harmony Pro - Cyber Console</title>
 
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' stroke='%230984e3' stroke-width='8' fill='none'/><path d='M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50' stroke='%23fd79a8' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' stroke='%2300f0ff' stroke-width='8' fill='none'/><path d='M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50' stroke='%23ff007f' stroke-width='8' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>">
     <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
 
     <style>
         :root {
-            --bg-color: #f1f5f9;
-            --card-bg: rgba(255, 255, 255, 0.8);
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --shadow-light: #ffffff;
-            --shadow-dark: #cbd5e1;
-            --accent-blue: #2563eb;
-            --accent-pink: #ec4899;
-            --accent-green: #10b981;
-            --accent-gold: #f59e0b;
+            --bg-main: #07070a;
+            --panel-bg: #12121a;
+            --panel-border: rgba(0, 240, 255, 0.25);
+            --text-main: #ffffff;
+            --text-muted: #8a8a9e;
+            --neon-cyan: #00f0ff;
+            --neon-pink: #ff007f;
+            --neon-gold: #fde047;
+            --neon-green: #00ff88;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg-color); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg-main); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; overflow-x: hidden; }
 
-        /* GLASSMOPHISM & NEUMORPHISM STYLE */
-        .glass-panel {
-            background: var(--card-bg);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            box-shadow: 8px 8px 20px rgba(203, 213, 225, 0.5), -8px -8px 20px #ffffff;
-            border-radius: 20px;
-            transition: all 0.3s ease;
+        /* 🔥 CYBER CONSOLE PANELS & BUTTONS 🔥 */
+        .cyber-panel {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: 16px;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.08), inset 0 0 15px rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(12px);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        .btn-sleek {
+        .btn-console {
+            background: #ffffff;
+            color: #000000;
             padding: 10px 20px;
             font-size: 12px;
-            font-weight: 700;
+            font-weight: 900;
+            border-radius: 10px;
+            border: none;
             cursor: pointer;
             display: inline-flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-radius: 12px;
-            background: #ffffff;
-            box-shadow: 4px 4px 10px rgba(203, 213, 225, 0.6), -4px -4px 10px #ffffff;
-            border: none;
-            color: var(--text-main);
-            transition: 0.2s ease;
+            letter-spacing: 0.8px;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.25);
+            transition: all 0.2s ease;
         }
-        .btn-sleek:hover { transform: translateY(-2px); box-shadow: 6px 6px 14px rgba(203, 213, 225, 0.8), -6px -6px 14px #ffffff; }
+        .btn-console:hover { transform: scale(1.05); box-shadow: 0 0 20px rgba(255, 255, 255, 0.6); }
+        .btn-console:active { transform: scale(0.95); }
 
-        .referral-bar-box {
-            background: rgba(37, 99, 235, 0.08);
-            border: 1px solid rgba(37, 99, 235, 0.2);
-            border-radius: 14px;
-            padding: 10px 15px;
-            display: flex;
+        .golden-ticket {
+            background: linear-gradient(135deg, #fde047 0%, #eab308 50%, #ca8a04 100%);
+            color: #2a1200;
+            font-weight: 900;
+            border: 2px dashed #000;
+            padding: 8px 16px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(234, 179, 8, 0.5);
+            cursor: pointer;
+            display: inline-flex;
             align-items: center;
-            justify-content: space-between;
-            gap: 15px;
+            gap: 6px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: 0.2s;
         }
-        .progress-track { flex: 1; height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
-        .progress-fill { height: 100%; width: 33%; background: linear-gradient(90deg, var(--accent-blue), var(--accent-pink)); border-radius: 4px; }
+        .golden-ticket:hover { transform: scale(1.05) rotate(-1deg); }
 
-        .header { padding: 18px 35px; display: flex; flex-direction: column; gap: 15px; position: sticky; top: 0; z-index: 100; background: rgba(241, 245, 249, 0.85); backdrop-filter: blur(12px); }
+        /* HEADER CONSOLE */
+        .header { padding: 18px 35px; display: flex; flex-direction: column; gap: 16px; position: sticky; top: 0; z-index: 100; background: rgba(7, 7, 10, 0.88); backdrop-filter: blur(16px); border-bottom: 2px solid var(--neon-pink); }
         .top-row { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 15px; }
-        .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 20px; letter-spacing: -0.5px; }
+        .brand { display: flex; align-items: center; gap: 12px; font-weight: 900; font-size: 20px; color: var(--neon-cyan); letter-spacing: 1.5px; text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); }
         
-        .search-bar { width: 100%; max-width: 380px; padding: 12px 22px; font-size: 13px; border-radius: 30px; border: none; background: #ffffff; box-shadow: inset 3px 3px 8px rgba(203, 213, 225, 0.5), inset -3px -3px 8px #ffffff; outline: none; }
-        textarea.search-bar { border-radius: 16px; min-height: 100px; resize: vertical; }
+        .search-bar { width: 100%; max-width: 380px; padding: 12px 22px; font-size: 13px; color: #fff; background: #181824; border: 1px solid var(--neon-cyan); border-radius: 10px; outline: none; box-shadow: inset 0 0 8px rgba(0, 240, 255, 0.2); }
+        .search-bar:focus { box-shadow: 0 0 15px rgba(0, 240, 255, 0.5); }
+        textarea.search-bar { min-height: 110px; resize: vertical; }
 
-        /* VISIBILITY LOGIC FOR FOUNDER ADMIN & VIP */
+        .right-actions { display: flex; align-items: center; gap: 15px; }
+        .profile-icon { height: 38px; padding: 0 18px; display: flex; justify-content: center; align-items: center; font-size: 13px; cursor: pointer; background: #ffffff; color: #000; font-weight: 900; gap: 6px; border-radius: 19px; box-shadow: 0 0 15px rgba(255, 255, 255, 0.3); }
+
+        /* VISIBILITY CONTROLS */
         .founder-badge, .pro-only { display: none !important; }
         body.founder-active .founder-badge { display: inline-flex !important; }
         body.vip-active div.pro-only, body.vip-active span.pro-only { display: flex !important; }
 
-        .app-layout { display: flex; flex: 1; padding: 20px 35px 150px 35px; gap: 30px; }
+        /* REPLACED PLAIN GREEN WITH NITRO CYBER INVITE BUTTON */
+        .btn-nitro-invite {
+            background: linear-gradient(135deg, var(--neon-pink) 0%, #b0005d 100%);
+            color: #ffffff;
+            border: 1px solid var(--neon-pink);
+            box-shadow: 0 0 15px rgba(255, 0, 127, 0.6);
+        }
+        .btn-nitro-invite:hover { box-shadow: 0 0 25px rgba(255, 0, 127, 0.9); }
+
+        .premium-ticker { background: linear-gradient(90deg, var(--neon-pink), #b0005d); color: #fff; padding: 7px 0; font-size: 12px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; width: 100%; box-shadow: 0 0 15px rgba(255,0,127,0.5); }
+        body.vip-active .premium-ticker { display: none !important; } 
+
+        .sub-row { display: flex; justify-content: space-between; align-items: center; width: 100%; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
+        .sub-title { font-weight: 900; font-size: 14px; letter-spacing: 1px; color: var(--neon-pink); text-shadow: 0 0 8px rgba(255,0,127,0.5); }
+        .sub-actions { display: flex; gap: 15px; flex-wrap: wrap; }
+        
+        /* APP LAYOUT & PAGE ROUTING */
+        .app-layout { display: flex; flex: 1; padding: 25px 35px 150px 35px; gap: 30px; }
         .view-page { display: none; width: 100%; flex-direction: column; gap: 20px; }
         .view-page.active-page { display: flex; }
 
-        .panel-header { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; color: var(--text-main); border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: 800; color: var(--neon-cyan); border-bottom: 1px solid rgba(0, 240, 255, 0.2); padding-bottom: 12px; text-shadow: 0 0 8px rgba(0, 240, 255, 0.4); }
 
-        /* VINYL CARDS */
-        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 25px; }
-        .song-card { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 15px; cursor: pointer; border-radius: 18px; }
+        /* CYBER ALBUM CARDS */
+        .song-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 22px; }
+        .song-card { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 15px; cursor: pointer; background: #161622; border: 1px solid rgba(255,255,255,0.06); border-radius: 14px; transition: 0.2s ease; }
+        .song-card:hover { border-color: var(--neon-cyan); box-shadow: 0 0 20px rgba(0, 240, 255, 0.3); transform: translateY(-4px); }
         
         .vinyl-cover {
-            width: 105px; height: 105px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            background: radial-gradient(circle, #1e293b 20%, #020617 80%);
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.15), -5px -5px 15px #ffffff;
+            width: 95px; height: 95px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            background: radial-gradient(circle, #242436 25%, #08080c 85%);
+            border: 2px solid rgba(0, 240, 255, 0.4);
+            box-shadow: 0 0 15px rgba(0,0,0,0.8), 0 0 10px rgba(0, 240, 255, 0.2);
             position: relative; transition: transform 0.5s ease;
         }
-        .vinyl-center { width: 38px; height: 38px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), var(--accent-pink)); display: flex; justify-content: center; align-items: center; color: #fff; font-size: 12px; }
+        .vinyl-center { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--neon-cyan), var(--neon-pink)); display: flex; justify-content: center; align-items: center; color: #fff; font-size: 12px; font-weight: bold; }
 
         .playing .vinyl-cover { animation: spinVinyl 6s linear infinite; }
         @keyframes spinVinyl { 100% { transform: rotate(360deg); } }
 
-        .song-title { font-size: 12px; font-weight: 700; text-align: center; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); }
+        .song-title { font-size: 12px; font-weight: 700; text-align: center; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #ffffff; }
 
-        .fab-btn { position: fixed; bottom: 110px; right: 35px; width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--accent-blue), #1d4ed8); color: #fff; font-size: 26px; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4); z-index: 1001; transition: 0.2s; }
-        .fab-btn:hover { transform: scale(1.1); }
+        /* FLOATING ACTION BUTTON (FAB) */
+        .fab-btn { position: fixed; bottom: 110px; right: 35px; width: 58px; height: 55px; border-radius: 28px; background: linear-gradient(135deg, var(--neon-cyan), #00a8ff); color: #000; font-size: 28px; font-weight: bold; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 0 20px rgba(0, 240, 255, 0.6); z-index: 1001; transition: 0.2s; }
+        .fab-btn:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(0, 240, 255, 0.9); }
 
-        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 35px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(16px); border-radius: 24px 24px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
-        .nav-items { display: flex; gap: 12px; align-items: center; }
-        .nav-icon { width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; border-radius: 14px; background: #ffffff; box-shadow: 3px 3px 8px rgba(203, 213, 225, 0.6), -3px -3px 8px #ffffff; transition: 0.2s; }
-        .nav-icon.active-nav { border: 2px solid var(--accent-blue); }
+        /* UNIFIED BOTTOM PLAYER CONSOLE */
+        .bottom-bar { position: fixed; bottom: 0; left: 0; width: 100%; padding: 15px 35px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: rgba(7, 7, 10, 0.92); backdrop-filter: blur(16px); border-top: 2px solid var(--neon-cyan); border-radius: 24px 24px 0 0; }
+        .nav-items { display: flex; gap: 14px; align-items: center; }
+        .nav-icon { width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; font-size: 18px; cursor: pointer; border-radius: 12px; background: #ffffff; color: #000; transition: 0.2s; box-shadow: 0 0 10px rgba(255, 255, 255, 0.2); }
+        .nav-icon.active-nav { background: var(--neon-cyan); color: #000; box-shadow: 0 0 20px var(--neon-cyan); }
 
         .player-controls { flex: 1; display: flex; justify-content: center; align-items: center; gap: 18px; padding: 0 20px; }
-        .audio-element { width: 100%; max-width: 380px; height: 36px; }
+        .audio-element { width: 100%; max-width: 400px; height: 35px; border-radius: 20px; filter: invert(1); }
 
-        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.4); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
-        .modal-card { width: 100%; max-width: 520px; padding: 30px; display: flex; flex-direction: column; gap: 18px; text-align: center; max-height: 90vh; overflow-y: auto;}
+        .control-icon { font-size: 24px; cursor: pointer; color: #fff; transition: all 0.2s; border-radius: 50%; width: 44px; height: 44px; display: flex; justify-content: center; align-items: center; background: rgba(255,255,255,0.08); }
+        .control-icon:hover { color: var(--neon-cyan); background: rgba(0,240,255,0.15); box-shadow: 0 0 15px rgba(0,240,255,0.4); }
+
+        .now-playing { display: flex; align-items: center; gap: 12px; width: 240px; }
+        .now-playing-info h4 { font-size: 13px; font-weight: 800; color: var(--neon-cyan); }
+        .now-playing-info p { font-size: 11px; color: var(--text-muted); }
+
+        /* MODALS */
+        .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 3000; justify-content: center; align-items: center; padding: 20px; }
+        .modal-card { width: 100%; max-width: 520px; padding: 30px; display: flex; flex-direction: column; gap: 18px; text-align: center; background: #121218; border: 1px solid var(--neon-cyan); border-radius: 20px; box-shadow: 0 0 30px rgba(0, 240, 255, 0.2); max-height: 90vh; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; font-weight: 900; font-size: 18px; color: var(--neon-pink); }
 
         .pricing-grid { display: flex; gap: 15px; margin: 10px 0; }
-        .pricing-card { flex: 1; padding: 20px; border-radius: 16px; background: #ffffff; box-shadow: inset 2px 2px 6px rgba(203,213,225,0.4); position: relative; }
+        .pricing-card { flex: 1; padding: 20px; border-radius: 16px; background: #1a1a26; border: 1px solid rgba(255,255,255,0.1); position: relative; }
 
-        .admin-user-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; text-align: left; border-radius: 12px; background: #ffffff; margin-bottom: 8px; box-shadow: 2px 2px 6px rgba(203,213,225,0.4); }
+        .admin-user-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px; text-align: left; border-radius: 10px; background: #1a1a26; margin-bottom: 8px; border: 1px solid rgba(255,255,255,0.08); }
+
+        .eq-slider { -webkit-appearance: none; width: 100%; height: 6px; background: #262636; border-radius: 5px; outline: none; margin: 10px 0; }
+        .eq-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 18px; height: 18px; border-radius: 50%; background: var(--neon-cyan); cursor: pointer; box-shadow: 0 0 10px var(--neon-cyan); }
 
         @media (max-width: 900px) {
             .app-layout { padding-bottom: 200px; }
@@ -146,9 +190,9 @@
     <header class="header">
         <div class="top-row">
             <div class="brand" onclick="switchPage('library')" style="cursor:pointer;">
-                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px; height:30px;">
-                    <circle cx="50" cy="50" r="45" stroke="#2563eb" stroke-width="8"/>
-                    <path d="M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50" stroke="#ec4899" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+                <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:30px; height:30px; filter: drop-shadow(0 0 8px #00f0ff);">
+                    <circle cx="50" cy="50" r="45" stroke="#00f0ff" stroke-width="8"/>
+                    <path d="M50 25 C30 25 25 40 25 50 C25 60 30 75 50 75 C70 75 75 60 75 50 H50" stroke="#ff007f" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
                 </svg>
                 Global Harmony
             </div>
@@ -156,77 +200,88 @@
             <input type="text" class="search-bar" id="searchInput" placeholder="Search Tracks, Playlists..." onkeyup="searchSongs()">
 
             <div class="right-actions">
-                <label for="multiFileInput" class="btn-sleek" id="importBtnLabel"><span style="color:var(--accent-blue);">➕</span> Import</label>
-                <!-- ADMIN BUTTON (Only visible to verified Founder emails) -->
-                <button class="btn-sleek founder-badge" onclick="openModal('adminDashboardModal'); fetchActiveUsers();"><span style="color:var(--accent-gold);">👑</span> ADMIN</button>
-                <div class="btn-sleek" style="background: linear-gradient(135deg, #fef08a, #fde047); color: #854d0e;" onclick="openModal('vipGateModal')">🎟️ VIP ACCESS</div>
-                <div class="btn-sleek" onclick="window.loginWithGoogle()">👤 <span id="profileNameDisplay">Login</span></div>
+                <label for="multiFileInput" class="btn-console" id="importBtnLabel"><span style="color:var(--neon-cyan);">➕</span> Import</label>
+                <button class="btn-console founder-badge" onclick="openModal('adminDashboardModal'); fetchActiveUsers();"><span style="color:var(--neon-gold);">👑</span> ADMIN</button>
+                <div class="golden-ticket" onclick="openModal('vipGateModal')">🎟️ VIP ACCESS</div>
+                <div class="btn-console" onclick="window.loginWithGoogle()">👤 <span id="profileNameDisplay">Login</span></div>
             </div>
         </div>
 
         <div class="sub-row">
-            <div class="referral-bar-box" style="flex: 1; max-width: 500px;">
-                <span style="font-size: 11px; font-weight: 800; color: var(--accent-blue);">🎁 Invite 3 Friends -> Get 1 Month FREE VIP</span>
-                <div class="progress-track"><div class="progress-fill" id="referralMeterFill"></div></div>
-                <span style="font-size: 11px; font-weight: 800;" id="referralMeterText">1/3</span>
-            </div>
+            <div class="sub-title" id="pageTitleDisplay">CYBER VAULT TRACKS</div>
 
             <div class="sub-actions">
-                <div class="btn-sleek" style="background:#25d366; color:#fff;" onclick="shareAppOnWhatsApp()">📲 Share on WhatsApp</div>
-                <div class="btn-sleek pro-only" onclick="switchPage('studio')"><span style="color:var(--accent-pink);">🎤</span> Studio</div>
+                <!-- NITRO CYBER VIRAL BUTTON (NO PLAIN GREEN) -->
+                <div class="btn-console btn-nitro-invite" onclick="shareAppOnWhatsApp()">⚡ VIRAL INVITE (GET VIP)</div>
+                <div class="btn-console pro-only" onclick="switchPage('studio')"><span style="color:var(--neon-pink);">🎤</span> Studio</div>
             </div>
         </div>
     </header>
 
+    <div class="premium-ticker" onclick="openModal('vipGateModal')" style="cursor:pointer;">
+        <marquee behavior="scroll" direction="left" scrollamount="8">
+            🔥 UPGRADE TO GLOBAL HARMONY PRO! UNLOCK 360° SPATIAL AUDIO, PARTY SYNC, SINGER AUTO-TUNE STUDIO & AD-FREE MUSIC! 🔥
+        </marquee>
+    </div>
+
     <input type="file" id="multiFileInput" accept="audio/*" multiple style="display: none;">
 
     <div class="app-layout">
-        <section class="view-page active-page glass-panel" id="page-library" style="padding:25px;">
+        <section class="view-page active-page cyber-panel" id="page-library" style="padding:25px;">
             <div class="panel-header">
-                <span>Music Vault</span>
+                <span>Music Vault Tracks</span>
                 <span id="trackCount" style="font-size: 12px; color: var(--text-muted);">0 Tracks</span>
             </div>
             <div class="song-grid" id="songGrid"></div>
         </section>
 
-        <section class="view-page glass-panel" id="page-playlists" style="padding:25px;">
+        <section class="view-page cyber-panel" id="page-playlists" style="padding:25px;">
             <div class="panel-header"><span>Playlists & Folders</span></div>
             <div class="song-grid" id="playlistGrid"></div>
             <div class="fab-btn" onclick="openModal('createPlaylistModal')">➕</div>
         </section>
 
-        <section class="view-page glass-panel" id="page-studio" style="padding:25px;">
+        <section class="view-page cyber-panel" id="page-studio" style="padding:25px;">
             <div class="panel-header"><span>🎤 Singer Auto-Tune Studio</span></div>
             <div style="display:flex; flex-direction:column; gap:15px; margin-top:10px;">
                 <div style="display:flex; gap:15px; align-items:center;">
-                    <button class="btn-sleek" id="micRecordBtn" onclick="toggleVocalRecording()" style="color:var(--accent-pink);">🎙️ Record Vocals</button>
-                    <span id="recordingStatus" style="font-size:12px; font-weight:bold;">Mic Idle</span>
+                    <button class="btn-console" id="micRecordBtn" onclick="toggleVocalRecording()" style="color:var(--neon-pink);">🎙️ Record Vocals</button>
+                    <span id="recordingStatus" style="font-size:12px; font-weight:bold; color:var(--text-muted);">Mic Idle</span>
                 </div>
                 <audio id="vocalRecordPlayback" controls class="audio-element" style="display:none;"></audio>
+                
+                <div style="border-top:1px solid rgba(255,255,255,0.1); padding-top:15px;">
+                    <h4 style="color:var(--neon-cyan); margin-bottom:10px;">🎛️ Auto-Tune Frequency & Voice Modulator</h4>
+                    <label style="font-size:12px; font-weight:bold;">Pitch Shift (Awaaz Moti / Patli / Auto-Tune):</label>
+                    <input type="range" id="studioPitchSlider" min="0.5" max="2" step="0.05" value="1" class="eq-slider" oninput="applyStudioPitch()">
+                </div>
             </div>
         </section>
 
-        <section class="view-page glass-panel" id="page-notes" style="padding:25px;">
+        <section class="view-page cyber-panel" id="page-notes" style="padding:25px;">
             <div class="panel-header"><span>📝 Lyrics & Notes</span></div>
-            <h4 id="lyricsSongTitle" style="color:var(--accent-blue); margin-bottom:10px; font-size:15px;">No track playing</h4>
-            <textarea id="lyricsInput" class="search-bar" placeholder="Type lyrics here..."></textarea>
-            <div class="btn-sleek" style="margin-top:15px; color:var(--accent-blue);" onclick="saveLyrics()">💾 Save Notes</div>
+            <h4 id="lyricsSongTitle" style="color:var(--neon-cyan); margin-bottom:10px; font-size:15px;">No track playing</h4>
+            <textarea id="lyricsInput" class="search-bar" placeholder="Type lyrics or chords here..."></textarea>
+            <div class="btn-console" style="margin-top:15px; color:var(--neon-cyan);" onclick="saveLyrics()">💾 Save Notes</div>
         </section>
     </div>
 
     <!-- PLAYER FOOTER -->
     <footer class="bottom-bar">
         <div class="nav-items">
-            <div class="nav-icon active-nav" id="nav-library" title="Library" onclick="switchPage('library')"><span style="color:var(--accent-blue);">🏠</span></div>
-            <div class="nav-icon" id="nav-playlists" title="Playlists" onclick="switchPage('playlists')"><span style="color:var(--accent-gold);">📂</span></div>
-            <div class="nav-icon pro-only" id="nav-studio" title="Studio" onclick="switchPage('studio')"><span style="color:var(--accent-pink);">🎤</span></div>
-            <div class="nav-icon" id="nav-notes" title="Lyrics" onclick="switchPage('notes')"><span style="color:var(--accent-green);">📝</span></div>
+            <div class="nav-icon active-nav" id="nav-library" title="Library" onclick="switchPage('library')">🏠</div>
+            <div class="nav-icon" id="nav-playlists" title="Playlists" onclick="switchPage('playlists')">📂</div>
+            <div class="nav-icon pro-only" id="nav-studio" title="Studio" onclick="switchPage('studio')">🎤</div>
+            <div class="nav-icon" id="nav-notes" title="Lyrics" onclick="switchPage('notes')">📝</div>
+            <div class="nav-icon pro-only" title="Equalizer" onclick="openModal('settingsModal')">🎛️</div>
+            <div class="nav-icon pro-only" title="Party Sync" onclick="openModal('roomModal')">👥</div>
         </div>
 
         <div class="player-controls">
             <span class="control-icon" onclick="playPreviousTrack()">⏮</span>
             <audio id="audioElement" class="audio-element" controls crossorigin="anonymous"></audio>
             <span class="control-icon" onclick="playNextTrack()">⏭</span>
+            <span class="control-icon pro-only" id="spatialBtn" onclick="toggle8DSpatialAudio()" title="360° Spatial Audio" style="color:var(--neon-cyan); font-weight:bold;">🌌</span>
         </div>
 
         <div class="now-playing" id="nowPlayingCard">
@@ -242,44 +297,44 @@
 
     <!-- MODALS -->
     <div class="modal-overlay" id="vipGateModal">
-        <div class="modal-card glass-panel">
-            <div class="modal-header"><h3>🎟️ Premium Access</h3><span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span></div>
+        <div class="modal-card cyber-panel">
+            <div class="modal-header"><h3>🎟️ Unlock Premium Access</h3><span style="cursor:pointer;" onclick="closeModal('vipGateModal')">✕</span></div>
             <div class="pricing-grid">
                 <div class="pricing-card">
-                    <h4 style="color: var(--accent-blue);">1 MONTH</h4>
+                    <h4 style="color: var(--neon-cyan);">1 MONTH</h4>
                     <h2 style="margin:8px 0;">₹29</h2>
-                    <button class="btn-sleek" style="width:100%; color:var(--accent-blue);" onclick="openCheckout('1 Month', 29)">Buy ₹29</button>
+                    <button class="btn-console" style="width:100%; color:var(--neon-cyan);" onclick="openCheckout('1 Month', 29)">Buy ₹29</button>
                 </div>
                 <div class="pricing-card">
-                    <h4 style="color: var(--accent-pink);">3 MONTHS</h4>
+                    <h4 style="color: var(--neon-pink);">3 MONTHS</h4>
                     <h2 style="margin:8px 0;">₹99</h2>
-                    <button class="btn-sleek" style="width:100%; color:var(--accent-pink);" onclick="openCheckout('3 Months', 99)">Buy ₹99</button>
+                    <button class="btn-console" style="width:100%; color:var(--neon-pink);" onclick="openCheckout('3 Months', 99)">Buy ₹99</button>
                 </div>
             </div>
             <input type="text" id="vipCodeInput" class="search-bar" placeholder="Enter VIP Code (Try: ADMIN-KARAN)" style="text-align:center; font-weight:bold;">
-            <div class="btn-sleek" style="width:100%; margin-top:10px;" onclick="redeemVIPCode()">🔓 Redeem VIP</div>
+            <div class="btn-console" style="width:100%; margin-top:10px;" onclick="redeemVIPCode()">🔓 Redeem VIP</div>
         </div>
     </div>
 
     <!-- ADMIN DASHBOARD MODAL -->
     <div class="modal-overlay" id="adminDashboardModal">
-        <div class="modal-card glass-panel" style="max-width:550px;">
+        <div class="modal-card cyber-panel" style="max-width:550px;">
             <div class="modal-header"><h3>👑 Admin Panel</h3><span style="cursor:pointer;" onclick="closeModal('adminDashboardModal')">✕</span></div>
             
-            <div style="background:#fff; padding:15px; border-radius:12px; margin-bottom:15px;">
-                <h4 style="margin-bottom:8px;">🎟️ Generate VIP Code</h4>
-                <div class="btn-sleek" onclick="generateVIPCode()" style="width:100%;">⚡ Generate Code</div>
-                <div id="generatedCodeDisplay" style="font-size:22px; font-weight:900; color:var(--accent-blue); margin-top:10px;"></div>
+            <div style="background:#181824; padding:15px; border-radius:12px; margin-bottom:15px; border:1px solid var(--neon-cyan);">
+                <h4 style="margin-bottom:8px; color:var(--neon-cyan);">🎟️ Generate VIP Code</h4>
+                <div class="btn-console" onclick="generateVIPCode()" style="width:100%;">⚡ Generate Code</div>
+                <div id="generatedCodeDisplay" style="font-size:22px; font-weight:900; color:var(--neon-pink); margin-top:10px;"></div>
             </div>
 
-            <div style="background:#fff; padding:15px; border-radius:12px; margin-bottom:15px;">
-                <h4 style="margin-bottom:8px;">🎁 Direct VIP Grant by Email</h4>
+            <div style="background:#181824; padding:15px; border-radius:12px; margin-bottom:15px; border:1px solid var(--neon-pink);">
+                <h4 style="margin-bottom:8px; color:var(--neon-pink);">🎁 Direct VIP Grant by Email</h4>
                 <input type="email" id="adminGrantEmail" class="search-bar" placeholder="Enter User Email..." style="margin-bottom:10px;">
-                <div class="btn-sleek" onclick="grantVIPToEmailDirect()" style="width:100%; color:var(--accent-green);">⚡ Grant 1 Month VIP</div>
+                <div class="btn-console" onclick="grantVIPToEmailDirect()" style="width:100%; color:var(--neon-green);">⚡ Grant VIP Access</div>
             </div>
 
             <div style="text-align:left;">
-                <h4 style="margin-bottom:8px;">👥 Registered & Logged-In Users List:</h4>
+                <h4 style="margin-bottom:8px; color:#fff;">👥 Active Logged-In Users List:</h4>
                 <div id="adminUsersList" style="max-height:220px; overflow-y:auto;">
                     <p style="font-size:12px; color:var(--text-muted);">Fetching users...</p>
                 </div>
@@ -287,27 +342,29 @@
         </div>
     </div>
 
+    <!-- PAYMENT QR MODAL -->
     <div class="modal-overlay" id="paymentModal">
-        <div class="modal-card glass-panel">
-            <div class="modal-header"><h3>💳 Payment QR</h3><span style="cursor:pointer;" onclick="closeModal('paymentModal')">✕</span></div>
-            <p style="font-size:13px;">Pay <strong id="payAmountDisplay" style="color:var(--accent-pink);">₹0</strong> for <span id="payPlanDisplay">Plan</span></p>
+        <div class="modal-card cyber-panel">
+            <div class="modal-header"><h3>💳 Fast UPI Payment</h3><span style="cursor:pointer;" onclick="closeModal('paymentModal')">✕</span></div>
+            <p style="font-size:13px;">Pay <strong id="payAmountDisplay" style="color:var(--neon-pink);">₹0</strong> for <span id="payPlanDisplay">Plan</span></p>
+
             <div style="background:#fff; padding:12px; border-radius:12px; text-align:center; margin:15px 0;">
                 <img id="qrCodeImage" src="" style="width:140px; height:140px;">
-                <p style="font-size:12px; font-weight:bold; margin-top:5px;">UPI ID: globalharmony@ybl</p>
+                <p style="font-size:12px; font-weight:bold; color:#000; margin-top:5px;">UPI ID: globalharmony@ybl</p>
             </div>
-            <div class="btn-sleek" style="color:var(--accent-blue); width:100%;" onclick="confirmPaymentAndEmail()">📧 Send Payment Proof</div>
+            <div class="btn-console" style="color:var(--neon-cyan); width:100%;" onclick="confirmPaymentAndEmail()">📧 Send Payment Proof</div>
         </div>
     </div>
 
     <div class="modal-overlay" id="createPlaylistModal">
-        <div class="modal-card glass-panel">
+        <div class="modal-card cyber-panel">
             <div class="modal-header"><h3>New Playlist</h3><span style="cursor:pointer;" onclick="closeModal('createPlaylistModal')">✕</span></div>
-            <input type="text" id="playlistNameInput" class="search-bar" placeholder="Playlist Title..." style="background:#fff;">
-            <div class="btn-sleek" style="margin-top:10px; color:var(--accent-blue);" onclick="createPlaylist()">Create Playlist</div>
+            <input type="text" id="playlistNameInput" class="search-bar" placeholder="Playlist Title..." style="background:#181824;">
+            <div class="btn-console" style="margin-top:10px; color:var(--neon-cyan);" onclick="createPlaylist()">Create Playlist</div>
         </div>
     </div>
 
-    <!-- MAIN ENGINE -->
+    <!-- MAIN ENGINE JS -->
     <script>
         if(localStorage.getItem('harmony_is_vip') === 'true') document.body.classList.add('vip-active');
         if(localStorage.getItem('harmony_is_admin') === 'true') document.body.classList.add('founder-active');
@@ -324,13 +381,21 @@
             
             if(targetPage) targetPage.classList.add('active-page');
             if(targetNav) targetNav.classList.add('active-nav');
+
+            const pageTitles = {
+                'library': 'CYBER VAULT TRACKS',
+                'playlists': 'PLAYLISTS & FOLDER CONSOLE',
+                'studio': 'SINGER AUTO-TUNE STUDIO',
+                'notes': 'SONG LYRICS & NOTES'
+            };
+            document.getElementById('pageTitleDisplay').innerText = pageTitles[pageId] || 'CYBER STUDIO';
             window.scrollTo(0,0);
         };
 
         window.shareAppOnWhatsApp = function() {
             const uid = localStorage.getItem('harmony_user_uid') || 'guest';
             const link = `${window.location.origin + window.location.pathname}?ref=${uid}`;
-            const msg = encodeURIComponent(`🎧 Check out Global Harmony Pro! 360° Studio Audio Player with Auto-Tune. Try it here: ${link}`);
+            const msg = encodeURIComponent(`⚡ Bro, check out Global Harmony Pro! Cyber Studio Player with Auto-Tune & 360° Spatial Audio. Use my link to unlock Free VIP:\n\n${link}`);
             window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank');
         };
 
@@ -347,7 +412,7 @@
         window.confirmPaymentAndEmail = function() {
             const email = "globalharmonypro9052@gmail.com";
             const subject = encodeURIComponent(`Payment Proof: Global Harmony Pro - ${selectedPlan}`);
-            const body = encodeURIComponent(`Hello Founder Karan,\n\nI paid ₹${selectedPrice} for ${selectedPlan}.\n\nAttached is my payment screenshot.`);
+            const body = encodeURIComponent(`Hello Founder Karan,\n\nI paid ₹${selectedPrice} for ${selectedPlan}.\n\nScreenshot attached.`);
             window.open(`mailto:${email}?subject=${subject}&body=${body}`, '_blank');
             closeModal('paymentModal');
         };
@@ -356,7 +421,7 @@
         const audio = document.getElementById('audioElement');
         const songGrid = document.getElementById('songGrid');
         const playlistGrid = document.getElementById('playlistGrid');
-        let trackList = [], playlistList = [], db, currentPlayingIndex = -1;
+        let trackList = [], playlistList = [], activeQueue = [], db, currentPlayingIndex = -1;
 
         audio.addEventListener('play', () => { document.getElementById('nowPlayingCard').classList.add('playing'); });
         audio.addEventListener('pause', () => { document.getElementById('nowPlayingCard').classList.remove('playing'); });
@@ -368,7 +433,7 @@
         window.loadAllAppStates = function() {
             if (!db) return;
             db.transaction(["saved_songs"], "readonly").objectStore("saved_songs").getAll().onsuccess = (e) => { 
-                trackList = e.target.result || []; window.renderSongGrid(trackList); 
+                trackList = e.target.result || []; activeQueue = trackList; window.renderSongGrid(trackList); 
             };
             db.transaction(["saved_playlists"], "readonly").objectStore("saved_playlists").getAll().onsuccess = (e) => { 
                 playlistList = e.target.result || []; window.renderPlaylistGrid(playlistList); 
@@ -378,28 +443,39 @@
         window.renderSongGrid = function(list) {
             songGrid.innerHTML = '';
             document.getElementById('trackCount').innerText = `${list.length} Tracks`;
+            if (list.length === 0) { songGrid.innerHTML = `<p style="font-size:12px; color:var(--text-muted); grid-column: 1/-1;">Vault empty. Click Import to add songs.</p>`; return; }
+            
+            const fragment = document.createDocumentFragment();
             list.forEach((track, i) => {
                 const card = document.createElement('div');
-                card.className = 'song-card glass-panel';
-                card.onclick = () => window.playTrack(i);
+                card.className = 'song-card';
+                card.onclick = () => window.playTrackFromQueue(list, i);
                 card.innerHTML = `<div class="vinyl-cover"><div class="vinyl-center">▶</div></div><h3 class="song-title">${track.title}</h3>`;
-                songGrid.appendChild(card);
+                fragment.appendChild(card);
             });
+            songGrid.appendChild(fragment);
         }
 
         window.renderPlaylistGrid = function(list) {
             playlistGrid.innerHTML = '';
+            if (list.length === 0) { playlistGrid.innerHTML = `<p style="font-size:12px; color:var(--text-muted); grid-column: 1/-1;">No playlists created. Click ➕ to create one!</p>`; return; }
+            
+            const fragment = document.createDocumentFragment();
             list.forEach((pl) => {
                 const card = document.createElement('div');
-                card.className = 'song-card glass-panel';
-                card.innerHTML = `<div class="vinyl-cover" style="background:linear-gradient(135deg, #f59e0b, #d97706);"><div class="vinyl-center">📂</div></div><h3 class="song-title">${pl.name}</h3>`;
-                playlistGrid.appendChild(card);
+                card.className = 'song-card';
+                card.innerHTML = `<div class="vinyl-cover" style="border-color:var(--neon-gold);"><div class="vinyl-center" style="background:linear-gradient(135deg, var(--neon-gold), #ca8a04);">📂</div></div><h3 class="song-title">${pl.name}</h3>`;
+                fragment.appendChild(card);
             });
+            playlistGrid.appendChild(fragment);
         }
 
-        window.playTrack = function(i) {
-            currentPlayingIndex = i;
-            const track = trackList[i];
+        window.playTrackFromQueue = function(queue, index) {
+            activeQueue = queue;
+            currentPlayingIndex = index;
+            const track = activeQueue[index];
+            if (!track) return;
+
             if (track.audioData) {
                 audio.src = URL.createObjectURL(new Blob([track.audioData], { type: 'audio/mp3' }));
             }
@@ -407,12 +483,14 @@
             audio.play().catch(() => {});
         }
 
-        window.playNextTrack = function() { if (trackList.length > 0) window.playTrack((currentPlayingIndex + 1) % trackList.length); }
-        window.playPreviousTrack = function() { if (trackList.length > 0) window.playTrack((currentPlayingIndex - 1 + trackList.length) % trackList.length); }
+        window.playNextTrack = function() { if (activeQueue.length > 0) window.playTrackFromQueue(activeQueue, (currentPlayingIndex + 1) % activeQueue.length); }
+        window.playPreviousTrack = function() { if (activeQueue.length > 0) window.playTrackFromQueue(activeQueue, (currentPlayingIndex - 1 + activeQueue.length) % activeQueue.length); }
 
         document.getElementById('multiFileInput').addEventListener('change', async (e) => {
             const files = Array.from(e.target.files);
+            const importLabel = document.getElementById('importBtnLabel');
             for (let i = 0; i < files.length; i++) {
+                importLabel.innerText = `⏳ Saving ${i + 1}/${files.length}`;
                 const file = files[i];
                 const buffer = await file.arrayBuffer(); 
                 await new Promise((resolve) => {
@@ -421,6 +499,7 @@
                     tx.oncomplete = () => resolve();
                 });
             }
+            importLabel.innerHTML = "<span style='color:var(--neon-cyan);'>➕</span> Import"; 
             window.loadAllAppStates(); 
         });
 
@@ -462,7 +541,6 @@
                 const email = user.email.toLowerCase();
                 document.getElementById('profileNameDisplay').innerText = user.displayName ? user.displayName.split(" ")[0] : "User";
                 
-                // FOUNDER ADMIN CHECK (STRICT EMAIL VERIFICATION)
                 if (email.includes("globalharmonypro9052") || email.includes("ks1007293") || email.includes("kn863422")) {
                     localStorage.setItem('harmony_is_admin', 'true');
                     localStorage.setItem('harmony_is_vip', 'true');
@@ -472,7 +550,6 @@
                     document.body.classList.remove('founder-active');
                 }
 
-                // SAVE ALL LOGGED-IN USERS TO FIRESTORE CLOUD
                 try {
                     await setDoc(doc(dbFirestore, "active_users", user.uid), {
                         name: user.displayName || "User",
@@ -483,7 +560,6 @@
             }
         });
 
-        // FETCH USER LIST FOR ADMIN PANEL
         window.fetchActiveUsers = async function() {
             const listDiv = document.getElementById('adminUsersList');
             listDiv.innerHTML = '<p style="font-size:12px; color:var(--text-muted);">Fetching users...</p>';
@@ -495,14 +571,14 @@
                     listDiv.innerHTML += `
                         <div class="admin-user-row">
                             <div>
-                                <strong style="font-size:13px;">${data.name}</strong>
+                                <strong style="font-size:13px; color:#fff;">${data.name}</strong>
                                 <p style="font-size:11px; color:var(--text-muted);">${data.email}</p>
                             </div>
-                            <span style="font-size:10px; background:#dcfce7; color:#15803d; padding:3px 8px; border-radius:10px; font-weight:bold;">Active</span>
+                            <span style="font-size:10px; background:rgba(0,240,255,0.15); color:var(--neon-cyan); border:1px solid var(--neon-cyan); padding:3px 8px; border-radius:10px; font-weight:bold;">Active</span>
                         </div>`;
                 });
             } catch(e) {
-                listDiv.innerHTML = '<p style="font-size:12px; color:var(--accent-pink);">Cloud Firestore rule check needed or Offline Mode.</p>';
+                listDiv.innerHTML = '<p style="font-size:12px; color:var(--neon-pink);">Cloud Firestore rule check needed or Offline Mode.</p>';
             }
         };
 
